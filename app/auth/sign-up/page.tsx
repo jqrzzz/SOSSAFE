@@ -250,11 +250,7 @@ export default function SignUpPage() {
             </button>
           </form>
 
-          <div className="mt-6 text-center space-y-4">
-            <Link href="/demo" className="block text-primary hover:text-primary/80 font-medium transition-colors">
-              Try Demo Instead
-            </Link>
-
+          <div className="mt-6 text-center">
             <div className="text-sm text-muted-foreground">
               Already have an account?{" "}
               <Link href="/auth/login" className="text-primary hover:text-primary/80 font-medium">
