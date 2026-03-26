@@ -1,5 +1,6 @@
 "use client"
 import Link from "next/link"
+import { Logo } from "@/components/Logo"
 
 interface MarketingHeaderProps {
   isDarkMode: boolean
@@ -11,9 +12,10 @@ export function MarketingHeader({ isDarkMode, setIsDarkMode }: MarketingHeaderPr
     <nav className="fixed top-0 w-full z-50 border-b border-border/50 bg-background/95 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="flex items-center">
-            <Link href="/" className="text-lg sm:text-xl font-bold gradient-text">
-              SOS SAFETY by Tourist SOS
+          <div className="flex items-center gap-3">
+            <Link href="/" className="flex items-center gap-2">
+              <Logo size="default" />
+              <span className="hidden sm:inline text-xs text-muted-foreground font-medium uppercase tracking-wide">Safety</span>
             </Link>
           </div>
           <div className="flex items-center gap-2 sm:gap-4">

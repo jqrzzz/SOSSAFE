@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
+import { Logo } from "@/components/Logo"
 import type { User } from "@supabase/supabase-js"
 
 interface DashboardNavProps {
@@ -31,8 +32,9 @@ export function DashboardNav({ user }: DashboardNavProps) {
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-8">
-            <Link href="/dashboard" className="text-xl font-bold gradient-text">
-              SOS Safety
+            <Link href="/dashboard" className="flex items-center gap-2">
+              <Logo size="default" />
+              <span className="text-xs text-muted-foreground font-medium uppercase tracking-wide">Safety</span>
             </Link>
             
             <nav className="hidden md:flex items-center gap-1">
