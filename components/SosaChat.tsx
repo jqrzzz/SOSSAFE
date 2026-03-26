@@ -118,78 +118,155 @@ function TypingIndicator({ show }: { show: boolean }) {
 /*  Quick action chips                                                 */
 /* ------------------------------------------------------------------ */
 const QUICK_ACTIONS = [
-  { label: "Hotel / Resort", text: "I manage a hotel or resort. How can SOS Safety certification help us protect our guests?" },
-  { label: "Tour Operator", text: "I run a tour operation. How do I get SOS Safe certified?" },
-  { label: "What is SOS Safe?", text: "What is SOS Safe certification and why should my property get certified?" },
-  { label: "Pricing", text: "What does SOS Safety certification cost?" },
+  { label: "Hotel / Resort", text: "I manage a hotel. How does SOS Safe certification work?" },
+  { label: "Tour Operator", text: "I run tours. Can I get certified?" },
+  { label: "What is SOS Safe?", text: "What exactly is SOS Safe certification?" },
+  { label: "How long does it take?", text: "How long does the certification process take?" },
 ]
 
 /* ------------------------------------------------------------------ */
 /*  Simulated responses (until AI backend is connected)                */
 /* ------------------------------------------------------------------ */
 const SIMULATED_RESPONSES: Record<string, string> = {
-  "hotel": `Great question! **SOS Safety certification** helps hotels and resorts:
+  "hotel": `Great to meet you! Hotels and resorts are exactly who we built **SOS Safe** for.
 
-- Demonstrate commitment to guest safety with the **SOS Safe** badge
-- Get direct access to Tourist SOS emergency response network
-- Receive staff training on emergency protocols
-- Connect guests to immediate medical and evacuation assistance
+Here is how certification helps your property:
+- Display the **SOS Safe badge** so guests know you are prepared
+- Get direct access to our emergency coordination network
+- Complete staff training on handling medical situations
+- Connect guests instantly to vetted local medical providers
 
-Ready to get started? [Sign up for certification](/auth/sign-up) and we will guide you through the process.`,
+The process takes about 2-3 hours total (you can do it at your own pace), and most properties complete certification within 1-2 weeks.
 
-  "tour": `Tour operators are essential partners in our safety network! Here is how to get **SOS Safe certified**:
+Ready to start? [Create your account](/auth/sign-up) and I will guide you through each step.`,
 
-- Complete our online assessment (about 15 minutes)
-- Review emergency preparedness protocols
-- Train your guides on Tourist SOS procedures
-- Display your SOS Safe badge on marketing materials
+  "tour": `Absolutely! Tour operators are essential partners in our safety network, especially for adventure and outdoor activities.
 
-[Start your certification](/auth/sign-up) today and show travelers you prioritize their safety.`,
+**SOS Safe certification** for tour operators includes:
+- Emergency protocols training for your guides
+- Communication procedures when incidents happen
+- Access to our medical coordination network
+- The SOS Safe badge for your marketing materials
 
-  "what": `**SOS Safe** is the industry standard certification for travel safety.
+Your guides will know exactly what to do if a guest has a medical issue during a tour. That peace of mind is valuable for both you and your customers.
 
-When your property is certified:
-- Guests know you have verified emergency protocols
-- You get priority access to our 24/7 response network
-- Staff receive training on handling medical emergencies
-- Your property joins a trusted network of safety-conscious partners
+[Start your certification](/auth/sign-up) - it takes about 2-3 hours to complete.`,
 
-It is like a seal of approval that says: "We take your safety seriously."
+  "what": `**SOS Safe** is a certification that shows travelers your property or tour company is prepared for medical emergencies.
 
-[Learn more about certification](/auth/sign-up)`,
+When you are certified:
+- Guests see a trusted safety badge on your listing
+- You have verified emergency response protocols
+- Your staff knows how to handle medical situations
+- You get priority access to Tourist SOS coordination services
 
-  "pricing": `Our certification is designed to be accessible:
+Think of it as a seal of approval that says: "We take your safety seriously." It helps you stand out and builds guest confidence.
 
-- **Basic Certification** - Included with partnership
-- **Premium Certification** - Enhanced training and support
-- **Elite Certification** - Full integration with emergency services
+Certification involves three training modules covering facility assessment, emergency preparedness, and communication protocols.
 
-[Contact us](/auth/sign-up) to discuss which tier is right for your property. We offer flexible options based on your size and needs.`,
+Would you like to [get started](/auth/sign-up)?`,
 
-  "default": `I am SOSA, your SOS Safety assistant! I can help you understand:
+  "time": `Most partners complete certification within **1-2 weeks**. Here is the breakdown:
 
+- **Training modules**: About 2-3 hours total (do it at your own pace)
+- **Our review**: 2-3 business days after you submit
+- **Certificate issued**: Same day after approval
+
+You do not need to do everything in one sitting. Many partners complete one module per day between other tasks.
+
+Ready to begin? [Create your account](/auth/sign-up) and start whenever you are ready.`,
+
+  "pricing": `We have three certification tiers:
+
+- **SOS Safe Basic** - Entry level, includes all core training
+- **SOS Safe Premium** - Enhanced support and staff training verification  
+- **SOS Safe Elite** - Full integration with on-site assessment
+
+You can start the certification process for free to see if it is right for you. Pricing details are available in your dashboard after you create an account.
+
+[Sign up](/auth/sign-up) to see which tier fits your property.`,
+
+  "emergency": `If you or a guest are experiencing a medical emergency right now, please **call your local emergency services immediately**:
+- Most countries: 911
+- Thailand: 1669
+- Mexico: 911
+
+Tourist SOS cannot dispatch emergency services - local EMS must be your first call.
+
+Once the situation is stable, your guests can use sostravel.app for follow-up care coordination.
+
+If you are asking about how we handle emergencies for certified partners, I am happy to explain that instead.`,
+
+  "medical": `For clinics, hospitals, and medical transport companies, we have a dedicated portal called **SOS Professional**.
+
+This SOS Safety portal is specifically for hotels, resorts, and tour operators who want to get certified.
+
+Medical providers should visit [SOS Professional](https://sos-professional.tourist-sos.com) or email partners@tourist-sos.com to get started with provider onboarding.
+
+Is there anything else I can help you with?`,
+
+  "traveler": `If you are a traveler looking for medical assistance, this portal is for hotels and tour operators.
+
+For travel assistance and emergency support, please:
+- Download our traveler app at **sostravel.app**
+- Or visit **tourist-sos.com**
+
+Is there something else I can help you with?`,
+
+  "default": `Hi! I am SOSA, your SOS Safety assistant.
+
+I can help you understand:
 - How **SOS Safe certification** works
-- Benefits for hotels, resorts, and tour operators
+- Benefits for hotels, resorts, and tour operators  
 - The certification process and requirements
-- How we help protect your guests
+- How we help you protect your guests
 
-What would you like to know?`
+What type of property or business do you have?`
 }
 
 function getSimulatedResponse(input: string): string {
   const lower = input.toLowerCase()
-  if (lower.includes("hotel") || lower.includes("resort") || lower.includes("accommodation")) {
+  
+  // Emergency detection - highest priority
+  if (lower.includes("emergency") || lower.includes("accident") || lower.includes("hurt") || lower.includes("injured") || lower.includes("hospital now")) {
+    return SIMULATED_RESPONSES["emergency"]
+  }
+  
+  // Medical provider redirect
+  if (lower.includes("clinic") || lower.includes("hospital") || lower.includes("ambulance") || lower.includes("doctor") || lower.includes("medical provider")) {
+    return SIMULATED_RESPONSES["medical"]
+  }
+  
+  // Traveler redirect
+  if (lower.includes("traveler") || lower.includes("tourist") || lower.includes("vacation") || lower.includes("traveling") || lower.includes("trip")) {
+    return SIMULATED_RESPONSES["traveler"]
+  }
+  
+  // Accommodation providers
+  if (lower.includes("hotel") || lower.includes("resort") || lower.includes("hostel") || lower.includes("accommodation") || lower.includes("airbnb") || lower.includes("property")) {
     return SIMULATED_RESPONSES["hotel"]
   }
-  if (lower.includes("tour") || lower.includes("operator") || lower.includes("guide")) {
+  
+  // Tour operators
+  if (lower.includes("tour") || lower.includes("operator") || lower.includes("guide") || lower.includes("excursion") || lower.includes("adventure")) {
     return SIMULATED_RESPONSES["tour"]
   }
-  if (lower.includes("what") || lower.includes("sos safe") || lower.includes("certification")) {
-    return SIMULATED_RESPONSES["what"]
+  
+  // Time/duration questions
+  if (lower.includes("how long") || lower.includes("time") || lower.includes("duration") || lower.includes("takes")) {
+    return SIMULATED_RESPONSES["time"]
   }
-  if (lower.includes("price") || lower.includes("cost") || lower.includes("pricing")) {
+  
+  // Pricing questions
+  if (lower.includes("price") || lower.includes("cost") || lower.includes("pricing") || lower.includes("fee") || lower.includes("pay")) {
     return SIMULATED_RESPONSES["pricing"]
   }
+  
+  // What is SOS Safe
+  if (lower.includes("what") || lower.includes("sos safe") || lower.includes("certification") || lower.includes("certified")) {
+    return SIMULATED_RESPONSES["what"]
+  }
+  
   return SIMULATED_RESPONSES["default"]
 }
 
