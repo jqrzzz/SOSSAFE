@@ -4,6 +4,8 @@ import { useState, useEffect } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { CERTIFICATION_RULES, evaluateCertificationReadiness } from "@/lib/certification/rules"
+import { CERTIFICATION_CURRICULUM, CERTIFICATION_MODULE_ORDER } from "@/lib/certification/curriculum"
 
 interface Certification {
   id: string
@@ -14,40 +16,37 @@ interface Certification {
   created_at: string
 }
 
+interface PartnerProfile {
+  id: string
+  name: string
+  type: "accommodation" | "tour_operator"
+  city: string | null
+  region: string | null
+  country: string | null
+}
+
 interface Submission {
   id: string
   submission_type: string
   score: number | null
   submitted_at: string
+  responses?: Record<string, number> | null
 }
 
-const MODULES = [
-  {
-    id: "facility_assessment",
-    title: "Facility Assessment",
-    description: "Evaluate your property safety features, emergency equipment, and accessibility.",
-    icon: "building",
-    questions: 8,
-  },
-  {
-    id: "emergency_preparedness",
-    title: "Emergency Preparedness",
-    description: "Assess your team readiness, emergency protocols, and response procedures.",
-    icon: "alert",
-    questions: 10,
-  },
-  {
-    id: "communication_protocols",
-    title: "Communication Protocols",
-    description: "Review your guest communication, emergency contacts, and coordination systems.",
-    icon: "message",
-    questions: 6,
-  },
-]
+const MODULES = CERTIFICATION_MODULE_ORDER.map((moduleId) => {
+  const module = CERTIFICATION_CURRICULUM[moduleId]
+  return {
+    id: module.id,
+    title: module.title,
+    description: module.description,
+    questions: module.questions.length,
+  }
+})
 
 export default function CertificationPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [partnerId, setPartnerId] = useState<string | null>(null)
+  const [partnerProfile, setPartnerProfile] = useState<PartnerProfile | null>(null)
   const [certification, setCertification] = useState<Certification | null>(null)
   const [submissions, setSubmissions] = useState<Submission[]>([])
   const [error, setError] = useState<string | null>(null)
@@ -76,6 +75,16 @@ export default function CertificationPage() {
       }
 
       setPartnerId(membership.partner_id)
+
+      const { data: partnerData } = await supabase
+        .from("partners")
+        .select("id, name, type, city, region, country")
+        .eq("id", membership.partner_id)
+        .single()
+
+      if (partnerData) {
+        setPartnerProfile(partnerData)
+      }
 
       // Get certification
       const { data: certData } = await supabase
@@ -139,6 +148,7 @@ export default function CertificationPage() {
 
   const completedModules = submissions.length
   const progress = (completedModules / MODULES.length) * 100
+  const readiness = evaluateCertificationReadiness(submissions)
 
   if (isLoading) {
     return (
@@ -255,6 +265,36 @@ export default function CertificationPage() {
         </div>
       </div>
 
+      {partnerProfile && (
+        <div className="glass-card p-6 rounded-lg border border-border/50">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <p className="text-xs uppercase tracking-wide text-muted-foreground mb-1">Organization</p>
+              <h2 className="text-xl font-semibold">{partnerProfile.name}</h2>
+              <p className="text-sm text-muted-foreground mt-1">
+                {partnerProfile.type === "accommodation" ? "Accommodation" : "Tour Operator"}
+                {partnerProfile.city || partnerProfile.region || partnerProfile.country
+                  ? ` • ${[partnerProfile.city, partnerProfile.region, partnerProfile.country]
+                      .filter(Boolean)
+                      .join(", ")}`
+                  : ""}
+              </p>
+            </div>
+
+            <div className="rounded-lg border border-border/50 px-4 py-3 bg-background/50">
+              <p className="text-xs text-muted-foreground">Certification Tier</p>
+              <p className="font-semibold mt-1">
+                {certification.certification_tier === "sos_safe_basic"
+                  ? "SOS Safe Basic"
+                  : certification.certification_tier === "sos_safe_premium"
+                  ? "SOS Safe Premium"
+                  : "SOS Safe Elite"}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Progress Bar */}
       <div className="glass-card p-6 rounded-lg border border-border/50">
         <div className="flex items-center justify-between mb-2">
@@ -271,6 +311,59 @@ export default function CertificationPage() {
           <p className="text-sm text-muted-foreground mt-3">
             All modules complete! Your certification is being reviewed by our team.
           </p>
+        )}
+      </div>
+
+      {/* Readiness Summary */}
+      <div className={`glass-card p-6 rounded-lg border ${
+        readiness.isEligible
+          ? "border-green-300 dark:border-green-800 bg-green-50/40 dark:bg-green-900/10"
+          : "border-yellow-300 dark:border-yellow-800 bg-yellow-50/40 dark:bg-yellow-900/10"
+      }`}>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h2 className="text-lg font-semibold">Certification Readiness</h2>
+            <p className="text-sm text-muted-foreground mt-1">
+              Minimum module score: {CERTIFICATION_RULES.minModuleScore}% • Weighted overall: {CERTIFICATION_RULES.minOverallScore}%
+            </p>
+          </div>
+          <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+            readiness.isEligible
+              ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
+              : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300"
+          }`}>
+            {readiness.isEligible ? "Eligible for Review" : "Needs Improvement"}
+          </span>
+        </div>
+
+        <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div className="rounded-lg border border-border/50 p-3 bg-background/50">
+            <p className="text-xs text-muted-foreground">Modules Completed</p>
+            <p className="text-lg font-semibold">
+              {readiness.completedModules}/{readiness.totalModules}
+            </p>
+          </div>
+          <div className="rounded-lg border border-border/50 p-3 bg-background/50">
+            <p className="text-xs text-muted-foreground">Weighted Overall</p>
+            <p className="text-lg font-semibold">
+              {readiness.weightedOverallScore !== null ? `${readiness.weightedOverallScore}%` : "N/A"}
+            </p>
+          </div>
+          <div className="rounded-lg border border-border/50 p-3 bg-background/50">
+            <p className="text-xs text-muted-foreground">Critical Fail Items</p>
+            <p className="text-lg font-semibold">{readiness.criticalFails.length}</p>
+          </div>
+        </div>
+
+        {!readiness.isEligible && (
+          <ul className="mt-4 space-y-2 text-sm">
+            {readiness.reasons.map((reason) => (
+              <li key={reason} className="flex items-start gap-2">
+                <span className="mt-1 inline-block w-1.5 h-1.5 rounded-full bg-yellow-600 dark:bg-yellow-400" />
+                <span>{reason}</span>
+              </li>
+            ))}
+          </ul>
         )}
       </div>
 
