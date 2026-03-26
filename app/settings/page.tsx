@@ -28,7 +28,7 @@ export default function SettingsPage() {
   const router = useRouter()
   const [showProfilePopout, setShowProfilePopout] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [isDarkMode, setIsDarkMode] = useState(false)
+  const [isDarkMode, setIsDarkMode] = useState(true)
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null)
   const [bio, setBio] = useState("")
   const maxBioLength = 150

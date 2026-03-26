@@ -154,7 +154,7 @@ export default function ContactsPage() {
       if (stored) return JSON.parse(stored)
       return window.matchMedia("(prefers-color-scheme: dark)").matches
     }
-    return false
+    return true
   })
   const sidebarRef = useRef<HTMLDivElement>(null)
   const [newContact, setNewContact] = useState({

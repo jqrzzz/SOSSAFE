@@ -4,7 +4,7 @@ import { useState } from "react"
 import { MarketingHeader } from "@/components/MarketingHeader"
 
 export default function PrivacyPage() {
-  const [isDarkMode, setIsDarkMode] = useState(false)
+  const [isDarkMode, setIsDarkMode] = useState(true)
 
   return (
     <div className={`min-h-screen bg-background ${isDarkMode ? "dark" : ""}`}>

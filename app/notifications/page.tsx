@@ -10,7 +10,7 @@ import { BellIcon, TrashIcon } from "@/components/icons"
 export default function NotificationsPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [filter, setFilter] = useState<"all" | "unread" | "urgent">("all")
-  const [isDarkMode, setIsDarkMode] = useState(false)
+  const [isDarkMode, setIsDarkMode] = useState(true)
   const [notificationsList, setNotificationsList] = useState([
     {
       id: 1,

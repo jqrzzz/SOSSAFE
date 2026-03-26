@@ -12,10 +12,9 @@ export function MarketingHeader({ isDarkMode, setIsDarkMode }: MarketingHeaderPr
     <nav className="fixed top-0 w-full z-50 border-b border-border/50 bg-background/95 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="flex items-center gap-3">
-            <Link href="/" className="flex items-center gap-2">
+          <div className="flex items-center">
+            <Link href="/">
               <Logo size="default" />
-              <span className="hidden sm:inline text-xs text-muted-foreground font-medium uppercase tracking-wide">Safety</span>
             </Link>
           </div>
           <div className="flex items-center gap-2 sm:gap-4">

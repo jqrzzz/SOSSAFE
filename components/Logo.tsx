@@ -29,7 +29,7 @@ export function Logo({ size = "default", className }: { size?: LogoSize; classNa
     <span className={cn("inline-flex items-center select-none", s.wrapper, className)} aria-label="Tourist SOS">
       <span className={cn("font-light uppercase text-foreground", s.tourist)}>Tourist</span>
       <span className={cn("bg-primary/40", s.divider)} aria-hidden="true" />
-      <span className={cn("font-semibold uppercase text-red-600 dark:text-red-500", s.sos)}>SOS</span>
+      <span className={cn("font-semibold uppercase text-red-600 dark:text-red-500", s.sos)}>SOS Safety</span>
     </span>
   )
 }

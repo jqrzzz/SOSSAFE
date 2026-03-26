@@ -119,10 +119,8 @@ function TypingIndicator({ show }: { show: boolean }) {
 /*  Quick action chips                                                 */
 /* ------------------------------------------------------------------ */
 const QUICK_ACTIONS = [
-  { label: "Hotel / Resort", text: "I manage a hotel. How does SOS Safe certification work?" },
-  { label: "Tour Operator", text: "I run tours. Can I get certified?" },
-  { label: "What is SOS Safe?", text: "What exactly is SOS Safe certification?" },
-  { label: "Just browsing", text: "I'm just curious about SOS Safe. Give me a quick overview." },
+  { label: "Hotel / Resort", text: "I manage a hotel or resort." },
+  { label: "Tour Operator", text: "I run a tour operation." },
 ]
 
 /* ------------------------------------------------------------------ */
@@ -177,16 +175,17 @@ You do not need to do everything in one sitting. Many partners complete one modu
 
 Ready to begin? [Create your account](/auth/sign-up) and start whenever you are ready.`,
 
-  "sos": `I see you pressed the SOS button! Let me help you understand what **SOS Safe** certification can do for your business.
+  "sos": `Hi there! I am SOSA, your safety assistant.
 
-If you are in an actual emergency, please **call your local emergency services** (911, 999, 112, etc.) immediately.
+**SOS Safe certification** helps hotels, resorts, and tour operators protect their guests and their business.
 
-For certification questions, I am here to help:
-- Are you a **hotel or resort** looking to get certified?
-- Are you a **tour operator** wanting to protect your guests?
-- Just want to learn more about **SOS Safe**?
+When emergencies happen during a guest's stay or tour, being prepared makes all the difference. Our certification gives you:
+- Verified emergency protocols your staff can follow
+- Reduced liability through documented safety training  
+- The **SOS Safe badge** that builds guest trust
+- Direct access to our coordination network when incidents occur
 
-What type of business do you have?`,
+Are you a **hotel/resort** or a **tour operator**? I can tell you more about how we can help.`,
 
   "default": `Hi! I am SOSA, your SOS Safety assistant.
 
@@ -389,9 +388,7 @@ export function SosaChat() {
           </button>
         </div>
         
-        <p className="text-sm text-muted-foreground text-center max-w-xs">
-          Press the button or type below to learn about <strong className="text-foreground">SOS Safe</strong> certification
-        </p>
+
       </div>
 
       {/* ============================================================ */}

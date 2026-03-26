@@ -6,14 +6,13 @@ import { Logo } from "@/components/Logo"
 
 export default function ChatPage() {
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col dark">
       {/* Simple header */}
       <header className="sticky top-0 z-40 border-b border-border/50 bg-background/95 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <Link href="/" className="flex items-center gap-2">
+            <Link href="/">
               <Logo size="default" />
-              <span className="text-xs text-muted-foreground font-medium uppercase tracking-wide">Safety</span>
             </Link>
             <div className="flex items-center gap-4">
               <Link
