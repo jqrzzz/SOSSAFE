@@ -72,16 +72,40 @@ export default function SignUpPage() {
 
   if (step === "type") {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center px-4 dark">
-        <div className="w-full max-w-lg">
-          <div className="text-center mb-8">
-            <Link href="/" className="inline-block">
-              <Logo size="lg" />
-            </Link>
-            <p className="text-muted-foreground mt-2">Join the SOS Safe Certified Network</p>
+      <div className="min-h-screen bg-background flex flex-col dark">
+        {/* Header - matching homepage style */}
+        <header className="sticky top-0 z-40 border-b border-border/50 bg-background/95 backdrop-blur-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center h-16">
+              <Link href="/">
+                <Logo size="default" />
+              </Link>
+              <div className="flex items-center gap-4">
+                <Link
+                  href="/about"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  About
+                </Link>
+                <Link
+                  href="/auth/login"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Login
+                </Link>
+              </div>
+            </div>
           </div>
+        </header>
 
-          <div className="glass-card p-6 rounded-lg border border-border/50">
+        <div className="flex-1 flex items-center justify-center px-4 py-12">
+          <div className="w-full max-w-lg">
+            <div className="text-center mb-8">
+              <h1 className="text-2xl font-bold text-foreground mb-2">Get Certified</h1>
+              <p className="text-muted-foreground">Join the SOS Safe Certified Network</p>
+            </div>
+
+            <div className="glass-card p-6 rounded-xl border border-border/50">
             <h2 className="text-xl font-semibold mb-6 text-center">What type of organization are you?</h2>
             
             <div className="space-y-4">
@@ -131,28 +155,53 @@ export default function SignUpPage() {
               </Link>
             </div>
           </div>
+          </div>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-8 dark">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-block">
-            <Logo size="lg" />
-          </Link>
-          <p className="text-muted-foreground mt-2">
-            {partnerType === "accommodation" ? "Accommodation Provider" : "Tour Operator"} Registration
-          </p>
+    <div className="min-h-screen bg-background flex flex-col dark">
+      {/* Header - matching homepage style */}
+      <header className="sticky top-0 z-40 border-b border-border/50 bg-background/95 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <Link href="/">
+              <Logo size="default" />
+            </Link>
+            <div className="flex items-center gap-4">
+              <Link
+                href="/about"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                About
+              </Link>
+              <Link
+                href="/auth/login"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Login
+              </Link>
+            </div>
+          </div>
         </div>
+      </header>
 
-        <div className="glass-card p-6 rounded-lg border border-border/50">
-          <button
-            onClick={() => setStep("type")}
-            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-4 transition-colors"
-          >
+      <div className="flex-1 flex items-center justify-center px-4 py-12">
+        <div className="w-full max-w-md">
+          <div className="text-center mb-8">
+            <h1 className="text-2xl font-bold text-foreground mb-2">
+              {partnerType === "accommodation" ? "Accommodation Provider" : "Tour Operator"} Registration
+            </h1>
+            <p className="text-muted-foreground">Complete your account details</p>
+          </div>
+
+          <div className="glass-card p-6 rounded-xl border border-border/50">
+            <button
+              onClick={() => setStep("type")}
+              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-4 transition-colors"
+            >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
@@ -259,6 +308,7 @@ export default function SignUpPage() {
               </Link>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>

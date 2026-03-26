@@ -1,20 +1,45 @@
 "use client"
 
-import { useState } from "react"
 import Link from "next/link"
 import { MetricCard } from "@/components/ui/metric-card"
 import { FeatureCard } from "@/components/ui/feature-card"
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
 import { IconContainer } from "@/components/ui/icon-container"
-import { MarketingHeader } from "@/components/MarketingHeader"
 import { Logo } from "@/components/Logo"
 
 export default function AboutPage() {
-  const [isDarkMode, setIsDarkMode] = useState(true)
-
   return (
-    <div className={`min-h-screen bg-background ${isDarkMode ? "dark" : ""}`}>
-      <MarketingHeader isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+    <div className="min-h-screen bg-background dark">
+      {/* Header - matching homepage style */}
+      <header className="fixed top-0 w-full z-50 border-b border-border/50 bg-background/95 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <Link href="/">
+              <Logo size="default" />
+            </Link>
+            <div className="flex items-center gap-4">
+              <Link
+                href="/"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Home
+              </Link>
+              <Link
+                href="/auth/login"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Login
+              </Link>
+              <Link
+                href="/auth/sign-up"
+                className="btn-primary-gradient px-4 py-2 rounded-lg text-sm font-medium text-white transition-all duration-300"
+              >
+                Get Certified
+              </Link>
+            </div>
+          </div>
+        </div>
+      </header>
 
       {/* Hero Section */}
       <section className="pt-32 pb-20 sm:pt-40 sm:pb-24 lg:pt-44 lg:pb-28">

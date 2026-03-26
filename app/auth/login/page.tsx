@@ -36,16 +36,40 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4 dark">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-block">
-            <Logo size="lg" />
-          </Link>
-          <p className="text-muted-foreground mt-2">Sign in to your partner account</p>
+    <div className="min-h-screen bg-background flex flex-col dark">
+      {/* Header - matching homepage style */}
+      <header className="sticky top-0 z-40 border-b border-border/50 bg-background/95 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <Link href="/">
+              <Logo size="default" />
+            </Link>
+            <div className="flex items-center gap-4">
+              <Link
+                href="/about"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                About
+              </Link>
+              <Link
+                href="/auth/sign-up"
+                className="btn-primary-gradient px-4 py-2 rounded-lg text-sm font-medium text-white transition-all duration-300"
+              >
+                Get Certified
+              </Link>
+            </div>
+          </div>
         </div>
+      </header>
 
-        <div className="glass-card p-6 rounded-lg border border-border/50">
+      <div className="flex-1 flex items-center justify-center px-4 py-12">
+        <div className="w-full max-w-md">
+          <div className="text-center mb-8">
+            <h1 className="text-2xl font-bold text-foreground mb-2">Welcome back</h1>
+            <p className="text-muted-foreground">Sign in to your partner account</p>
+          </div>
+
+          <div className="glass-card p-6 rounded-xl border border-border/50">
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
               <div className="p-3 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 text-sm">
@@ -100,6 +124,7 @@ export default function LoginPage() {
               </Link>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>
