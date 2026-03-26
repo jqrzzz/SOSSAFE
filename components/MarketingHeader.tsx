@@ -43,16 +43,16 @@ export function MarketingHeader({ isDarkMode, setIsDarkMode }: MarketingHeaderPr
               )}
             </button>
             <Link
-              href="/login"
+              href="/auth/login"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-2 py-1"
             >
               Login
             </Link>
             <Link
-              href="/signup"
+              href="/auth/sign-up"
               className="btn-primary-gradient px-3 py-2 sm:px-4 sm:py-2 rounded-lg text-sm font-medium text-white transition-all duration-300 premium-hover flex items-center justify-center"
             >
-              Get Started
+              Get Certified
             </Link>
           </div>
         </div>
