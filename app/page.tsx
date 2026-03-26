@@ -7,7 +7,6 @@ import { FeatureCard } from "@/components/ui/feature-card"
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
 import { IconContainer } from "@/components/ui/icon-container"
 import { MarketingHeader } from "@/components/MarketingHeader"
-import { SosaChat } from "@/components/SosaChat"
 
 export default function LandingPage() {
   const [isDarkMode, setIsDarkMode] = useState(false)
@@ -525,8 +524,20 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* SOSA Chat Widget */}
-      <SosaChat />
+      {/* SOSA Chat Floating Button - links to full chat experience */}
+      <Link
+        href="/chat"
+        className="fixed bottom-6 right-6 z-40 w-16 h-16 rounded-full bg-primary shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group hover:scale-105"
+        aria-label="Chat with SOSA"
+      >
+        <img
+          src="/sosa-avatar.png"
+          alt="SOSA"
+          width={48}
+          height={48}
+          className="w-12 h-12 object-contain group-hover:scale-110 transition-transform"
+        />
+      </Link>
 
       {/* Footer */}
       <footer className="border-t border-border/50 py-16">

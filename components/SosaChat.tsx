@@ -3,7 +3,7 @@
 import React from "react"
 import { useState, useRef, useEffect, useCallback } from "react"
 import Link from "next/link"
-import { Send, Loader2, ArrowRight, X, MessageCircle } from "lucide-react"
+import { Send, Loader2, ArrowRight } from "lucide-react"
 
 const MAX_MESSAGES = 20
 
@@ -61,12 +61,13 @@ function MessageBubble({ message }: { message: Message }) {
   const isUser = message.role === "user"
   const text = message.content
 
+  if (isUser && text.includes("[SOS BUTTON PRESSED]")) return null
   if (!text) return null
 
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"} animate-[fadeIn_0.4s_ease-out_both]`}>
       <div
-        className={`max-w-[85%] rounded-2xl px-4 py-3 text-[15px] leading-relaxed ${
+        className={`max-w-[85%] md:max-w-[70%] rounded-2xl px-4 py-3 text-[15px] leading-relaxed ${
           isUser
             ? "bg-foreground/[0.06] dark:bg-white/[0.08] text-foreground rounded-br-md"
             : "text-foreground"
@@ -121,7 +122,7 @@ const QUICK_ACTIONS = [
   { label: "Hotel / Resort", text: "I manage a hotel. How does SOS Safe certification work?" },
   { label: "Tour Operator", text: "I run tours. Can I get certified?" },
   { label: "What is SOS Safe?", text: "What exactly is SOS Safe certification?" },
-  { label: "How long does it take?", text: "How long does the certification process take?" },
+  { label: "Just browsing", text: "I'm just curious about SOS Safe. Give me a quick overview." },
 ]
 
 /* ------------------------------------------------------------------ */
@@ -176,42 +177,16 @@ You do not need to do everything in one sitting. Many partners complete one modu
 
 Ready to begin? [Create your account](/auth/sign-up) and start whenever you are ready.`,
 
-  "pricing": `We have three certification tiers:
+  "sos": `I see you pressed the SOS button! Let me help you understand what **SOS Safe** certification can do for your business.
 
-- **SOS Safe Basic** - Entry level, includes all core training
-- **SOS Safe Premium** - Enhanced support and staff training verification  
-- **SOS Safe Elite** - Full integration with on-site assessment
+If you are in an actual emergency, please **call your local emergency services** (911, 999, 112, etc.) immediately.
 
-You can start the certification process for free to see if it is right for you. Pricing details are available in your dashboard after you create an account.
+For certification questions, I am here to help:
+- Are you a **hotel or resort** looking to get certified?
+- Are you a **tour operator** wanting to protect your guests?
+- Just want to learn more about **SOS Safe**?
 
-[Sign up](/auth/sign-up) to see which tier fits your property.`,
-
-  "emergency": `If you or a guest are experiencing a medical emergency right now, please **call your local emergency services immediately**:
-- Most countries: 911
-- Thailand: 1669
-- Mexico: 911
-
-Tourist SOS cannot dispatch emergency services - local EMS must be your first call.
-
-Once the situation is stable, your guests can use sostravel.app for follow-up care coordination.
-
-If you are asking about how we handle emergencies for certified partners, I am happy to explain that instead.`,
-
-  "medical": `For clinics, hospitals, and medical transport companies, we have a dedicated portal called **SOS Professional**.
-
-This SOS Safety portal is specifically for hotels, resorts, and tour operators who want to get certified.
-
-Medical providers should visit [SOS Professional](https://sos-professional.tourist-sos.com) or email partners@tourist-sos.com to get started with provider onboarding.
-
-Is there anything else I can help you with?`,
-
-  "traveler": `If you are a traveler looking for medical assistance, this portal is for hotels and tour operators.
-
-For travel assistance and emergency support, please:
-- Download our traveler app at **sostravel.app**
-- Or visit **tourist-sos.com**
-
-Is there something else I can help you with?`,
+What type of business do you have?`,
 
   "default": `Hi! I am SOSA, your SOS Safety assistant.
 
@@ -227,19 +202,9 @@ What type of property or business do you have?`
 function getSimulatedResponse(input: string): string {
   const lower = input.toLowerCase()
   
-  // Emergency detection - highest priority
-  if (lower.includes("emergency") || lower.includes("accident") || lower.includes("hurt") || lower.includes("injured") || lower.includes("hospital now")) {
-    return SIMULATED_RESPONSES["emergency"]
-  }
-  
-  // Medical provider redirect
-  if (lower.includes("clinic") || lower.includes("hospital") || lower.includes("ambulance") || lower.includes("doctor") || lower.includes("medical provider")) {
-    return SIMULATED_RESPONSES["medical"]
-  }
-  
-  // Traveler redirect
-  if (lower.includes("traveler") || lower.includes("tourist") || lower.includes("vacation") || lower.includes("traveling") || lower.includes("trip")) {
-    return SIMULATED_RESPONSES["traveler"]
+  // SOS button pressed
+  if (lower.includes("[sos button pressed]")) {
+    return SIMULATED_RESPONSES["sos"]
   }
   
   // Accommodation providers
@@ -257,13 +222,8 @@ function getSimulatedResponse(input: string): string {
     return SIMULATED_RESPONSES["time"]
   }
   
-  // Pricing questions
-  if (lower.includes("price") || lower.includes("cost") || lower.includes("pricing") || lower.includes("fee") || lower.includes("pay")) {
-    return SIMULATED_RESPONSES["pricing"]
-  }
-  
   // What is SOS Safe
-  if (lower.includes("what") || lower.includes("sos safe") || lower.includes("certification") || lower.includes("certified")) {
+  if (lower.includes("what") || lower.includes("sos safe") || lower.includes("certification") || lower.includes("certified") || lower.includes("curious") || lower.includes("overview") || lower.includes("browsing")) {
     return SIMULATED_RESPONSES["what"]
   }
   
@@ -271,34 +231,70 @@ function getSimulatedResponse(input: string): string {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Rate limit notice                                                  */
+/* ------------------------------------------------------------------ */
+function RateLimitNotice() {
+  return (
+    <div className="rounded-2xl border border-border/60 bg-foreground/[0.03] dark:bg-white/[0.04] px-5 py-4 text-center">
+      <p className="text-sm text-foreground mb-2 font-medium">
+        You seem really interested -- that is great!
+      </p>
+      <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+        To keep the conversation going, reach out to our team or create an account for full access.
+      </p>
+      <div className="flex flex-wrap items-center justify-center gap-3">
+        <Link href="/auth/sign-up" className="inline-flex items-center gap-1.5 rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:bg-primary/90 transition-colors">
+          Get Certified <ArrowRight className="w-3.5 h-3.5" />
+        </Link>
+        <Link href="/support" className="inline-flex items-center gap-1.5 rounded-xl border border-border text-foreground px-4 py-2 text-sm font-medium hover:bg-foreground/[0.04] transition-colors">
+          Contact Team <ArrowRight className="w-3.5 h-3.5" />
+        </Link>
+      </div>
+    </div>
+  )
+}
+
+/* ------------------------------------------------------------------ */
 /*  Main component                                                     */
 /* ------------------------------------------------------------------ */
 export function SosaChat() {
-  const [isOpen, setIsOpen] = useState(false)
   const [input, setInput] = useState("")
+  const [welcomeVisible, setWelcomeVisible] = useState(true)
   const [messages, setMessages] = useState<Message[]>([])
   const [isTyping, setIsTyping] = useState(false)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const lastMsgRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
   const hasMessages = messages.length > 0
   const userMessageCount = messages.filter((m) => m.role === "user").length
   const rateLimited = userMessageCount >= MAX_MESSAGES
 
-  // Scroll to bottom when messages change
+  // Fade welcome on first message
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
+    if (hasMessages && welcomeVisible) {
+      setWelcomeVisible(false)
     }
-  }, [messages, isTyping])
+  }, [hasMessages, welcomeVisible])
 
-  // Focus input when chat opens
+  // Scroll last message into view
   useEffect(() => {
-    if (isOpen) {
-      const t = setTimeout(() => inputRef.current?.focus(), 100)
-      return () => clearTimeout(t)
+    if (hasMessages && lastMsgRef.current) {
+      const el = lastMsgRef.current
+      const rect = el.getBoundingClientRect()
+      const viewportH = window.innerHeight
+      if (rect.bottom > viewportH - 280) {
+        window.scrollTo({
+          top: window.scrollY + rect.top - 80,
+          behavior: "smooth",
+        })
+      }
     }
-  }, [isOpen])
+  }, [messages, isTyping, hasMessages])
+
+  useEffect(() => {
+    const t = setTimeout(() => inputRef.current?.focus(), 500)
+    return () => clearTimeout(t)
+  }, [])
 
   const send = useCallback(
     (text: string) => {
@@ -326,10 +322,15 @@ export function SosaChat() {
         }
         setMessages(prev => [...prev, assistantMessage])
         setIsTyping(false)
-      }, 1000 + Math.random() * 1000)
+      }, 800 + Math.random() * 800)
     },
     [isTyping, rateLimited],
   )
+
+  const handleSOS = useCallback(() => {
+    if (isTyping) return
+    send("[SOS BUTTON PRESSED]")
+  }, [isTyping, send])
 
   const onKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -353,70 +354,70 @@ export function SosaChat() {
 
   return (
     <>
-      {/* Floating chat button */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className={`fixed bottom-6 right-6 z-40 w-16 h-16 rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center ${isOpen ? "scale-0 opacity-0" : "scale-100 opacity-100"}`}
-        aria-label="Open chat with SOSA"
-      >
-        <img
-          src="/sosa-avatar.png"
-          alt="SOSA"
-          width={48}
-          height={48}
-          className="w-12 h-12 object-contain"
-        />
-      </button>
-
-      {/* Chat panel */}
+      {/* ============================================================ */}
+      {/*  Welcome state -- fades via opacity                          */}
+      {/* ============================================================ */}
       <div
-        className={`fixed bottom-0 right-0 z-50 w-full sm:w-[420px] sm:bottom-6 sm:right-6 sm:rounded-2xl bg-background border border-border shadow-2xl transition-all duration-300 ${
-          isOpen 
-            ? "translate-y-0 opacity-100" 
-            : "translate-y-full sm:translate-y-8 opacity-0 pointer-events-none"
+        className={`flex flex-col items-center justify-center px-4 transition-all duration-700 ease-out ${
+          welcomeVisible && !hasMessages
+            ? "opacity-100"
+            : "opacity-0 pointer-events-none absolute inset-0 -z-10"
         }`}
-        style={{ maxHeight: "min(600px, calc(100dvh - 2rem))" }}
+        style={{ minHeight: welcomeVisible && !hasMessages ? "calc(100dvh - 18rem)" : undefined }}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-border">
-          <div className="flex items-center gap-3">
-            <img
-              src="/sosa-avatar.png"
-              alt="SOSA"
-              width={40}
-              height={40}
-              className="w-10 h-10 object-contain"
-            />
-            <div>
-              <h3 className="font-semibold text-foreground">SOSA</h3>
-              <p className="text-xs text-muted-foreground">SOS Safety Assistant</p>
-            </div>
-          </div>
+        {/* SOS Button */}
+        <div className="relative mb-6">
           <button
-            onClick={() => setIsOpen(false)}
-            className="w-8 h-8 rounded-full hover:bg-muted flex items-center justify-center transition-colors"
-            aria-label="Close chat"
+            onClick={handleSOS}
+            disabled={isTyping}
+            className="group relative w-36 h-36 md:w-44 md:h-44 rounded-full disabled:opacity-40 disabled:pointer-events-none focus:outline-none active:scale-[0.92] transition-transform duration-300 ease-out"
+            aria-label="Press SOS to start"
           >
-            <X className="w-5 h-5 text-muted-foreground" />
+            {/* Beacon ripples */}
+            <span className="absolute inset-0 rounded-full border-2 border-red-500/40 animate-[beacon_3.5s_ease-out_infinite]" />
+            <span className="absolute inset-0 rounded-full border border-red-500/25 animate-[beacon_3.5s_ease-out_0.8s_infinite]" />
+            <span className="absolute inset-0 rounded-full border border-red-500/15 animate-[beacon_3.5s_ease-out_1.6s_infinite]" />
+            <span className="absolute inset-0 rounded-full border border-red-400/10 animate-[beacon_3.5s_ease-out_2.4s_infinite]" />
+            {/* Soft glow */}
+            <span className="absolute -inset-8 rounded-full bg-red-500/8 blur-3xl animate-[breathe_4s_ease-in-out_infinite]" />
+            {/* Button face */}
+            <span className="absolute inset-0 rounded-full bg-gradient-to-b from-red-400 via-red-500 to-red-700 shadow-[inset_0_-4px_12px_rgba(0,0,0,0.3),inset_0_4px_8px_rgba(255,255,255,0.2),0_4px_24px_rgba(239,68,68,0.35)] transition-shadow duration-300 group-hover:shadow-[inset_0_-4px_12px_rgba(0,0,0,0.3),inset_0_4px_8px_rgba(255,255,255,0.2),0_8px_40px_rgba(239,68,68,0.5)]" />
+            <span className="absolute inset-4 rounded-full bg-gradient-to-b from-red-400/40 to-transparent" />
+            <span className="absolute inset-0 flex items-center justify-center text-white font-extrabold text-3xl md:text-4xl tracking-wider drop-shadow-lg">
+              SOS
+            </span>
           </button>
         </div>
+        
+        <p className="text-sm text-muted-foreground text-center max-w-xs">
+          Press the button or type below to learn about <strong className="text-foreground">SOS Safe</strong> certification
+        </p>
+      </div>
 
-        {/* Messages area */}
-        <div className="flex-1 overflow-y-auto p-4" style={{ height: "calc(min(600px, calc(100dvh - 2rem)) - 140px)" }}>
-          {!hasMessages && (
-            <div className="flex flex-col items-center justify-center h-full text-center px-4">
-              <img
-                src="/sosa-avatar.png"
-                alt="SOSA"
-                width={120}
-                height={120}
-                className="w-24 h-24 object-contain mb-4"
-              />
-              <h4 className="font-semibold text-foreground mb-2">Hi, I am SOSA!</h4>
-              <p className="text-sm text-muted-foreground mb-4">
-                I can help you learn about SOS Safe certification for your property.
-              </p>
-              <div className="flex flex-wrap justify-center gap-2">
+      {/* ============================================================ */}
+      {/*  Chat messages                                                */}
+      {/* ============================================================ */}
+      {hasMessages && (
+        <div className="max-w-2xl mx-auto px-4 md:px-6 pt-4 pb-2 flex flex-col gap-4">
+          {messages.map((msg, i) => (
+            <div key={msg.id} ref={i === messages.length - 1 ? lastMsgRef : undefined}>
+              <MessageBubble message={msg} />
+            </div>
+          ))}
+          <TypingIndicator show={isTyping} />
+        </div>
+      )}
+
+      {/* ============================================================ */}
+      {/*  Sticky bottom: SOSA + chips + input                          */}
+      {/* ============================================================ */}
+      <div className="sticky bottom-0 z-30 pt-4 pb-3 px-4 md:px-6" style={{ background: "linear-gradient(to top, var(--background) 70%, transparent)" }}>
+        <div className="max-w-2xl mx-auto">
+
+          {/* Quick action chips */}
+          <div className="flex flex-col items-center mb-1 min-h-[1.5rem]">
+            {!hasMessages && (
+              <div className="mb-2 flex flex-wrap justify-center gap-2 animate-[fadeIn_0.5s_ease-out_both]">
                 {QUICK_ACTIONS.map((action) => (
                   <button
                     key={action.label}
@@ -428,59 +429,79 @@ export function SosaChat() {
                   </button>
                 ))}
               </div>
-            </div>
-          )}
-          
-          {hasMessages && (
-            <div className="flex flex-col gap-4">
-              {messages.map((msg) => (
-                <MessageBubble key={msg.id} message={msg} />
-              ))}
-              <TypingIndicator show={isTyping} />
-              <div ref={messagesEndRef} />
-            </div>
-          )}
-        </div>
+            )}
+          </div>
 
-        {/* Input area */}
-        <div className="p-4 border-t border-border">
-          <form
-            onSubmit={(e) => { e.preventDefault(); send(input) }}
-            className={`flex items-end gap-2 rounded-full border px-4 py-2.5 transition-all duration-300 bg-background ${
-              input.trim()
-                ? "border-primary/50 shadow-sm ring-1 ring-primary/20"
-                : "border-border/80 hover:border-primary/30"
-            }`}
-          >
-            <textarea
-              ref={inputRef}
-              value={input}
-              onChange={onInputChange}
-              onKeyDown={onKeyDown}
-              placeholder="Ask about certification..."
-              disabled={isTyping || rateLimited}
-              rows={1}
-              className="flex-1 bg-transparent border-none outline-none resize-none text-[15px] text-foreground placeholder:text-muted-foreground py-1 max-h-[120px] disabled:opacity-50 leading-normal"
-              aria-label="Chat message"
+          {/* SOSA avatar */}
+          <div className="flex justify-center mb-2 pointer-events-none">
+            <img
+              src="/sosa-avatar.png"
+              alt="SOSA"
+              width={192}
+              height={192}
+              loading="eager"
+              className="w-40 h-40 md:w-48 md:h-48 object-contain drop-shadow-lg"
             />
-            <button
-              type="submit"
-              disabled={!input.trim() || isTyping}
-              className={`flex items-center justify-center w-8 h-8 rounded-full transition-all duration-300 ${
+          </div>
+
+          {/* Rate limit or input */}
+          {rateLimited ? (
+            <RateLimitNotice />
+          ) : (
+            <form
+              onSubmit={(e) => { e.preventDefault(); send(input) }}
+              className={`flex items-end gap-2 rounded-full border px-4 py-2.5 transition-all duration-500 ease-out bg-background ${
                 input.trim()
-                  ? "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 active:scale-95"
-                  : "text-muted-foreground/40"
-              } disabled:pointer-events-none`}
-              aria-label="Send message"
+                  ? "border-primary/50 shadow-sm ring-1 ring-primary/20"
+                  : "border-border/80 shadow-sm hover:border-primary/30"
+              }`}
             >
-              {isTyping ? <Loader2 className="w-[18px] h-[18px] animate-spin" /> : <Send className="w-[18px] h-[18px]" />}
-            </button>
-          </form>
+              <textarea
+                ref={inputRef}
+                value={input}
+                onChange={onInputChange}
+                onKeyDown={onKeyDown}
+                placeholder="Talk to SOSA..."
+                disabled={isTyping}
+                rows={1}
+                className="flex-1 bg-transparent border-none outline-none resize-none text-[15px] text-foreground placeholder:text-muted-foreground py-1 max-h-[120px] disabled:opacity-50 leading-normal"
+                aria-label="Chat message"
+              />
+              <div className="flex items-center gap-1.5 flex-shrink-0">
+                <button
+                  type="submit"
+                  disabled={!input.trim() || isTyping}
+                  className={`flex items-center justify-center w-8 h-8 rounded-full transition-all duration-300 ease-out ${
+                    input.trim()
+                      ? "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 active:scale-95"
+                      : "text-muted-foreground/40"
+                  } disabled:pointer-events-none`}
+                  aria-label="Send message"
+                >
+                  {isTyping ? <Loader2 className="w-[18px] h-[18px] animate-spin" /> : <Send className="w-[18px] h-[18px]" />}
+                </button>
+              </div>
+            </form>
+          )}
+
+          <p className="text-[11px] text-muted-foreground text-center mt-2 opacity-40">
+            Website demo only. In a real emergency, call local services. For travelers, visit{" "}
+            <a href="https://sostravel.app" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-foreground transition-colors">sostravel.app</a>.
+          </p>
         </div>
       </div>
 
       {/* Keyframes */}
       <style jsx>{`
+        @keyframes breathe {
+          0%, 100% { transform: scale(1); opacity: 0.08; }
+          50% { transform: scale(1.3); opacity: 0.15; }
+        }
+        @keyframes beacon {
+          0% { transform: scale(1); opacity: 0.4; }
+          70% { opacity: 0.05; }
+          100% { transform: scale(3); opacity: 0; }
+        }
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(6px); }
           to { opacity: 1; transform: translateY(0); }
