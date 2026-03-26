@@ -7,6 +7,7 @@ import { FeatureCard } from "@/components/ui/feature-card"
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
 import { IconContainer } from "@/components/ui/icon-container"
 import { MarketingHeader } from "@/components/MarketingHeader"
+import { Logo } from "@/components/Logo"
 
 export default function AboutPage() {
   const [isDarkMode, setIsDarkMode] = useState(true)

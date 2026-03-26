@@ -5,6 +5,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
+import { Logo } from "@/components/Logo"
 
 type PartnerType = "accommodation" | "tour_operator"
 
@@ -71,11 +72,11 @@ export default function SignUpPage() {
 
   if (step === "type") {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center px-4">
+      <div className="min-h-screen bg-background flex items-center justify-center px-4 dark">
         <div className="w-full max-w-lg">
           <div className="text-center mb-8">
-            <Link href="/" className="text-2xl font-bold gradient-text">
-              SOS SAFETY by Tourist SOS
+            <Link href="/" className="inline-block">
+              <Logo size="lg" />
             </Link>
             <p className="text-muted-foreground mt-2">Join the SOS Safe Certified Network</p>
           </div>
@@ -136,11 +137,11 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-8">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-8 dark">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <Link href="/" className="text-2xl font-bold gradient-text">
-            SOS SAFETY by Tourist SOS
+          <Link href="/" className="inline-block">
+            <Logo size="lg" />
           </Link>
           <p className="text-muted-foreground mt-2">
             {partnerType === "accommodation" ? "Accommodation Provider" : "Tour Operator"} Registration

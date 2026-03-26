@@ -1,12 +1,13 @@
 import Link from "next/link"
+import { Logo } from "@/components/Logo"
 
 export default function SignUpSuccessPage() {
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 dark">
       <div className="w-full max-w-md text-center">
         <div className="mb-8">
-          <Link href="/" className="text-2xl font-bold gradient-text">
-            SOS SAFETY by Tourist SOS
+          <Link href="/" className="inline-block">
+            <Logo size="lg" />
           </Link>
         </div>
 

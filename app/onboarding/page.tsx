@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { Logo } from "@/components/Logo"
 
 interface OnboardingFormData {
   // Step 1: Organization basics
@@ -167,19 +168,19 @@ export default function OnboardingPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center dark">
         <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12 dark">
       <div className="w-full max-w-xl">
         {/* Header */}
         <div className="text-center mb-8">
-          <Link href="/" className="text-2xl font-bold gradient-text">
-            SOS SAFETY
+          <Link href="/" className="inline-block">
+            <Logo size="lg" />
           </Link>
           <p className="text-muted-foreground mt-2">Complete your organization setup</p>
         </div>

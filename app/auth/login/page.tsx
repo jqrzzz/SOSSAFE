@@ -5,6 +5,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
+import { Logo } from "@/components/Logo"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -35,11 +36,11 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 dark">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <Link href="/" className="text-2xl font-bold gradient-text">
-            SOS SAFETY by Tourist SOS
+          <Link href="/" className="inline-block">
+            <Logo size="lg" />
           </Link>
           <p className="text-muted-foreground mt-2">Sign in to your partner account</p>
         </div>
@@ -91,11 +92,7 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <div className="mt-6 text-center space-y-4">
-            <Link href="/demo" className="block text-primary hover:text-primary/80 font-medium transition-colors">
-              Try Demo Instead
-            </Link>
-
+          <div className="mt-6 text-center">
             <div className="text-sm text-muted-foreground">
               {"Don't have an account? "}
               <Link href="/auth/sign-up" className="text-primary hover:text-primary/80 font-medium">

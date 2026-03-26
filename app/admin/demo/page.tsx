@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Logo } from "@/components/Logo"
 
 export default function AdminDemoPage() {
   const [activeTab, setActiveTab] = useState("overview")
@@ -1247,13 +1248,13 @@ export default function AdminDemoPage() {
   )
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background dark">
       {/* Header */}
       <header className="border-b border-border/50 bg-background/95 backdrop-blur-sm sticky top-0 z-50">
         <div className="flex items-center justify-between px-6 py-4">
           <div className="flex items-center space-x-4">
-            <Link href="/" className="text-xl font-bold gradient-text">
-              SOS SAFETY by Tourist SOS
+            <Link href="/">
+              <Logo size="default" />
             </Link>
             <span className="text-sm text-muted-foreground">Admin Dashboard</span>
           </div>

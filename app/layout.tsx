@@ -12,15 +12,15 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "SOS SAFETY by Tourist SOS - Premium Travel Safety",
-  description: "Premium travel safety and emergency response platform",
+  title: "Tourist SOS Safety - Certification Portal",
+  description: "SOS Safe certification for hotels and tour operators. Protect your guests with verified safety training.",
   generator: "v0.app",
   manifest: "/manifest.json",
   viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "SOS SAFETY by Tourist SOS",
+    title: "Tourist SOS Safety",
   },
   formatDetection: {
     telephone: false,
@@ -37,8 +37,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${GeistMono.variable}`}>
-      <body className={`font-sans antialiased`}>
+    <html lang="en" className={`${inter.variable} ${GeistMono.variable} dark`}>
+      <body className="font-sans antialiased bg-background text-foreground">
         {children}
         <Analytics />
       </body>
