@@ -7,6 +7,7 @@ import { FeatureCard } from "@/components/ui/feature-card"
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
 import { IconContainer } from "@/components/ui/icon-container"
 import { MarketingHeader } from "@/components/MarketingHeader"
+import { SosaChat } from "@/components/SosaChat"
 
 export default function LandingPage() {
   const [isDarkMode, setIsDarkMode] = useState(false)
@@ -36,7 +37,7 @@ export default function LandingPage() {
           </p>
 
           <div className="flex justify-center mb-12 sm:mb-16">
-            <img src="/images/sosa-avatar.png" alt="SOS Safety Certification" className="w-32 sm:w-40 lg:w-48 h-auto" />
+            <img src="/sosa-avatar.png" alt="SOS Safety Certification" className="w-32 sm:w-40 lg:w-48 h-auto" />
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-20 sm:mb-24">
@@ -523,6 +524,9 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* SOSA Chat Widget */}
+      <SosaChat />
 
       {/* Footer */}
       <footer className="border-t border-border/50 py-16">

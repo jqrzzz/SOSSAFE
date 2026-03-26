@@ -7,7 +7,7 @@ import "./globals.css"
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-sans", // ensuring font variable matches CSS expectations
+  variable: "--font-inter",
 })
 
 export const metadata: Metadata = {
