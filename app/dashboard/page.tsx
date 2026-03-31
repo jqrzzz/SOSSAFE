@@ -19,6 +19,7 @@ export default async function DashboardPage() {
 
   // Get certification status if profile exists
   let certificationStatus = null
+  let activeCaseCount = 0
   if (hasProfile) {
     const { data: certification } = await supabase
       .from("certifications")
@@ -27,8 +28,26 @@ export default async function DashboardPage() {
       .order("created_at", { ascending: false })
       .limit(1)
       .single()
-    
+
     certificationStatus = certification
+
+    // Count active cases for this partner
+    const { data: caseParties } = await supabase
+      .from("case_parties")
+      .select("case_id")
+      .eq("party_id", membership.partner_id)
+      .eq("party_type", "other")
+
+    if (caseParties && caseParties.length > 0) {
+      const caseIds = caseParties.map(cp => cp.case_id)
+      const { count } = await supabase
+        .from("cases")
+        .select("*", { count: "exact", head: true })
+        .in("id", caseIds)
+        .in("status", ["open", "in_progress"])
+
+      activeCaseCount = count || 0
+    }
   }
 
   return (
@@ -102,7 +121,7 @@ export default async function DashboardPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-muted-foreground">Active Cases</p>
-              <p className="text-2xl font-bold mt-1">0</p>
+              <p className="text-2xl font-bold mt-1">{activeCaseCount}</p>
             </div>
             <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center">
               <svg className="w-6 h-6 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
