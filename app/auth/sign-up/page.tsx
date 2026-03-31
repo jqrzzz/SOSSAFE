@@ -3,14 +3,19 @@
 import type React from "react"
 import { useState } from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { Logo } from "@/components/Logo"
 
 type PartnerType = "accommodation" | "tour_operator"
 
 export default function SignUpPage() {
-  const [step, setStep] = useState<"type" | "details">("type")
+  const searchParams = useSearchParams()
+  const invitePartnerId = searchParams.get("invite")
+  const inviteRole = searchParams.get("role") || "staff"
+  const isTeamInvite = !!invitePartnerId
+
+  const [step, setStep] = useState<"type" | "details">(isTeamInvite ? "details" : "type")
   const [partnerType, setPartnerType] = useState<PartnerType | null>(null)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -46,17 +51,26 @@ export default function SignUpPage() {
     try {
       const supabase = createClient()
       
+      const metadata: Record<string, string | null> = {
+        full_name: fullName,
+        partner_type: partnerType,
+      }
+
+      if (isTeamInvite) {
+        // Team invite — store invite info so callback can auto-link
+        metadata.invite_partner_id = invitePartnerId
+        metadata.invite_role = inviteRole
+      } else {
+        metadata.organization_name = organizationName
+      }
+
       const { error: signUpError } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL || 
+          emailRedirectTo: process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL ||
             `${window.location.origin}/auth/callback`,
-          data: {
-            full_name: fullName,
-            organization_name: organizationName,
-            partner_type: partnerType,
-          },
+          data: metadata,
         },
       })
       
@@ -192,21 +206,31 @@ export default function SignUpPage() {
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
             <h1 className="text-2xl font-bold text-foreground mb-2">
-              {partnerType === "accommodation" ? "Accommodation Provider" : "Tour Operator"} Registration
+              {isTeamInvite
+                ? "Join Your Team"
+                : partnerType === "accommodation"
+                  ? "Accommodation Provider Registration"
+                  : "Tour Operator Registration"}
             </h1>
-            <p className="text-muted-foreground">Complete your account details</p>
+            <p className="text-muted-foreground">
+              {isTeamInvite
+                ? "You've been invited to join a team on SOS Safety"
+                : "Complete your account details"}
+            </p>
           </div>
 
           <div className="glass-card p-6 rounded-xl border border-border/50">
-            <button
-              onClick={() => setStep("type")}
-              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-4 transition-colors"
-            >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Change organization type
-          </button>
+            {!isTeamInvite && (
+              <button
+                onClick={() => setStep("type")}
+                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-4 transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+                Change organization type
+              </button>
+            )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
@@ -230,20 +254,22 @@ export default function SignUpPage() {
               />
             </div>
 
-            <div>
-              <label htmlFor="organizationName" className="block text-sm font-medium mb-2">
-                {partnerType === "accommodation" ? "Property Name" : "Company Name"}
-              </label>
-              <input
-                id="organizationName"
-                type="text"
-                value={organizationName}
-                onChange={(e) => setOrganizationName(e.target.value)}
-                className="w-full px-3 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
-                placeholder={partnerType === "accommodation" ? "Grand Hotel Bangkok" : "Adventure Tours Thailand"}
-                required
-              />
-            </div>
+            {!isTeamInvite && (
+              <div>
+                <label htmlFor="organizationName" className="block text-sm font-medium mb-2">
+                  {partnerType === "accommodation" ? "Property Name" : "Company Name"}
+                </label>
+                <input
+                  id="organizationName"
+                  type="text"
+                  value={organizationName}
+                  onChange={(e) => setOrganizationName(e.target.value)}
+                  className="w-full px-3 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  placeholder={partnerType === "accommodation" ? "Grand Hotel Bangkok" : "Adventure Tours Thailand"}
+                  required
+                />
+              </div>
+            )}
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium mb-2">

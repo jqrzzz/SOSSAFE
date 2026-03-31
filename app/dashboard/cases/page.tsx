@@ -76,9 +76,10 @@ export default async function CasesPage() {
       ) : (
         <div className="space-y-4">
           {cases.map((caseItem) => (
-            <div
+            <Link
               key={caseItem.id}
-              className="glass-card p-6 rounded-lg border border-border/50 hover:border-border transition-colors"
+              href={`/dashboard/cases/${caseItem.id}`}
+              className="glass-card p-6 rounded-lg border border-border/50 hover:border-primary/30 transition-colors block"
             >
               <div className="flex items-start justify-between">
                 <div>
@@ -113,7 +114,7 @@ export default async function CasesPage() {
                   {new Date(caseItem.created_at).toLocaleDateString()}
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       )}
