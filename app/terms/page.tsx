@@ -1,14 +1,9 @@
-"use client"
-
-import { useState } from "react"
 import { MarketingHeader } from "@/components/MarketingHeader"
 
 export default function TermsPage() {
-  const [isDarkMode, setIsDarkMode] = useState(true)
-
   return (
-    <div className={`min-h-screen bg-background ${isDarkMode ? "dark" : ""}`}>
-      <MarketingHeader isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+    <div className="min-h-screen bg-background">
+      <MarketingHeader />
 
       {/* Terms Content */}
       <main className="pt-24 pb-16">
