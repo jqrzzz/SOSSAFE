@@ -624,3 +624,24 @@ select,
 textarea {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* ==========================================================================
+   PRINT STYLES — Certificate
+   ========================================================================== */
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #sos-certificate,
+  #sos-certificate * {
+    visibility: visible;
+  }
+  #sos-certificate {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    border-radius: 0;
+  }
+}

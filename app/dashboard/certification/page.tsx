@@ -4,6 +4,8 @@ import { useState, useEffect } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { getModuleSummaries, PASSING_SCORE, MODULES as ALL_MODULES, CERTIFICATION_TIERS } from "@/lib/certification-data"
+import { Certificate } from "@/components/dashboard/Certificate"
 
 interface Certification {
   id: string
@@ -21,33 +23,12 @@ interface Submission {
   submitted_at: string
 }
 
-const MODULES = [
-  {
-    id: "facility_assessment",
-    title: "Facility Assessment",
-    description: "Evaluate your property safety features, emergency equipment, and accessibility.",
-    icon: "building",
-    questions: 8,
-  },
-  {
-    id: "emergency_preparedness",
-    title: "Emergency Preparedness",
-    description: "Assess your team readiness, emergency protocols, and response procedures.",
-    icon: "alert",
-    questions: 10,
-  },
-  {
-    id: "communication_protocols",
-    title: "Communication Protocols",
-    description: "Review your guest communication, emergency contacts, and coordination systems.",
-    icon: "message",
-    questions: 6,
-  },
-]
+const MODULES = getModuleSummaries()
 
 export default function CertificationPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [partnerId, setPartnerId] = useState<string | null>(null)
+  const [organizationName, setOrganizationName] = useState("Your Organization")
   const [certification, setCertification] = useState<Certification | null>(null)
   const [submissions, setSubmissions] = useState<Submission[]>([])
   const [error, setError] = useState<string | null>(null)
@@ -62,6 +43,8 @@ export default function CertificationPage() {
         router.push("/auth/login")
         return
       }
+
+      setOrganizationName(user.user_metadata?.organization_name || "Your Organization")
 
       // Get partner membership
       const { data: membership } = await supabase
@@ -132,13 +115,14 @@ export default function CertificationPage() {
   const getModuleStatus = (moduleId: string) => {
     const submission = submissions.find(s => s.submission_type === moduleId)
     if (submission) {
-      return { completed: true, score: submission.score }
+      const passed = submission.score !== null && submission.score >= PASSING_SCORE
+      return { submitted: true, passed, score: submission.score }
     }
-    return { completed: false, score: null }
+    return { submitted: false, passed: false, score: null }
   }
 
-  const completedModules = submissions.length
-  const progress = (completedModules / MODULES.length) * 100
+  const passedModules = submissions.filter(s => s.score !== null && s.score >= PASSING_SCORE).length
+  const progress = (passedModules / MODULES.length) * 100
 
   if (isLoading) {
     return (
@@ -192,41 +176,70 @@ export default function CertificationPage() {
           </p>
         </div>
 
-        <div className="glass-card p-8 rounded-lg border border-border/50">
-          <div className="max-w-2xl mx-auto text-center">
-            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-primary/10 flex items-center justify-center">
-              <svg className="w-10 h-10 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-              </svg>
-            </div>
-            
-            <h2 className="text-2xl font-bold mb-4">Get SOS Safe Certified</h2>
-            <p className="text-muted-foreground mb-8">
-              Complete our certification modules to demonstrate your commitment to guest safety. 
-              Certified partners receive a badge, priority support, and access to our emergency response network.
-            </p>
+        {error && (
+          <div className="p-4 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 text-sm">
+            {error}
+          </div>
+        )}
 
-            {error && (
-              <div className="p-4 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 text-sm mb-6">
-                {error}
-              </div>
-            )}
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-              {MODULES.map((module) => (
-                <div key={module.id} className="p-4 rounded-lg bg-muted/50 text-left">
-                  <h3 className="font-medium mb-1">{module.title}</h3>
-                  <p className="text-sm text-muted-foreground">{module.questions} questions</p>
-                </div>
-              ))}
-            </div>
-
-            <button
-              onClick={startCertification}
-              className="btn-primary-gradient px-8 py-3 rounded-lg font-medium text-white transition-all duration-300 premium-hover"
+        {/* Tier cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {CERTIFICATION_TIERS.map((tier) => (
+            <div
+              key={tier.id}
+              className={`glass-card p-6 rounded-lg border relative flex flex-col ${
+                tier.available
+                  ? "border-primary/30 hover:border-primary/60"
+                  : "border-border/30 opacity-60"
+              }`}
             >
-              Start Certification
-            </button>
+              {!tier.available && (
+                <span className="absolute top-3 right-3 text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
+                  Coming Soon
+                </span>
+              )}
+              <h3 className="text-lg font-semibold mb-1">{tier.name}</h3>
+              <p className="text-xs text-muted-foreground mb-3">Valid for {tier.validity}</p>
+              <p className="text-sm text-muted-foreground mb-4 flex-1">{tier.description}</p>
+              <ul className="space-y-2 mb-6">
+                {tier.requirements.map((req, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm">
+                    <svg className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-muted-foreground">{req}</span>
+                  </li>
+                ))}
+              </ul>
+              {tier.available ? (
+                <button
+                  onClick={startCertification}
+                  className="btn-primary-gradient w-full px-6 py-3 rounded-lg font-medium text-white transition-all duration-300 premium-hover"
+                >
+                  Start {tier.label} Certification
+                </button>
+              ) : (
+                <button
+                  disabled
+                  className="w-full px-6 py-3 rounded-lg font-medium border border-border text-muted-foreground cursor-not-allowed"
+                >
+                  Not Yet Available
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Module preview */}
+        <div className="glass-card p-6 rounded-lg border border-border/50">
+          <h3 className="font-semibold mb-4">Basic Certification Modules</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {MODULES.map((module) => (
+              <div key={module.id} className="p-4 rounded-lg bg-muted/50 text-left">
+                <h4 className="font-medium mb-1">{module.title}</h4>
+                <p className="text-sm text-muted-foreground">{module.questions} questions — {PASSING_SCORE}% to pass</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -259,33 +272,69 @@ export default function CertificationPage() {
       <div className="glass-card p-6 rounded-lg border border-border/50">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium">Progress</span>
-          <span className="text-sm text-muted-foreground">{completedModules} of {MODULES.length} modules</span>
+          <span className="text-sm text-muted-foreground">{passedModules} of {MODULES.length} modules passed</span>
         </div>
         <div className="h-3 bg-muted rounded-full overflow-hidden">
-          <div 
+          <div
             className="h-full bg-primary rounded-full transition-all duration-500"
             style={{ width: `${progress}%` }}
           />
         </div>
-        {completedModules === MODULES.length && certification.status === "pending" && (
-          <p className="text-sm text-muted-foreground mt-3">
-            All modules complete! Your certification is being reviewed by our team.
+        <p className="text-xs text-muted-foreground mt-2">
+          Each module requires a score of {PASSING_SCORE}% or higher to pass.
+        </p>
+        {passedModules === MODULES.length && certification.status === "pending" && (
+          <p className="text-sm text-primary font-medium mt-3">
+            All modules passed! Your certification is being reviewed by our team.
           </p>
         )}
       </div>
+
+      {/* In-Review Banner */}
+      {certification.status === "in_review" && (
+        <div className="glass-card p-6 rounded-lg border border-blue-200 dark:border-blue-800 bg-blue-50/50 dark:bg-blue-900/10">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
+              <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="font-semibold text-blue-700 dark:text-blue-400">Certification Under Review</h3>
+              <p className="text-sm text-muted-foreground mt-1">
+                All modules have been completed and passed. Our safety team is now reviewing your submissions.
+                This typically takes 2–3 business days. You'll receive an email once your certification is approved.
+              </p>
+              {submissions.length > 0 && (
+                <div className="flex gap-4 mt-3">
+                  <span className="text-xs text-muted-foreground">
+                    Average score: {Math.round(submissions.reduce((sum, s) => sum + (s.score || 0), 0) / submissions.length)}%
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    Submitted: {new Date(Math.max(...submissions.map(s => new Date(s.submitted_at).getTime()))).toLocaleDateString()}
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Modules */}
       <div className="space-y-4">
         {MODULES.map((module, index) => {
           const status = getModuleStatus(module.id)
-          const isLocked = index > 0 && !getModuleStatus(MODULES[index - 1].id).completed
-          
+          const prevStatus = index > 0 ? getModuleStatus(MODULES[index - 1].id) : null
+          const isLocked = index > 0 && !prevStatus?.passed
+
           return (
             <div
               key={module.id}
               className={`glass-card p-6 rounded-lg border transition-colors ${
-                status.completed
+                status.passed
                   ? "border-green-200 dark:border-green-800 bg-green-50/50 dark:bg-green-900/10"
+                  : status.submitted && !status.passed
+                  ? "border-red-200 dark:border-red-800 bg-red-50/50 dark:bg-red-900/10"
                   : isLocked
                   ? "border-border/30 opacity-60"
                   : "border-border/50 hover:border-primary/30"
@@ -293,15 +342,21 @@ export default function CertificationPage() {
             >
               <div className="flex items-start gap-4">
                 <div className={`w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                  status.completed
+                  status.passed
                     ? "bg-green-100 dark:bg-green-900/30"
+                    : status.submitted && !status.passed
+                    ? "bg-red-100 dark:bg-red-900/30"
                     : isLocked
                     ? "bg-muted"
                     : "bg-primary/10"
                 }`}>
-                  {status.completed ? (
+                  {status.passed ? (
                     <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  ) : status.submitted && !status.passed ? (
+                    <svg className="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   ) : isLocked ? (
                     <svg className="w-6 h-6 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -311,13 +366,17 @@ export default function CertificationPage() {
                     <span className="text-lg font-bold text-primary">{index + 1}</span>
                   )}
                 </div>
-                
+
                 <div className="flex-1">
                   <div className="flex items-center gap-3">
                     <h3 className="font-semibold">{module.title}</h3>
-                    {status.completed && status.score !== null && (
-                      <span className="text-sm text-green-600 dark:text-green-400">
-                        Score: {status.score}%
+                    {status.submitted && status.score !== null && (
+                      <span className={`text-sm font-medium ${
+                        status.passed
+                          ? "text-green-600 dark:text-green-400"
+                          : "text-red-600 dark:text-red-400"
+                      }`}>
+                        {status.score}% {status.passed ? "— Passed" : "— Below " + PASSING_SCORE + "%"}
                       </span>
                     )}
                   </div>
@@ -325,7 +384,8 @@ export default function CertificationPage() {
                   <p className="text-xs text-muted-foreground mt-2">{module.questions} questions</p>
                 </div>
 
-                {!status.completed && !isLocked && (
+                {/* Not yet attempted and not locked */}
+                {!status.submitted && !isLocked && (
                   <Link
                     href={`/dashboard/certification/${module.id}?certId=${certification.id}`}
                     className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
@@ -334,7 +394,18 @@ export default function CertificationPage() {
                   </Link>
                 )}
 
-                {status.completed && (
+                {/* Failed — show retry */}
+                {status.submitted && !status.passed && (
+                  <Link
+                    href={`/dashboard/certification/${module.id}?certId=${certification.id}`}
+                    className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors"
+                  >
+                    Retake
+                  </Link>
+                )}
+
+                {/* Passed — show review */}
+                {status.passed && (
                   <Link
                     href={`/dashboard/certification/${module.id}?certId=${certification.id}&review=true`}
                     className="px-4 py-2 rounded-lg border border-border text-sm font-medium hover:bg-muted/50 transition-colors"
@@ -348,22 +419,15 @@ export default function CertificationPage() {
         })}
       </div>
 
-      {/* Certification Badge Preview */}
+      {/* Certificate — visible when approved */}
       {certification.status === "approved" && (
-        <div className="glass-card p-8 rounded-lg border border-green-200 dark:border-green-800 bg-green-50/50 dark:bg-green-900/10 text-center">
-          <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-            <svg className="w-12 h-12 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-            </svg>
-          </div>
-          <h2 className="text-2xl font-bold text-green-700 dark:text-green-400 mb-2">SOS Safe Certified</h2>
-          <p className="text-muted-foreground mb-4">
-            Valid until {certification.expires_at ? new Date(certification.expires_at).toLocaleDateString() : "N/A"}
-          </p>
-          <button className="px-6 py-2 rounded-lg border border-green-600 text-green-600 dark:border-green-400 dark:text-green-400 text-sm font-medium hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors">
-            Download Certificate
-          </button>
-        </div>
+        <Certificate
+          organizationName={organizationName}
+          certificationTier={certification.certification_tier}
+          issuedAt={certification.issued_at}
+          expiresAt={certification.expires_at}
+          certificationId={certification.id}
+        />
       )}
     </div>
   )
