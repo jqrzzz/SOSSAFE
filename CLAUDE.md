@@ -35,7 +35,7 @@ All 6 SOS projects share **one Supabase instance**:
 
 ### SOSSAFE Owns These Tables
 
-Created in `scripts/001_create_partner_tables.sql` and `scripts/002_create_staff_training_table.sql`:
+Created in `scripts/001_create_partner_tables.sql`, `scripts/002_create_staff_training_table.sql`, and `scripts/003_create_local_knowledge_table.sql`:
 
 | Table | Purpose |
 |---|---|
@@ -44,6 +44,7 @@ Created in `scripts/001_create_partner_tables.sql` and `scripts/002_create_staff
 | `certifications` | SOS Safe certification records per partner |
 | `certification_submissions` | Module assessment responses + scores |
 | `staff_training_completions` | Individual staff training records per module |
+| `partner_local_knowledge` | Staff-contributed local safety intel (medical, transport, hazards) |
 
 **Enums owned:** `partner_type`, `certification_status`, `certification_tier`, `partner_membership_role`
 
@@ -79,6 +80,8 @@ app/
   dashboard/
     page.tsx         # Analytics dashboard (certification, cases, team stats)
     certification/   # 3-module assessment flow + certificate display
+    knowledge/       # Local knowledge base (staff-contributed safety intel)
+    training/        # Individual "My Training" page
     cases/           # Case list + detail view + CSV export (read-only)
     team/            # Team members + training status matrix
     profile/         # Partner profile editor
@@ -88,12 +91,14 @@ components/
   SosaChat.tsx       # Simulated SOSA chat widget
   Logo.tsx           # Brand logo
 lib/
-  certification-data.ts  # Single source of truth: modules, questions, scoring
+  certification-data.ts    # Single source of truth: modules, questions, scoring
+  knowledge-categories.ts  # Single source of truth: knowledge categories, fields, examples
   supabase/          # Supabase client/server/middleware helpers
   utils.ts           # Just cn() utility
 scripts/
   001_create_partner_tables.sql
   002_create_staff_training_table.sql
+  003_create_local_knowledge_table.sql
 ```
 
 ---
@@ -102,6 +107,8 @@ scripts/
 
 - **Certification data** lives in `lib/certification-data.ts` — all questions, scoring
   logic, tier definitions. Update here, not in components.
+- **Local knowledge categories** live in `lib/knowledge-categories.ts` — category
+  definitions, form field visibility, example entries. Update here, not in components.
 - **Team invites** use URL params (`?invite=PARTNER_ID&role=staff`) + auth callback
   auto-linking. No separate invitations table needed.
 - **Cases are read-only.** Cases are created by SOSCOMMAND via WhatsApp/LINE intake.
