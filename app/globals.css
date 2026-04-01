@@ -626,18 +626,19 @@ textarea {
 }
 
 /* ==========================================================================
-   PRINT STYLES — Certificate
+   PRINT STYLES
    ========================================================================== */
 
 @media print {
-  body * {
+  /* Certificate print — isolate certificate element */
+  body:has(#sos-certificate) * {
     visibility: hidden;
   }
-  #sos-certificate,
-  #sos-certificate * {
+  body:has(#sos-certificate) #sos-certificate,
+  body:has(#sos-certificate) #sos-certificate * {
     visibility: visible;
   }
-  #sos-certificate {
+  body:has(#sos-certificate) #sos-certificate {
     position: absolute;
     left: 0;
     top: 0;
