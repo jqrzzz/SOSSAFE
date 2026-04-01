@@ -2,7 +2,13 @@ import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
 import { PASSING_SCORE } from "@/lib/certification-data"
 
-export default async function DashboardPage() {
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ welcome?: string }>
+}) {
+  const params = await searchParams
+  const isWelcome = params.welcome === "true"
   const supabase = await createClient()
   const {
     data: { user },
@@ -126,7 +132,9 @@ export default async function DashboardPage() {
     <div className="space-y-8">
       {/* Welcome */}
       <div>
-        <h1 className="text-3xl font-bold">Welcome back!</h1>
+        <h1 className="text-3xl font-bold">
+          {isWelcome ? "Welcome to SOS Safe!" : "Welcome back!"}
+        </h1>
         <p className="text-muted-foreground mt-1">
           {organizationName} —{" "}
           {partnerType === "accommodation"
@@ -134,6 +142,34 @@ export default async function DashboardPage() {
             : "Tour Operator"}
         </p>
       </div>
+
+      {/* First-time welcome banner */}
+      {isWelcome && (
+        <div className="glass-card p-6 rounded-lg border border-primary/30 bg-primary/5">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
+              <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <h2 className="text-lg font-semibold">Your organization is set up!</h2>
+              <p className="text-muted-foreground text-sm mt-1">
+                Next step: complete your safety certification. Pass 3 modules with 80% or higher to earn your SOS Safe Certified badge.
+              </p>
+              <Link
+                href="/dashboard/certification"
+                className="inline-flex items-center gap-2 mt-4 btn-primary-gradient px-4 py-2 rounded-lg text-sm font-medium text-white"
+              >
+                Start Certification
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Setup nudge for new users */}
       {!hasProfile && (

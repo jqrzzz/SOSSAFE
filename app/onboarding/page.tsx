@@ -10,26 +10,32 @@ interface OnboardingFormData {
   // Step 1: Organization basics
   name: string
   type: "accommodation" | "tour_operator"
-  
-  // Step 2: Location
+
+  // Step 2: Location & contact
   country: string
   region: string
   city: string
   address: string
-  
-  // Step 3: Contact & details
   phone: string
   website: string
+
+  // Step 3: Operations
   propertySize: string
   guestCapacity: string
 }
 
 const COUNTRIES = [
-  "Thailand", "Vietnam", "Indonesia", "Philippines", "Malaysia", 
-  "Cambodia", "Laos", "Myanmar", "Singapore", "Japan", 
+  "Thailand", "Vietnam", "Indonesia", "Philippines", "Malaysia",
+  "Cambodia", "Laos", "Myanmar", "Singapore", "Japan",
   "South Korea", "China", "India", "Australia", "New Zealand",
   "United States", "Canada", "United Kingdom", "Germany", "France",
   "Spain", "Italy", "Mexico", "Brazil", "Other"
+]
+
+const STEPS = [
+  { num: 1, label: "Organization" },
+  { num: 2, label: "Location" },
+  { num: 3, label: "Operations" },
 ]
 
 export default function OnboardingPage() {
@@ -73,7 +79,6 @@ export default function OnboardingPage() {
         .single()
 
       if (membership?.partner_id) {
-        // Already onboarded, go to dashboard
         router.push("/dashboard")
         return
       }
@@ -137,7 +142,6 @@ export default function OnboardingPage() {
 
       if (membershipError) throw membershipError
 
-      // Redirect to dashboard
       router.push("/dashboard?welcome=true")
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to complete setup")
@@ -156,11 +160,11 @@ export default function OnboardingPage() {
   const canProceed = () => {
     switch (step) {
       case 1:
-        return formData.name.trim() !== "" && formData.type !== null
+        return formData.name.trim() !== ""
       case 2:
         return formData.country !== "" && formData.city.trim() !== ""
       case 3:
-        return true // Optional fields
+        return true
       default:
         return false
     }
@@ -185,29 +189,34 @@ export default function OnboardingPage() {
           <p className="text-muted-foreground mt-2">Complete your organization setup</p>
         </div>
 
-        {/* Progress Steps */}
+        {/* Progress Steps with Labels */}
         <div className="flex items-center justify-center gap-2 mb-8">
-          {[1, 2, 3].map((s) => (
-            <div key={s} className="flex items-center">
-              <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors ${
-                  s < step
-                    ? "bg-primary text-primary-foreground"
-                    : s === step
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-muted-foreground"
-                }`}
-              >
-                {s < step ? (
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                ) : (
-                  s
-                )}
+          {STEPS.map((s) => (
+            <div key={s.num} className="flex items-center">
+              <div className="flex flex-col items-center gap-1">
+                <div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors ${
+                    s.num < step
+                      ? "bg-primary text-primary-foreground"
+                      : s.num === step
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted text-muted-foreground"
+                  }`}
+                >
+                  {s.num < step ? (
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  ) : (
+                    s.num
+                  )}
+                </div>
+                <span className={`text-xs ${s.num === step ? "text-foreground font-medium" : "text-muted-foreground"}`}>
+                  {s.label}
+                </span>
               </div>
-              {s < 3 && (
-                <div className={`w-12 h-0.5 mx-1 ${s < step ? "bg-primary" : "bg-muted"}`} />
+              {s.num < 3 && (
+                <div className={`w-12 h-0.5 mx-1 mb-5 ${s.num < step ? "bg-primary" : "bg-muted"}`} />
               )}
             </div>
           ))}
@@ -231,21 +240,21 @@ export default function OnboardingPage() {
 
               <div>
                 <label htmlFor="name" className="block text-sm font-medium mb-2">
-                  Organization Name *
+                  Organization Name <span className="text-red-400">*</span>
                 </label>
                 <input
                   id="name"
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                  className="w-full px-4 py-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
-                  placeholder="e.g., Grand Hotel Bangkok"
+                  className="premium-input w-full"
+                  placeholder={formData.type === "accommodation" ? "e.g., Grand Hotel Bangkok" : "e.g., Adventure Tours Thailand"}
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-3">Organization Type *</label>
+                <label className="block text-sm font-medium mb-3">Organization Type <span className="text-red-400">*</span></label>
                 <div className="grid grid-cols-1 gap-3">
                   <button
                     type="button"
@@ -299,23 +308,23 @@ export default function OnboardingPage() {
             </div>
           )}
 
-          {/* Step 2: Location */}
+          {/* Step 2: Location & Contact */}
           {step === 2 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-xl font-semibold mb-1">Location</h2>
-                <p className="text-sm text-muted-foreground">Where is your organization based?</p>
+                <h2 className="text-xl font-semibold mb-1">Location & Contact</h2>
+                <p className="text-sm text-muted-foreground">Where can guests find you?</p>
               </div>
 
               <div>
                 <label htmlFor="country" className="block text-sm font-medium mb-2">
-                  Country *
+                  Country <span className="text-red-400">*</span>
                 </label>
                 <select
                   id="country"
                   value={formData.country}
                   onChange={(e) => setFormData(prev => ({ ...prev, country: e.target.value }))}
-                  className="w-full px-4 py-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  className="premium-input w-full"
                 >
                   <option value="">Select a country</option>
                   {COUNTRIES.map((country) => (
@@ -334,20 +343,20 @@ export default function OnboardingPage() {
                     type="text"
                     value={formData.region}
                     onChange={(e) => setFormData(prev => ({ ...prev, region: e.target.value }))}
-                    className="w-full px-4 py-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    className="premium-input w-full"
                     placeholder="e.g., Bangkok"
                   />
                 </div>
                 <div>
                   <label htmlFor="city" className="block text-sm font-medium mb-2">
-                    City *
+                    City <span className="text-red-400">*</span>
                   </label>
                   <input
                     id="city"
                     type="text"
                     value={formData.city}
                     onChange={(e) => setFormData(prev => ({ ...prev, city: e.target.value }))}
-                    className="w-full px-4 py-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    className="premium-input w-full"
                     placeholder="e.g., Bangkok"
                     required
                   />
@@ -362,51 +371,54 @@ export default function OnboardingPage() {
                   id="address"
                   value={formData.address}
                   onChange={(e) => setFormData(prev => ({ ...prev, address: e.target.value }))}
-                  className="w-full px-4 py-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 min-h-[80px]"
+                  className="premium-input w-full min-h-[80px]"
                   placeholder="Street address, building name, etc."
                 />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="phone" className="block text-sm font-medium mb-2">
+                    Phone Number
+                  </label>
+                  <input
+                    id="phone"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                    className="premium-input w-full"
+                    placeholder="+66 2 123 4567"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="website" className="block text-sm font-medium mb-2">
+                    Website
+                  </label>
+                  <input
+                    id="website"
+                    type="url"
+                    value={formData.website}
+                    onChange={(e) => setFormData(prev => ({ ...prev, website: e.target.value }))}
+                    className="premium-input w-full"
+                    placeholder="https://yoursite.com"
+                  />
+                </div>
               </div>
             </div>
           )}
 
-          {/* Step 3: Contact & Details */}
+          {/* Step 3: Operations + What's Next */}
           {step === 3 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-xl font-semibold mb-1">Additional Details</h2>
-                <p className="text-sm text-muted-foreground">Help us understand your organization better</p>
+                <h2 className="text-xl font-semibold mb-1">Operations</h2>
+                <p className="text-sm text-muted-foreground">
+                  Help us tailor your certification experience
+                </p>
               </div>
 
-              <div>
-                <label htmlFor="phone" className="block text-sm font-medium mb-2">
-                  Phone Number
-                </label>
-                <input
-                  id="phone"
-                  type="tel"
-                  value={formData.phone}
-                  onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                  className="w-full px-4 py-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
-                  placeholder="+66 2 123 4567"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="website" className="block text-sm font-medium mb-2">
-                  Website
-                </label>
-                <input
-                  id="website"
-                  type="url"
-                  value={formData.website}
-                  onChange={(e) => setFormData(prev => ({ ...prev, website: e.target.value }))}
-                  className="w-full px-4 py-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
-                  placeholder="https://www.yoursite.com"
-                />
-              </div>
-
-              {formData.type === "accommodation" && (
-                <>
+              {formData.type === "accommodation" ? (
+                <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="propertySize" className="block text-sm font-medium mb-2">
                       Property Size
@@ -415,7 +427,7 @@ export default function OnboardingPage() {
                       id="propertySize"
                       value={formData.propertySize}
                       onChange={(e) => setFormData(prev => ({ ...prev, propertySize: e.target.value }))}
-                      className="w-full px-4 py-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      className="premium-input w-full"
                     >
                       <option value="">Select size</option>
                       <option value="small">Small (1-20 rooms)</option>
@@ -424,7 +436,6 @@ export default function OnboardingPage() {
                       <option value="enterprise">Enterprise (300+ rooms)</option>
                     </select>
                   </div>
-
                   <div>
                     <label htmlFor="guestCapacity" className="block text-sm font-medium mb-2">
                       Average Daily Guests
@@ -433,7 +444,7 @@ export default function OnboardingPage() {
                       id="guestCapacity"
                       value={formData.guestCapacity}
                       onChange={(e) => setFormData(prev => ({ ...prev, guestCapacity: e.target.value }))}
-                      className="w-full px-4 py-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      className="premium-input w-full"
                     >
                       <option value="">Select capacity</option>
                       <option value="1-50">1-50 guests</option>
@@ -442,11 +453,9 @@ export default function OnboardingPage() {
                       <option value="500+">500+ guests</option>
                     </select>
                   </div>
-                </>
-              )}
-
-              {formData.type === "tour_operator" && (
-                <>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="propertySize" className="block text-sm font-medium mb-2">
                       Company Size
@@ -455,35 +464,53 @@ export default function OnboardingPage() {
                       id="propertySize"
                       value={formData.propertySize}
                       onChange={(e) => setFormData(prev => ({ ...prev, propertySize: e.target.value }))}
-                      className="w-full px-4 py-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      className="premium-input w-full"
                     >
                       <option value="">Select size</option>
                       <option value="solo">Solo operator</option>
-                      <option value="small">Small team (2-10 people)</option>
-                      <option value="medium">Medium (11-50 people)</option>
-                      <option value="large">Large (50+ people)</option>
+                      <option value="small">Small team (2-10)</option>
+                      <option value="medium">Medium (11-50)</option>
+                      <option value="large">Large (50+)</option>
                     </select>
                   </div>
-
                   <div>
                     <label htmlFor="guestCapacity" className="block text-sm font-medium mb-2">
-                      Monthly Tour Participants
+                      Monthly Participants
                     </label>
                     <select
                       id="guestCapacity"
                       value={formData.guestCapacity}
                       onChange={(e) => setFormData(prev => ({ ...prev, guestCapacity: e.target.value }))}
-                      className="w-full px-4 py-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      className="premium-input w-full"
                     >
                       <option value="">Select volume</option>
-                      <option value="1-100">1-100 participants</option>
-                      <option value="101-500">101-500 participants</option>
-                      <option value="501-2000">501-2000 participants</option>
-                      <option value="2000+">2000+ participants</option>
+                      <option value="1-100">1-100</option>
+                      <option value="101-500">101-500</option>
+                      <option value="501-2000">501-2000</option>
+                      <option value="2000+">2000+</option>
                     </select>
                   </div>
-                </>
+                </div>
               )}
+
+              {/* What's Next Preview */}
+              <div className="p-4 rounded-lg bg-primary/5 border border-primary/20">
+                <p className="text-sm font-medium text-foreground mb-3">After setup, you will:</p>
+                <div className="space-y-2.5">
+                  {[
+                    { icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z", text: "Complete 3 safety certification modules" },
+                    { icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z", text: "Invite and train your team" },
+                    { icon: "M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z", text: "Earn your SOS Safe Certified badge" },
+                  ].map((item) => (
+                    <div key={item.text} className="flex items-center gap-2.5">
+                      <svg className="w-4 h-4 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
+                      </svg>
+                      <span className="text-sm text-muted-foreground">{item.text}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           )}
 
@@ -523,15 +550,17 @@ export default function OnboardingPage() {
           </div>
         </div>
 
-        {/* Skip for now */}
-        <div className="text-center mt-6">
-          <button
-            onClick={() => router.push("/dashboard")}
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Skip for now
-          </button>
-        </div>
+        {/* Finish later — less prominent, but doesn't dead-end */}
+        {step < 3 && (
+          <div className="text-center mt-6">
+            <button
+              onClick={() => setStep(3)}
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Skip to finish
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )

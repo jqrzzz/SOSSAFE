@@ -248,7 +248,7 @@ export default function SignUpPage() {
                 type="text"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="w-full px-3 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="premium-input w-full"
                 placeholder="John Smith"
                 required
               />
@@ -264,7 +264,7 @@ export default function SignUpPage() {
                   type="text"
                   value={organizationName}
                   onChange={(e) => setOrganizationName(e.target.value)}
-                  className="w-full px-3 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  className="premium-input w-full"
                   placeholder={partnerType === "accommodation" ? "Grand Hotel Bangkok" : "Adventure Tours Thailand"}
                   required
                 />
