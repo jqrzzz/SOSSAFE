@@ -19,6 +19,7 @@ CREATE TABLE staff_training_completions (
 
   -- Timestamps
   completed_at timestamptz DEFAULT now(),
+  expires_at timestamptz, -- Training valid for 1 year from completion
   created_at timestamptz DEFAULT now(),
 
   -- Each user has one record per module per partner (latest attempt wins)

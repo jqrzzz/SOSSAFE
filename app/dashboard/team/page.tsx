@@ -40,7 +40,7 @@ export default async function TeamPage() {
   // Get training completions for all members
   const { data: trainingData } = await supabase
     .from("staff_training_completions")
-    .select("user_id, module_id, score, passed, completed_at")
+    .select("user_id, module_id, score, passed, completed_at, expires_at")
     .eq("partner_id", membership.partner_id)
 
   const partners = membership.partners as unknown as { name: string } | null

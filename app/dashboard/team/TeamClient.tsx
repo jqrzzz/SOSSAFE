@@ -19,6 +19,7 @@ interface TrainingRecord {
   score: number
   passed: boolean
   completed_at: string
+  expires_at: string | null
 }
 
 interface ModuleSummary {
@@ -407,18 +408,28 @@ export function TeamClient({
 
                           {modules.map((mod) => {
                             const record = userTraining[mod.id]
+                            const daysUntilExpiry = record?.expires_at
+                              ? Math.ceil((new Date(record.expires_at).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+                              : null
+                            const isExpired = daysUntilExpiry !== null && daysUntilExpiry <= 0
+                            const isExpiringSoon = daysUntilExpiry !== null && daysUntilExpiry > 0 && daysUntilExpiry <= 60
+
                             return (
                               <td key={mod.id} className="p-4 text-center">
                                 {record ? (
                                   <div>
                                     <div
                                       className={`inline-flex items-center justify-center w-10 h-10 rounded-full mb-1 ${
-                                        record.passed
-                                          ? "bg-green-100 dark:bg-green-900/30"
-                                          : "bg-red-100 dark:bg-red-900/30"
+                                        isExpired
+                                          ? "bg-orange-100 dark:bg-orange-900/30"
+                                          : record.passed
+                                            ? "bg-green-100 dark:bg-green-900/30"
+                                            : "bg-red-100 dark:bg-red-900/30"
                                       }`}
                                     >
-                                      {record.passed ? (
+                                      {isExpired ? (
+                                        <ClockIcon className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+                                      ) : record.passed ? (
                                         <CheckIcon className="w-5 h-5 text-green-600 dark:text-green-400" />
                                       ) : (
                                         <XIcon className="w-5 h-5 text-red-600 dark:text-red-400" />
@@ -426,18 +437,24 @@ export function TeamClient({
                                     </div>
                                     <p
                                       className={`text-xs font-medium ${
-                                        record.passed
-                                          ? "text-green-600 dark:text-green-400"
-                                          : "text-red-600 dark:text-red-400"
+                                        isExpired
+                                          ? "text-orange-600 dark:text-orange-400"
+                                          : record.passed
+                                            ? "text-green-600 dark:text-green-400"
+                                            : "text-red-600 dark:text-red-400"
                                       }`}
                                     >
-                                      {record.score}%
+                                      {isExpired ? "Expired" : `${record.score}%`}
                                     </p>
-                                    <p className="text-xs text-muted-foreground">
-                                      {new Date(record.completed_at).toLocaleDateString("en-US", {
-                                        month: "short",
-                                        day: "numeric",
-                                      })}
+                                    <p className={`text-xs ${isExpiringSoon ? "text-orange-500 font-medium" : "text-muted-foreground"}`}>
+                                      {isExpired
+                                        ? "Retrain needed"
+                                        : isExpiringSoon
+                                          ? `${daysUntilExpiry}d left`
+                                          : new Date(record.completed_at).toLocaleDateString("en-US", {
+                                              month: "short",
+                                              day: "numeric",
+                                            })}
                                     </p>
                                   </div>
                                 ) : (
@@ -541,6 +558,14 @@ function XIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  )
+}
+
+function ClockIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
     </svg>
   )
 }

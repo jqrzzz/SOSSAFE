@@ -154,6 +154,10 @@ export default function ModuleAssessmentPage({ params }: { params: Promise<{ mod
           .single()
 
         if (membership?.partner_id) {
+          const now = new Date()
+          const expiresAt = new Date(now)
+          expiresAt.setFullYear(expiresAt.getFullYear() + 1)
+
           await supabase
             .from("staff_training_completions")
             .upsert(
@@ -163,7 +167,8 @@ export default function ModuleAssessmentPage({ params }: { params: Promise<{ mod
                 module_id: moduleId,
                 score: calculatedScore,
                 passed,
-                completed_at: new Date().toISOString(),
+                completed_at: now.toISOString(),
+                expires_at: passed ? expiresAt.toISOString() : null,
               },
               { onConflict: "partner_id,user_id,module_id" },
             )
