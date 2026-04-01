@@ -258,13 +258,9 @@ export default function CertificationPage() {
         <div className={`px-3 py-1 rounded-full text-sm font-medium ${
           certification.status === "approved"
             ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
-            : certification.status === "in_review"
-            ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400"
             : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
         }`}>
-          {certification.status === "approved" ? "Certified" :
-           certification.status === "in_review" ? "In Review" :
-           "In Progress"}
+          {certification.status === "approved" ? "Certified" : "In Progress"}
         </div>
       </div>
 
@@ -283,27 +279,27 @@ export default function CertificationPage() {
         <p className="text-xs text-muted-foreground mt-2">
           Each module requires a score of {PASSING_SCORE}% or higher to pass.
         </p>
-        {passedModules === MODULES.length && certification.status === "pending" && (
+        {passedModules === MODULES.length && certification.status === "approved" && (
           <p className="text-sm text-primary font-medium mt-3">
-            All modules passed! Your certification is being reviewed by our team.
+            All modules passed! You are now SOS Safe Certified.
           </p>
         )}
       </div>
 
-      {/* In-Review Banner */}
-      {certification.status === "in_review" && (
-        <div className="glass-card p-6 rounded-lg border border-blue-200 dark:border-blue-800 bg-blue-50/50 dark:bg-blue-900/10">
+      {/* Certified Banner */}
+      {certification.status === "approved" && (
+        <div className="glass-card p-6 rounded-lg border border-green-200 dark:border-green-800 bg-green-50/50 dark:bg-green-900/10">
           <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
-              <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <div className="w-12 h-12 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
+              <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
             </div>
             <div>
-              <h3 className="font-semibold text-blue-700 dark:text-blue-400">Certification Under Review</h3>
+              <h3 className="font-semibold text-green-700 dark:text-green-400">SOS Safe Certified</h3>
               <p className="text-sm text-muted-foreground mt-1">
-                All modules have been completed and passed. Our safety team is now reviewing your submissions.
-                This typically takes 2–3 business days. You'll receive an email once your certification is approved.
+                Congratulations! Your organization has passed all safety modules and is now SOS Safe Certified.
+                Your certificate is valid for one year{certification.expires_at ? ` until ${new Date(certification.expires_at).toLocaleDateString()}` : ""}.
               </p>
               {submissions.length > 0 && (
                 <div className="flex gap-4 mt-3">
@@ -311,7 +307,7 @@ export default function CertificationPage() {
                     Average score: {Math.round(submissions.reduce((sum, s) => sum + (s.score || 0), 0) / submissions.length)}%
                   </span>
                   <span className="text-xs text-muted-foreground">
-                    Submitted: {new Date(Math.max(...submissions.map(s => new Date(s.submitted_at).getTime()))).toLocaleDateString()}
+                    Certified: {certification.issued_at ? new Date(certification.issued_at).toLocaleDateString() : "—"}
                   </span>
                 </div>
               )}

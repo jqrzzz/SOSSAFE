@@ -137,9 +137,17 @@ export default function ModuleAssessmentPage({ params }: { params: Promise<{ mod
         passedModules.add(moduleId) // include the one we just submitted
 
         if (passedModules.size === MODULES.length) {
+          const now = new Date()
+          const expiresAt = new Date(now)
+          expiresAt.setFullYear(expiresAt.getFullYear() + 1)
+
           await supabase
             .from("certifications")
-            .update({ status: "in_review" })
+            .update({
+              status: "approved",
+              issued_at: now.toISOString(),
+              expires_at: expiresAt.toISOString(),
+            })
             .eq("id", certId)
         }
       }
