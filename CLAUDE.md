@@ -75,6 +75,7 @@ Created in `scripts/001_create_partner_tables.sql`, `scripts/002_create_staff_tr
 
 ```
 app/
+  api/chat/          # SOSA AI streaming endpoint (POST, text stream)
   auth/              # Login, signup, callback (team invite auto-linking)
   onboarding/        # New partner setup flow
   dashboard/
@@ -88,11 +89,13 @@ app/
 components/
   dashboard/         # DashboardNav, Certificate
   ui/                # shadcn primitives (do not delete — design system)
-  SosaChat.tsx       # Simulated SOSA chat widget
+  SosaChat.tsx       # Public SOSA chat (AI + simulated fallback)
   Logo.tsx           # Brand logo
 lib/
   certification-data.ts    # Single source of truth: modules, questions, scoring
   knowledge-categories.ts  # Single source of truth: knowledge categories, fields, examples
+  sosa-system-prompt.ts    # SOSA system prompt builder (public + dashboard contexts)
+  use-sosa-chat.ts         # Custom streaming chat hook (replaces AI SDK useChat)
   supabase/          # Supabase client/server/middleware helpers
   utils.ts           # Just cn() utility
 scripts/
@@ -117,8 +120,12 @@ scripts/
   `staff_training_completions` (per-user, per-module, with upsert on retry).
 - **Print CSS** uses `:has(#sos-certificate)` scoping for certificate isolation.
   General print support (incident log) uses Tailwind's `print:` variant.
-- **No API routes** in this project. All data access is via Supabase client in
-  server/client components.
+- **SOSA AI chat** uses `ai` SDK v6 + `@ai-sdk/anthropic`. The API route
+  (`app/api/chat/route.ts`) streams text via `streamText` + `toTextStreamResponse()`.
+  The client uses a custom `useSosaChat` hook (not `ai/react` which was removed in v6).
+  Two contexts: "public" (sales assistant) and "dashboard" (partner-aware assistant
+  with certification status, team info, and local knowledge in the system prompt).
+  Public chat falls back to simulated keyword-matching responses if the API fails.
 
 ---
 
