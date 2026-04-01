@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
 import { TeamClient } from "./TeamClient"
+import { getModuleSummaries } from "@/lib/certification-data"
 
 export default async function TeamPage() {
   const supabase = await createClient()
@@ -36,13 +37,17 @@ export default async function TeamPage() {
     .is("removed_at", null)
     .order("created_at", { ascending: true })
 
-  // Get user emails for each member
-  // Note: we fetch from auth.users via the user_id — but since RLS restricts this,
-  // we'll pass the current user's email separately and show user_id for others.
-  // In production, you'd use a server function or edge function to look up emails.
+  // Get training completions for all members
+  const { data: trainingData } = await supabase
+    .from("staff_training_completions")
+    .select("user_id, module_id, score, passed, completed_at")
+    .eq("partner_id", membership.partner_id)
 
   const partners = membership.partners as unknown as { name: string } | null
   const partnerName = partners?.name || "Your Organization"
+
+  // Module definitions for display
+  const modules = getModuleSummaries()
 
   return (
     <TeamClient
@@ -52,6 +57,8 @@ export default async function TeamPage() {
       currentUserEmail={user?.email || ""}
       currentUserRole={membership.role}
       members={members || []}
+      trainingData={trainingData || []}
+      modules={modules}
     />
   )
 }

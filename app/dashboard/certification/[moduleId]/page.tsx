@@ -144,6 +144,32 @@ export default function ModuleAssessmentPage({ params }: { params: Promise<{ mod
         }
       }
 
+      // Also record individual training completion for this user
+      if (user?.id) {
+        const { data: membership } = await supabase
+          .from("partner_memberships")
+          .select("partner_id")
+          .eq("user_id", user.id)
+          .is("removed_at", null)
+          .single()
+
+        if (membership?.partner_id) {
+          await supabase
+            .from("staff_training_completions")
+            .upsert(
+              {
+                partner_id: membership.partner_id,
+                user_id: user.id,
+                module_id: moduleId,
+                score: calculatedScore,
+                passed,
+                completed_at: new Date().toISOString(),
+              },
+              { onConflict: "partner_id,user_id,module_id" },
+            )
+        }
+      }
+
       setScore(calculatedScore)
       setSubmitted(true)
     } catch (error) {

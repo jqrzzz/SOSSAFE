@@ -84,19 +84,20 @@ export default async function DashboardPage() {
 
     teamMemberCount = members?.length || 0
 
-    // Count members who have completed certification submissions
-    // (as a proxy for "trained" until we have per-user training tracking)
+    // Count members who have completed all training modules
     if (members && members.length > 0) {
-      const memberIds = members.map((m) => m.user_id)
-      const { data: trainedSubs } = await supabase
-        .from("certification_submissions")
-        .select("submitted_by_user_id")
-        .in("submitted_by_user_id", memberIds)
+      const { data: trainingRecords } = await supabase
+        .from("staff_training_completions")
+        .select("user_id, module_id, passed")
+        .eq("partner_id", membership.partner_id)
 
-      const uniqueTrained = new Set(
-        trainedSubs?.map((s) => s.submitted_by_user_id) || [],
-      )
-      trainedMemberCount = uniqueTrained.size
+      if (trainingRecords && trainingRecords.length > 0) {
+        // Count users who have passed at least one module
+        const usersWithTraining = new Set(
+          trainingRecords.filter((r) => r.passed).map((r) => r.user_id),
+        )
+        trainedMemberCount = usersWithTraining.size
+      }
     }
   }
 
