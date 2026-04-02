@@ -6,15 +6,14 @@ import {
   getDashboardSystemPrompt,
   type PartnerContext,
 } from "@/lib/sosa-system-prompt"
+import { ASSESSMENT_QUESTIONS } from "@/lib/facility-assessment-data"
 
 export async function POST(req: Request) {
   const { messages, context } = await req.json()
 
-  // Determine if this is a dashboard (authenticated) or public request
   let systemPrompt: string
 
   if (context === "dashboard") {
-    // Try to load partner context for authenticated users
     try {
       const supabase = await createClient()
       const {
@@ -37,20 +36,17 @@ export async function POST(req: Request) {
             city: string
           } | null
 
-          // Get certification status
-          const { data: cert } = await supabase
+          // Get ALL certification records
+          const { data: certs } = await supabase
             .from("certifications")
-            .select("status")
+            .select("certification_tier, status")
             .eq("partner_id", membership.partner_id)
             .order("created_at", { ascending: false })
-            .limit(1)
-            .single()
 
-          // Get modules completed
+          // Get modules completed (across all certs)
           const { data: subs } = await supabase
             .from("certification_submissions")
             .select("submission_type, score")
-            .eq("partner_id", membership.partner_id)
 
           const modulesCompleted = (subs ?? []).filter(
             (s) => s.score !== null && s.score >= 80,
@@ -81,12 +77,35 @@ export async function POST(req: Request) {
             .order("created_at", { ascending: false })
             .limit(50)
 
+          // Get facility assessment answers
+          const { data: assessmentAnswers } = await supabase
+            .from("facility_assessments")
+            .select("question_id, category, answer")
+            .eq("partner_id", membership.partner_id)
+            .order("created_at", { ascending: true })
+
+          // Map assessment answers to include policy sections
+          const facilityAssessment = (assessmentAnswers ?? []).map((a) => {
+            const question = ASSESSMENT_QUESTIONS.find(
+              (q) => q.id === a.question_id,
+            )
+            return {
+              questionId: a.question_id,
+              category: a.category,
+              answer: a.answer,
+              policySection: question?.policySection ?? "General",
+            }
+          })
+
           const partnerContext: PartnerContext = {
             partnerName: partner?.name ?? "Your Organization",
             partnerType: partner?.type ?? "accommodation",
             country: partner?.country ?? "Unknown",
             city: partner?.city ?? "Unknown",
-            certificationStatus: cert?.status ?? null,
+            certifications: (certs ?? []).map((c) => ({
+              tier: c.certification_tier,
+              status: c.status,
+            })),
             modulesCompleted,
             teamSize: teamSize ?? 1,
             trainedMembers,
@@ -96,6 +115,7 @@ export async function POST(req: Request) {
               content: k.content,
               verified: k.verified,
             })),
+            facilityAssessment,
           }
 
           systemPrompt = getDashboardSystemPrompt(partnerContext)

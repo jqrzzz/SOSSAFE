@@ -3,11 +3,12 @@
  *
  * Generates the system prompt for the SOSA AI assistant based on whether
  * the user is on the public homepage (sales mode) or in the dashboard
- * (partner assistant mode).
+ * (partner assistant mode with full facility + local knowledge context).
  */
 
-import { MODULES, PASSING_SCORE, CERTIFICATION_TIERS } from "./certification-data"
+import { PASSING_SCORE, CERTIFICATION_TIERS, TIER_MODULES, getModuleSummariesForTier } from "./certification-data"
 import { CATEGORIES } from "./knowledge-categories"
+import { ASSESSMENT_CATEGORIES } from "./facility-assessment-data"
 
 /* ------------------------------------------------------------------ */
 /*  Types for partner context                                          */
@@ -18,7 +19,11 @@ export interface PartnerContext {
   partnerType: "accommodation" | "tour_operator"
   country: string
   city: string
-  certificationStatus: string | null // null | "pending" | "in_review" | "approved"
+  /** All certification records for this partner */
+  certifications: {
+    tier: string
+    status: string
+  }[]
   modulesCompleted: number
   teamSize: number
   trainedMembers: number
@@ -29,34 +34,31 @@ export interface PartnerContext {
     content: string
     verified: boolean
   }[]
+  /** Facility assessment answers from the SOSA interview */
+  facilityAssessment: {
+    questionId: string
+    category: string
+    answer: string
+    policySection: string
+  }[]
 }
 
 /* ------------------------------------------------------------------ */
-/*  Certification curriculum summary (injected into prompt)            */
+/*  Certification summary (compact — just tiers + module names)        */
 /* ------------------------------------------------------------------ */
 
-function getCurriculumSummary(): string {
-  const moduleLines = MODULES.map((m) => {
-    const topics = m.questions.map((q) => q.question).join("\n    - ")
-    return `  **${m.title}** (${m.questions.length} questions)\n    - ${topics}`
-  }).join("\n\n")
-
-  const tierLines = CERTIFICATION_TIERS.map(
-    (t) => `  - **${t.name}** (${t.validity} validity${t.available ? "" : " — coming soon"}): ${t.description}`
-  ).join("\n")
+function getCertificationOverview(): string {
+  const tierLines = CERTIFICATION_TIERS.map((t) => {
+    const modules = getModuleSummariesForTier(t.id)
+    const moduleList = modules.map((m) => `${m.title} (${m.questions}q)`).join(", ")
+    return `  - **${t.name}** (${t.validity}): ${moduleList}`
+  }).join("\n")
 
   return `## SOS Safe Certification Program
-
-### Passing Score: ${PASSING_SCORE}% per module (retakes allowed)
-
-### Modules:
-${moduleLines}
-
-### Tiers:
+Passing score: ${PASSING_SCORE}% per module. Retakes allowed. Three tiers:
 ${tierLines}
 
-### Knowledge Categories (staff can contribute):
-${CATEGORIES.map((c) => `  - **${c.label}**: ${c.description}`).join("\n")}`
+Staff can contribute local safety intel in ${CATEGORIES.length} categories: ${CATEGORIES.map((c) => c.label).join(", ")}.`
 }
 
 /* ------------------------------------------------------------------ */
@@ -71,26 +73,27 @@ You help hotels, resorts, and tour operators understand and get started with SOS
 
 ## Key Facts
 - SOS Safe certifies accommodation providers and tour operators for guest emergency preparedness
-- Certification involves 3 training modules with a ${PASSING_SCORE}% passing threshold
-- Modules can be completed at your own pace (most finish in 2-3 hours total)
-- Certification is valid for 1 year
-- After passing all modules, our team reviews the submission (2-3 business days)
-- Certified partners get the SOS Safe badge for their website and marketing materials
+- Three certification tiers: Basic (3 modules), Premium (3 more modules), Elite (3 more modules) — 9 total modules across all tiers
+- Each module requires ${PASSING_SCORE}% to pass. Retakes are unlimited.
+- Modules can be completed at your own pace (most finish Basic in 2-3 hours)
+- Certification is automatic when all modules in a tier are passed — no waiting period
+- Basic and Premium are valid for 1 year, Elite for 2 years
+- Certified partners get the SOS Safe badge for their website and marketing
 - Partners also get access to the Tourist SOS emergency coordination network
-- The "Local Knowledge" feature lets staff contribute safety-critical local intel (nearest hospitals, real ambulance times, hazards) that makes emergency response smarter
+- The "Local Knowledge" feature lets staff contribute safety-critical local intel
+- The "Policies & Procedures" feature lets SOSA interview you about your facility and generate a custom emergency P&P document
 
-${getCurriculumSummary()}
+${getCertificationOverview()}
 
 ## Guidelines
 - Be concise. Most responses should be 2-4 short paragraphs.
 - When appropriate, guide users toward creating an account at /auth/sign-up
 - If someone describes an active medical emergency, tell them to call local emergency services IMMEDIATELY. You are NOT an emergency service.
 - If someone is a traveler (not a hotel/tour operator), direct them to sostravel.app
-- If someone asks about medical provider partnerships, direct them to email partners@tourist-sos.com
 - Never make up statistics, pricing, or features that aren't listed above
 - You can use **bold** for emphasis and bullet points for lists
 - Do NOT use markdown headers (#) in your responses — keep it conversational
-- Keep your answers grounded in the curriculum and program details above`
+- Keep your answers grounded in the program details above`
 }
 
 /* ------------------------------------------------------------------ */
@@ -98,24 +101,56 @@ ${getCurriculumSummary()}
 /* ------------------------------------------------------------------ */
 
 export function getDashboardSystemPrompt(ctx: PartnerContext): string {
-  const certStatus =
-    ctx.certificationStatus === "approved"
-      ? "Certified (approved)"
-      : ctx.certificationStatus === "in_review"
-      ? "Under review"
-      : ctx.certificationStatus === "pending"
-      ? `In progress (${ctx.modulesCompleted}/3 modules completed)`
-      : "Not started"
+  // Build certification status string
+  const certLines = ctx.certifications.length > 0
+    ? ctx.certifications.map((c) => {
+        const tierDef = CERTIFICATION_TIERS.find((t) => t.id === c.tier)
+        const label = tierDef?.name ?? c.tier
+        const status = c.status === "approved" ? "Certified" : "In Progress"
+        return `${label}: ${status}`
+      }).join(", ")
+    : "Not started"
 
+  // Build local knowledge section
   const knowledgeSection =
     ctx.localKnowledge.length > 0
-      ? `\n## Local Knowledge Entries (${ctx.localKnowledge.length} total)\n${ctx.localKnowledge
+      ? `\n## Local Knowledge (${ctx.localKnowledge.length} entries)\nThis is what the team knows about the surrounding area:\n${ctx.localKnowledge
           .map(
             (k) =>
               `- [${k.verified ? "Verified" : "Unverified"}] **${k.title}** (${k.category}): ${k.content}`
           )
           .join("\n")}`
-      : "\n## Local Knowledge\nNo entries yet. Encourage the team to contribute local safety intel."
+      : "\n## Local Knowledge\nNo entries yet. Encourage the team to contribute — hospitals, ambulance times, hazards, emergency contacts, local tips."
+
+  // Build facility assessment section — this is the property-specific data
+  const facilitySection =
+    ctx.facilityAssessment.length > 0
+      ? `\n## Facility Profile (from SOSA interview — ${ctx.facilityAssessment.length} answers)\nThis is what you know about THIS property's equipment, capabilities, and protocols:\n${
+          // Group by category for readability
+          ASSESSMENT_CATEGORIES
+            .map((cat) => {
+              const catAnswers = ctx.facilityAssessment.filter(
+                (a) => a.category === cat.id,
+              )
+              if (catAnswers.length === 0) return null
+              return `\n**${cat.label}:**\n${catAnswers
+                .map((a) => `- ${a.policySection}: ${a.answer}`)
+                .join("\n")}`
+            })
+            .filter(Boolean)
+            .join("")
+        }\n\n**Assessment gaps:** ${
+          ASSESSMENT_CATEGORIES
+            .filter((cat) => {
+              const answered = ctx.facilityAssessment.filter(
+                (a) => a.category === cat.id,
+              ).length
+              return answered === 0
+            })
+            .map((cat) => cat.label)
+            .join(", ") || "None — all categories covered"
+        }`
+      : "\n## Facility Profile\nNo facility assessment completed yet. Suggest they visit the Policies & Procedures page to let you interview them about their property."
 
   return `You are SOSA, the AI safety assistant embedded in the SOS Safe dashboard for **${ctx.partnerName}**.
 
@@ -123,27 +158,32 @@ export function getDashboardSystemPrompt(ctx: PartnerContext): string {
 - **Organization**: ${ctx.partnerName}
 - **Type**: ${ctx.partnerType === "accommodation" ? "Accommodation Provider" : "Tour Operator"}
 - **Location**: ${ctx.city}, ${ctx.country}
-- **Certification**: ${certStatus}
-- **Team**: ${ctx.teamSize} members, ${ctx.trainedMembers} trained
+- **Certification**: ${certLines}
+- **Team**: ${ctx.teamSize} members, ${ctx.trainedMembers} fully trained
+- **Modules completed**: ${ctx.modulesCompleted} of 9
 
-${getCurriculumSummary()}
+${getCertificationOverview()}
 ${knowledgeSection}
+${facilitySection}
 
 ## Your Role
-You are a knowledgeable safety assistant for this specific partner. You can:
-- Answer questions about certification modules and what they cover
-- Help them understand what they need to do next
-- Explain safety best practices relevant to their type of operation
-- Reference their local knowledge entries when discussing emergency preparedness
-- Suggest new local knowledge entries they should add based on their location
-- Help them think through emergency scenarios and protocols
+You are a knowledgeable, property-specific safety assistant. You know this property's actual equipment, protocols, and local context. Use that knowledge to give specific, actionable answers.
+
+You can:
+- Answer questions about their specific facility ("Do we have an AED?" → check facility profile)
+- Reference their local knowledge ("Which hospital should we use?" → check local knowledge entries)
+- Identify gaps in their preparedness and suggest improvements
+- Help them think through emergency scenarios using their actual setup
+- Explain certification modules and what they cover
+- Suggest Local Knowledge entries they should add based on their location
+- Suggest facility assessment questions they should complete
+- Help draft emergency procedures based on what they've told you
 
 ## Guidelines
+- **Be specific, not generic.** If they ask about their AED and you know they have 2 (one at reception, one at pool), say that. Don't give generic AED advice.
+- **Reference their data.** When answering questions, cite what they've told you in the facility assessment or local knowledge.
+- **Identify gaps.** If they ask about something you don't have data on, tell them and suggest they complete that part of the facility assessment.
 - Be concise and practical. These are busy hospitality professionals.
-- Reference their specific situation (certification status, team size, location) when relevant
-- If they ask about something outside your knowledge, say so honestly
-- For emergency procedures, be specific and actionable — not generic
-- When discussing local knowledge, reference their existing entries and suggest gaps
 - You can use **bold** for emphasis and bullet points for lists
 - Do NOT use markdown headers (#) — keep it conversational
 - If they describe an active emergency, tell them to call local services immediately`
