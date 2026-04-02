@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
-import { PASSING_SCORE } from "@/lib/certification-data"
+import { PASSING_SCORE, MODULES, CERTIFICATION_TIERS, TIER_MODULES } from "@/lib/certification-data"
+import { ASSESSMENT_QUESTIONS } from "@/lib/facility-assessment-data"
 
 export default async function DashboardPage({
   searchParams,
@@ -28,40 +29,57 @@ export default async function DashboardPage({
   const hasProfile = !!membership?.partners
 
   // ── Gather all dashboard data ────────────────────────────────────
-  let certificationStatus: {
+  let allCertifications: {
+    id: string
     status: string
     certification_tier: string
     issued_at: string | null
     expires_at: string | null
-  } | null = null
+  }[] = []
   let activeCaseCount = 0
   let totalCaseCount = 0
   let teamMemberCount = 0
   let trainedMemberCount = 0
   let knowledgeEntryCount = 0
+  let assessmentAnswerCount = 0
+  let latestPolicyVersion: number | null = null
   let certSubmissions: { submission_type: string; score: number | null }[] = []
 
   if (hasProfile) {
-    // Certification
-    const { data: certification } = await supabase
+    // All certifications (across tiers)
+    const { data: certs } = await supabase
       .from("certifications")
-      .select("*")
+      .select("id, status, certification_tier, issued_at, expires_at")
       .eq("partner_id", membership.partner_id)
       .order("created_at", { ascending: false })
+
+    allCertifications = certs || []
+
+    // All certification submissions (across all certs)
+    const { data: subs } = await supabase
+      .from("certification_submissions")
+      .select("submission_type, score")
+
+    certSubmissions = subs || []
+
+    // Facility assessment progress
+    const { count: assessCount } = await supabase
+      .from("facility_assessments")
+      .select("*", { count: "exact", head: true })
+      .eq("partner_id", membership.partner_id)
+
+    assessmentAnswerCount = assessCount || 0
+
+    // Latest policy document
+    const { data: latestPolicy } = await supabase
+      .from("facility_policies")
+      .select("version")
+      .eq("partner_id", membership.partner_id)
+      .order("version", { ascending: false })
       .limit(1)
       .single()
 
-    certificationStatus = certification
-
-    // Certification submissions (for module scores)
-    if (certification) {
-      const { data: subs } = await supabase
-        .from("certification_submissions")
-        .select("submission_type, score")
-        .eq("certification_id", certification.id)
-
-      certSubmissions = subs || []
-    }
+    latestPolicyVersion = latestPolicy?.version ?? null
 
     // Cases
     const { data: caseParties } = await supabase
@@ -117,13 +135,26 @@ export default async function DashboardPage({
   }
 
   // ── Derived values ───────────────────────────────────────────────
-  const isCertified = certificationStatus?.status === "approved"
-  const certExpiresAt = certificationStatus?.expires_at
+  const approvedCerts = allCertifications.filter((c) => c.status === "approved")
+  const highestApproved = approvedCerts.length > 0 ? approvedCerts[0] : null
+  const isCertified = approvedCerts.length > 0
+  const certExpiresAt = highestApproved?.expires_at ?? null
   const daysUntilExpiry = certExpiresAt
     ? Math.ceil(
         (new Date(certExpiresAt).getTime() - Date.now()) / (1000 * 60 * 60 * 24),
       )
     : null
+
+  // Find highest tier label
+  const highestTierLabel = highestApproved
+    ? CERTIFICATION_TIERS.find((t) => t.id === highestApproved.certification_tier)?.label ?? "Basic"
+    : null
+
+  // Current in-progress tier (latest non-approved cert)
+  const inProgressCert = allCertifications.find((c) => c.status !== "approved")
+  const currentTierId = inProgressCert?.certification_tier ?? allCertifications[0]?.certification_tier ?? "sos_safe_basic"
+  const currentTierModules = TIER_MODULES[currentTierId] ?? MODULES.slice(0, 3).map((m) => m.id)
+  const totalModulesInTier = currentTierModules.length
 
   const avgScore =
     certSubmissions.length > 0
@@ -136,6 +167,8 @@ export default async function DashboardPage({
   const passedModules = certSubmissions.filter(
     (s) => s.score !== null && s.score >= PASSING_SCORE,
   ).length
+
+  const totalAssessmentQuestions = ASSESSMENT_QUESTIONS.length
 
   return (
     <div className="space-y-8">
@@ -164,7 +197,7 @@ export default async function DashboardPage({
             <div className="flex-1">
               <h2 className="text-lg font-semibold">Your organization is set up!</h2>
               <p className="text-muted-foreground text-sm mt-1">
-                Next step: complete your safety certification. Pass 3 modules with 80% or higher to earn your SOS Safe Certified badge.
+                Next step: complete your safety certification. Pass all modules in a tier with {PASSING_SCORE}% or higher to earn your SOS Safe badge. Three tiers: Basic, Premium, and Elite.
               </p>
               <Link
                 href="/dashboard/certification"
@@ -266,12 +299,10 @@ export default async function DashboardPage({
           <p className="text-xs text-muted-foreground">Certification</p>
           <p className="text-xl font-bold mt-0.5">
             {isCertified
-              ? "Certified"
-              : certificationStatus?.status === "in_review"
-                ? "In Review"
-                : certificationStatus?.status === "pending"
-                  ? `${passedModules}/3 Modules`
-                  : "Not Started"}
+              ? `${highestTierLabel} Certified`
+              : inProgressCert
+                ? `${passedModules}/${totalModulesInTier} Modules`
+                : "Not Started"}
           </p>
           {isCertified && daysUntilExpiry !== null && (
             <p
@@ -402,11 +433,8 @@ export default async function DashboardPage({
             </Link>
           </div>
           <div className="space-y-4">
-            {[
-              { id: "facility_assessment", label: "Facility Assessment" },
-              { id: "emergency_preparedness", label: "Emergency Preparedness" },
-              { id: "communication_protocols", label: "Communication Protocols" },
-            ].map((mod) => {
+            {MODULES.filter((m) => certSubmissions.some((s) => s.submission_type === m.id)).map((mod) => {
+              const label = mod.title
               const sub = certSubmissions.find(
                 (s) => s.submission_type === mod.id,
               )
@@ -416,7 +444,7 @@ export default async function DashboardPage({
               return (
                 <div key={mod.id}>
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-sm font-medium">{mod.label}</span>
+                    <span className="text-sm font-medium">{label}</span>
                     {score !== null ? (
                       <span
                         className={`text-sm font-semibold ${
@@ -482,7 +510,7 @@ export default async function DashboardPage({
               <p className="text-xs text-muted-foreground">
                 {isCertified
                   ? "Download or print your certificate"
-                  : `${3 - passedModules} module${3 - passedModules !== 1 ? "s" : ""} remaining`}
+                  : `${passedModules} of ${MODULES.length} modules passed`}
               </p>
             </div>
           </Link>
@@ -571,6 +599,37 @@ export default async function DashboardPage({
               </p>
             </div>
           </Link>
+
+          <Link
+            href="/dashboard/policies"
+            className="glass-card p-4 rounded-lg border border-border/50 hover:border-primary/30 hover:bg-primary/5 transition-all group flex items-center gap-3"
+          >
+            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors flex-shrink-0">
+              <svg
+                className="w-5 h-5 text-primary"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
+              </svg>
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold">Policies & Procedures</h3>
+              <p className="text-xs text-muted-foreground">
+                {latestPolicyVersion
+                  ? `v${latestPolicyVersion} generated`
+                  : assessmentAnswerCount > 0
+                    ? `${assessmentAnswerCount}/${totalAssessmentQuestions} questions answered`
+                    : "Start facility assessment"}
+              </p>
+            </div>
+          </Link>
         </div>
       </div>
 
@@ -583,17 +642,17 @@ export default async function DashboardPage({
               {
                 step: "1",
                 title: "Get Certified",
-                desc: "Complete 3 safety modules with 80% or higher.",
+                desc: `Complete ${MODULES.length} safety modules across 3 tiers (Basic → Premium → Elite) with ${PASSING_SCORE}% or higher.`,
               },
               {
                 step: "2",
-                title: "Train Your Team",
-                desc: "Invite staff and ensure everyone is prepared.",
+                title: "Assess Your Facility",
+                desc: "Let SOSA interview you about your property to build custom Policies & Procedures.",
               },
               {
                 step: "3",
-                title: "Display Your Badge",
-                desc: "Show guests your property is safety-verified.",
+                title: "Train Your Team",
+                desc: "Invite staff, share local safety intel, and ensure everyone is prepared.",
               },
               {
                 step: "4",
