@@ -35,16 +35,18 @@ All 6 SOS projects share **one Supabase instance**:
 
 ### SOSSAFE Owns These Tables
 
-Created in `scripts/001_create_partner_tables.sql`, `scripts/002_create_staff_training_table.sql`, and `scripts/003_create_local_knowledge_table.sql`:
+Created in `scripts/001` through `scripts/005`:
 
 | Table | Purpose |
 |---|---|
 | `partners` | Hotels, accommodations, tour operators |
 | `partner_memberships` | Links users to partner orgs (owner/manager/staff roles) |
-| `certifications` | SOS Safe certification records per partner |
+| `certifications` | SOS Safe certification records per partner (Basic/Premium/Elite) |
 | `certification_submissions` | Module assessment responses + scores |
 | `staff_training_completions` | Individual staff training records per module |
 | `partner_local_knowledge` | Staff-contributed local safety intel (medical, transport, hazards) |
+| `facility_assessments` | SOSA-conducted facility interview answers (equipment, protocols) |
+| `facility_policies` | Generated P&P documents from assessment data (versioned) |
 
 **Enums owned:** `partner_type`, `certification_status`, `certification_tier`, `partner_membership_role`
 
@@ -84,18 +86,20 @@ app/
     knowledge/       # Local knowledge base (staff-contributed safety intel)
     training/        # Individual "My Training" page
     cases/           # Case list + detail view + CSV export (read-only)
+    policies/        # SOSA facility interview + generated P&P documents
     team/            # Team members + training status matrix
     profile/         # Partner profile editor
 components/
-  dashboard/         # DashboardNav, Certificate
+  dashboard/         # DashboardNav, Certificate, SosaChatWidget
   ui/                # shadcn primitives (do not delete — design system)
   SosaChat.tsx       # Public SOSA chat (AI + simulated fallback)
   Logo.tsx           # Brand logo
 lib/
-  certification-data.ts    # Single source of truth: modules, questions, scoring
-  knowledge-categories.ts  # Single source of truth: knowledge categories, fields, examples
-  sosa-system-prompt.ts    # SOSA system prompt builder (public + dashboard contexts)
-  use-sosa-chat.ts         # Custom streaming chat hook (replaces AI SDK useChat)
+  certification-data.ts       # Single source of truth: modules, questions, scoring, tiers
+  facility-assessment-data.ts # SOSA interview questions for facility P&P generation
+  knowledge-categories.ts     # Single source of truth: knowledge categories, fields, examples
+  sosa-system-prompt.ts       # SOSA system prompt builder (public + dashboard contexts)
+  use-sosa-chat.ts            # Custom streaming chat hook (replaces AI SDK useChat)
   supabase/          # Supabase client/server/middleware helpers
   utils.ts           # Just cn() utility
 scripts/
