@@ -165,6 +165,26 @@ export default function ModuleAssessmentPage({ params }: { params: Promise<{ mod
               expires_at: expiresAt.toISOString(),
             })
             .eq("id", certId)
+
+          // Send certification notification (fire and forget)
+          const { data: notifMembership } = await supabase
+            .from("partner_memberships")
+            .select("partner_id")
+            .eq("user_id", user?.id ?? "")
+            .is("removed_at", null)
+            .single()
+
+          if (notifMembership?.partner_id) {
+            fetch("/api/notifications/certification", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                type: "certification_approved",
+                partnerId: notifMembership.partner_id,
+                certificationTier: certRecord?.certification_tier,
+              }),
+            }).catch(() => {}) // Non-blocking
+          }
         }
       }
 

@@ -40,6 +40,18 @@ export async function GET(request: Request) {
             accepted_at: new Date().toISOString(),
           })
 
+          // Notify owner that a new member joined (fire and forget)
+          const memberName = user.user_metadata?.full_name || user.email || "New member"
+          fetch(`${origin}/api/notifications/certification`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              type: "team_member_joined",
+              partnerId: invitePartnerId,
+              memberName,
+            }),
+          }).catch(() => {})
+
           return NextResponse.redirect(`${origin}/dashboard`)
         }
       }
