@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/client"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { use } from "react"
-import { MODULES, PASSING_SCORE, calculateModuleScore, didPass } from "@/lib/certification-data"
+import { MODULES, PASSING_SCORE, calculateModuleScore, didPass, TIER_MODULES } from "@/lib/certification-data"
 
 export default function ModuleAssessmentPage({ params }: { params: Promise<{ moduleId: string }> }) {
   const resolvedParams = use(params)
@@ -123,6 +123,17 @@ export default function ModuleAssessmentPage({ params }: { params: Promise<{ mod
 
       // Only check for full completion if this module passed
       if (passed) {
+        // Get the certification to find its tier
+        const { data: certRecord } = await supabase
+          .from("certifications")
+          .select("certification_tier")
+          .eq("id", certId)
+          .single()
+
+        const tierModuleIds = certRecord
+          ? TIER_MODULES[certRecord.certification_tier] ?? []
+          : MODULES.map((m) => m.id)
+
         const { data: allSubmissions } = await supabase
           .from("certification_submissions")
           .select("submission_type, score")
@@ -136,10 +147,15 @@ export default function ModuleAssessmentPage({ params }: { params: Promise<{ mod
         )
         passedModules.add(moduleId) // include the one we just submitted
 
-        if (passedModules.size === MODULES.length) {
+        // Check if all modules for THIS tier are passed
+        const allTierModulesPassed = tierModuleIds.every((id) => passedModules.has(id))
+
+        if (allTierModulesPassed) {
           const now = new Date()
           const expiresAt = new Date(now)
-          expiresAt.setFullYear(expiresAt.getFullYear() + 1)
+          // Elite gets 2 years, Basic and Premium get 1 year
+          const years = certRecord?.certification_tier === "sos_safe_elite" ? 2 : 1
+          expiresAt.setFullYear(expiresAt.getFullYear() + years)
 
           await supabase
             .from("certifications")
