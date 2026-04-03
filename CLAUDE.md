@@ -33,6 +33,8 @@ All 6 SOS projects share **one Supabase instance**:
 - **Project ref:** `jnbxkvlkqmwnqlmetknj`
 - **URL:** `https://jnbxkvlkqmwnqlmetknj.supabase.co`
 
+> **WARNING — Two MCP connections exist.** The other database (`mdamwgtdtrvvnskqdoon.supabase.co`) belongs to the Nomadex / Muay Thai / ScootScoot projects. If you see tables like `organizations`, `bookings`, `trainer_profiles`, `gym_subscriptions` you're on the wrong database. Run `SELECT tablename FROM pg_tables WHERE schemaname='public' LIMIT 5;` to verify — SOS tables include `cases`, `patients`, `providers`.
+
 ### SOSSAFE Owns These Tables
 
 Created in `scripts/001` through `scripts/005`:
