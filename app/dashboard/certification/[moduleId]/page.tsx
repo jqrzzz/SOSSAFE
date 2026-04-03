@@ -5,155 +5,7 @@ import { createClient } from "@/lib/supabase/client"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { use } from "react"
-
-interface Question {
-  id: string
-  question: string
-  options: string[]
-  helpText?: string
-}
-
-const MODULE_DATA: Record<string, { title: string; description: string; questions: Question[] }> = {
-  facility_assessment: {
-    title: "Facility Assessment",
-    description: "Evaluate your property safety features and emergency equipment",
-    questions: [
-      {
-        id: "fa1",
-        question: "Does your property have clearly marked emergency exits?",
-        options: ["Yes, all exits are clearly marked and lit", "Yes, most exits are marked", "Some exits are marked", "No marked emergency exits"],
-        helpText: "Emergency exits should be clearly visible with illuminated signs."
-      },
-      {
-        id: "fa2",
-        question: "Is there a first aid kit readily available on the premises?",
-        options: ["Yes, multiple kits in accessible locations", "Yes, one well-stocked kit", "Yes, but supplies are limited", "No first aid kit available"],
-      },
-      {
-        id: "fa3",
-        question: "Are fire extinguishers present and regularly inspected?",
-        options: ["Yes, inspected within the last 6 months", "Yes, inspected within the last year", "Yes, but not recently inspected", "No fire extinguishers"],
-      },
-      {
-        id: "fa4",
-        question: "Does your property have an AED (Automated External Defibrillator)?",
-        options: ["Yes, with trained staff", "Yes, but staff needs training", "Planning to acquire one", "No AED available"],
-      },
-      {
-        id: "fa5",
-        question: "Are emergency contact numbers posted in visible locations?",
-        options: ["Yes, in all rooms and common areas", "Yes, in common areas only", "Yes, at the front desk only", "No posted emergency numbers"],
-      },
-      {
-        id: "fa6",
-        question: "Is your property accessible for guests with mobility issues?",
-        options: ["Fully accessible with ramps and elevators", "Partially accessible", "Limited accessibility", "Not accessible"],
-      },
-      {
-        id: "fa7",
-        question: "Do you have smoke detectors and fire alarms installed?",
-        options: ["Yes, in all rooms and tested regularly", "Yes, in all rooms", "Yes, in common areas only", "No smoke detectors"],
-      },
-      {
-        id: "fa8",
-        question: "Is there adequate lighting in emergency exit routes?",
-        options: ["Yes, with backup emergency lighting", "Yes, standard lighting", "Partial lighting", "Inadequate lighting"],
-      },
-    ],
-  },
-  emergency_preparedness: {
-    title: "Emergency Preparedness",
-    description: "Assess your team readiness and emergency response procedures",
-    questions: [
-      {
-        id: "ep1",
-        question: "Does your staff receive regular emergency response training?",
-        options: ["Yes, quarterly training sessions", "Yes, annual training", "Informal training only", "No formal training"],
-      },
-      {
-        id: "ep2",
-        question: "Is there a designated emergency coordinator on each shift?",
-        options: ["Yes, trained coordinator on every shift", "Yes, but not on all shifts", "Informal arrangement", "No designated coordinator"],
-      },
-      {
-        id: "ep3",
-        question: "Do you have a written emergency response plan?",
-        options: ["Yes, comprehensive and regularly updated", "Yes, but needs updating", "Basic plan only", "No written plan"],
-      },
-      {
-        id: "ep4",
-        question: "How often do you conduct emergency drills?",
-        options: ["Quarterly or more often", "Twice a year", "Once a year", "Never conducted drills"],
-      },
-      {
-        id: "ep5",
-        question: "Are staff trained in basic first aid and CPR?",
-        options: ["Most staff certified", "Some staff certified", "One person certified", "No certified staff"],
-      },
-      {
-        id: "ep6",
-        question: "Do you have procedures for natural disasters common to your area?",
-        options: ["Yes, specific procedures for all risks", "Yes, for major risks", "Basic awareness only", "No specific procedures"],
-      },
-      {
-        id: "ep7",
-        question: "Is there a system to account for all guests during an emergency?",
-        options: ["Yes, with guest manifest system", "Yes, manual process", "Informal process", "No system in place"],
-      },
-      {
-        id: "ep8",
-        question: "Do you have backup power for essential services?",
-        options: ["Yes, generator for full property", "Yes, for essential systems only", "Battery backup only", "No backup power"],
-      },
-      {
-        id: "ep9",
-        question: "Are emergency supplies stocked (water, blankets, etc.)?",
-        options: ["Yes, well-stocked emergency supplies", "Yes, basic supplies", "Minimal supplies", "No emergency supplies"],
-      },
-      {
-        id: "ep10",
-        question: "Do you have relationships with local emergency services?",
-        options: ["Yes, direct contacts and coordination", "Yes, know how to reach them", "General awareness only", "No established relationship"],
-      },
-    ],
-  },
-  communication_protocols: {
-    title: "Communication Protocols",
-    description: "Review your guest communication and emergency coordination systems",
-    questions: [
-      {
-        id: "cp1",
-        question: "Do you provide emergency information to guests at check-in?",
-        options: ["Yes, verbal and written information", "Yes, written information only", "Only if asked", "No emergency information provided"],
-      },
-      {
-        id: "cp2",
-        question: "Is emergency information available in multiple languages?",
-        options: ["Yes, 3+ languages including local", "Yes, 2 languages", "English only", "Local language only"],
-      },
-      {
-        id: "cp3",
-        question: "Do you have a system to communicate with all guests quickly?",
-        options: ["Yes, PA system and room phones", "Yes, one of these methods", "Staff go door-to-door", "No mass communication system"],
-      },
-      {
-        id: "cp4",
-        question: "Can guests easily contact front desk 24/7?",
-        options: ["Yes, multiple methods available", "Yes, phone only", "Limited hours", "No 24/7 contact"],
-      },
-      {
-        id: "cp5",
-        question: "Do you have contact information for guests medical conditions?",
-        options: ["Yes, collected at check-in", "Yes, if volunteered", "No formal collection", "Do not collect this information"],
-      },
-      {
-        id: "cp6",
-        question: "Is there a protocol for communicating with guest emergency contacts?",
-        options: ["Yes, established protocol", "Informal process", "Only in serious situations", "No protocol"],
-      },
-    ],
-  },
-}
+import { MODULES, PASSING_SCORE, calculateModuleScore, didPass, TIER_MODULES } from "@/lib/certification-data"
 
 export default function ModuleAssessmentPage({ params }: { params: Promise<{ moduleId: string }> }) {
   const resolvedParams = use(params)
@@ -170,7 +22,7 @@ export default function ModuleAssessmentPage({ params }: { params: Promise<{ mod
   const [existingSubmission, setExistingSubmission] = useState<{responses: Record<string, number>; score: number} | null>(null)
   const router = useRouter()
 
-  const moduleData = MODULE_DATA[moduleId]
+  const moduleData = MODULES.find((m) => m.id === moduleId)
 
   useEffect(() => {
     async function loadExistingSubmission() {
@@ -234,30 +86,19 @@ export default function ModuleAssessmentPage({ params }: { params: Promise<{ mod
     }
   }
 
-  const calculateScore = () => {
-    let totalScore = 0
-    const maxScore = questions.length * 3 // Max 3 points per question (index 0 = best)
-
-    Object.values(answers).forEach(answerIndex => {
-      // Score: 0 index = 3 points, 1 = 2 points, 2 = 1 point, 3 = 0 points
-      totalScore += Math.max(0, 3 - answerIndex)
-    })
-
-    return Math.round((totalScore / maxScore) * 100)
-  }
-
   const handleSubmit = async () => {
     if (!certId) return
 
     setIsSubmitting(true)
-    const calculatedScore = calculateScore()
+    const calculatedScore = calculateModuleScore(moduleId, answers)
+    const passed = didPass(calculatedScore)
 
     try {
       const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
 
       if (existingSubmission) {
-        // Update existing submission
+        // Update existing submission (retry or re-take)
         await supabase
           .from("certification_submissions")
           .update({
@@ -280,21 +121,102 @@ export default function ModuleAssessmentPage({ params }: { params: Promise<{ mod
           })
       }
 
-      // Check if all modules are complete
-      const { data: allSubmissions } = await supabase
-        .from("certification_submissions")
-        .select("submission_type")
-        .eq("certification_id", certId)
-
-      const completedModules = new Set(allSubmissions?.map(s => s.submission_type) || [])
-      completedModules.add(moduleId)
-
-      if (completedModules.size === Object.keys(MODULE_DATA).length) {
-        // All modules complete - update certification to in_review
-        await supabase
+      // Only check for full completion if this module passed
+      if (passed) {
+        // Get the certification to find its tier
+        const { data: certRecord } = await supabase
           .from("certifications")
-          .update({ status: "in_review" })
+          .select("certification_tier")
           .eq("id", certId)
+          .single()
+
+        const tierModuleIds = certRecord
+          ? TIER_MODULES[certRecord.certification_tier] ?? []
+          : MODULES.map((m) => m.id)
+
+        const { data: allSubmissions } = await supabase
+          .from("certification_submissions")
+          .select("submission_type, score")
+          .eq("certification_id", certId)
+
+        // A module counts as "complete" only if it passed
+        const passedModules = new Set(
+          (allSubmissions || [])
+            .filter((s) => s.score !== null && s.score >= PASSING_SCORE)
+            .map((s) => s.submission_type),
+        )
+        passedModules.add(moduleId) // include the one we just submitted
+
+        // Check if all modules for THIS tier are passed
+        const allTierModulesPassed = tierModuleIds.every((id) => passedModules.has(id))
+
+        if (allTierModulesPassed) {
+          const now = new Date()
+          const expiresAt = new Date(now)
+          // Elite gets 2 years, Basic and Premium get 1 year
+          const years = certRecord?.certification_tier === "sos_safe_elite" ? 2 : 1
+          expiresAt.setFullYear(expiresAt.getFullYear() + years)
+
+          await supabase
+            .from("certifications")
+            .update({
+              status: "approved",
+              issued_at: now.toISOString(),
+              expires_at: expiresAt.toISOString(),
+            })
+            .eq("id", certId)
+
+          // Send certification notification (fire and forget)
+          const { data: notifMembership } = await supabase
+            .from("partner_memberships")
+            .select("partner_id")
+            .eq("user_id", user?.id ?? "")
+            .is("removed_at", null)
+            .single()
+
+          if (notifMembership?.partner_id) {
+            fetch("/api/notifications/certification", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                type: "certification_approved",
+                partnerId: notifMembership.partner_id,
+                certificationTier: certRecord?.certification_tier,
+              }),
+            }).catch(() => {}) // Non-blocking
+          }
+        }
+      }
+
+      // Also record individual training completion for this user
+      if (user?.id) {
+        const { data: membership } = await supabase
+          .from("partner_memberships")
+          .select("partner_id")
+          .eq("user_id", user.id)
+          .is("removed_at", null)
+          .single()
+
+        if (membership?.partner_id) {
+          const now = new Date()
+          const expiresAt = new Date(now)
+          expiresAt.setFullYear(expiresAt.getFullYear() + 1)
+
+          await supabase
+            .from("staff_training_completions")
+            .upsert(
+              {
+                partner_id: membership.partner_id,
+                user_id: user.id,
+                module_id: moduleId,
+                score: calculatedScore,
+                passed,
+                completed_at: now.toISOString(),
+                expires_at: passed ? expiresAt.toISOString() : null,
+              },
+              { onConflict: "partner_id,user_id,module_id" },
+            )
+        }
       }
 
       setScore(calculatedScore)
@@ -309,37 +231,78 @@ export default function ModuleAssessmentPage({ params }: { params: Promise<{ mod
   const allAnswered = Object.keys(answers).length === questions.length
 
   if (submitted) {
+    const passed = score !== null && didPass(score)
+
+    const handleRetry = () => {
+      setSubmitted(false)
+      setScore(null)
+      setAnswers({})
+      setCurrentQuestion(0)
+      setExistingSubmission(null)
+    }
+
     return (
       <div className="max-w-2xl mx-auto">
-        <div className="glass-card p-8 rounded-lg border border-border/50 text-center">
+        <div className={`glass-card p-8 rounded-lg border text-center ${
+          passed
+            ? "border-green-200 dark:border-green-800"
+            : "border-red-200 dark:border-red-800"
+        }`}>
           <div className={`w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center ${
-            score && score >= 70 
-              ? "bg-green-100 dark:bg-green-900/30" 
-              : "bg-yellow-100 dark:bg-yellow-900/30"
+            passed
+              ? "bg-green-100 dark:bg-green-900/30"
+              : "bg-red-100 dark:bg-red-900/30"
           }`}>
-            {score && score >= 70 ? (
+            {passed ? (
               <svg className="w-10 h-10 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             ) : (
-              <svg className="w-10 h-10 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              <svg className="w-10 h-10 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             )}
           </div>
 
-          <h1 className="text-2xl font-bold mb-2">{moduleData.title}</h1>
-          <p className="text-4xl font-bold text-primary mb-4">{score}%</p>
-          <p className="text-muted-foreground mb-8">
-            {score && score >= 70 
-              ? "Great job! You have demonstrated good safety practices."
-              : "Consider improving your safety measures based on the assessment."}
+          <h1 className="text-2xl font-bold mb-2">{moduleData?.title}</h1>
+          <p className={`text-4xl font-bold mb-2 ${passed ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}`}>
+            {score}%
+          </p>
+          <p className="text-sm text-muted-foreground mb-4">
+            Passing score: {PASSING_SCORE}%
           </p>
 
+          {passed ? (
+            <p className="text-muted-foreground mb-8">
+              Excellent — you've demonstrated strong safety practices for this module.
+            </p>
+          ) : (
+            <div className="mb-8">
+              <p className="text-red-600 dark:text-red-400 font-medium mb-2">
+                This module requires a score of {PASSING_SCORE}% or higher to pass.
+              </p>
+              <p className="text-muted-foreground text-sm">
+                Review the areas where you scored lower and consider what improvements your property could make. You can retake this module as many times as needed.
+              </p>
+            </div>
+          )}
+
           <div className="flex justify-center gap-4">
+            {!passed && (
+              <button
+                onClick={handleRetry}
+                className="btn-primary-gradient px-6 py-3 rounded-lg font-medium text-white"
+              >
+                Retake Module
+              </button>
+            )}
             <Link
               href="/dashboard/certification"
-              className="btn-primary-gradient px-6 py-3 rounded-lg font-medium text-white"
+              className={`px-6 py-3 rounded-lg font-medium transition-colors ${
+                passed
+                  ? "btn-primary-gradient text-white"
+                  : "border border-border hover:bg-muted/50"
+              }`}
             >
               Back to Certification
             </Link>
