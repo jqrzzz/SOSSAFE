@@ -36,16 +36,15 @@ export function HomeView({ navigateToActiveCases, navigateToContacts, startNewCa
           const locationMessage = `📍 My location: https://maps.google.com/?q=${latitude},${longitude}`
           setHomeMessage(locationMessage)
           setIsGettingLocation(false)
-          console.log("[v0] Location shared:", { latitude, longitude })
+          // Location acquired
         },
         (error) => {
-          console.error("[v0] Location error:", error)
-          alert("Unable to get your location. Please check your browser settings.")
+          setHomeMessage("Unable to get your location. Please check your browser settings.")
           setIsGettingLocation(false)
         },
       )
     } else {
-      alert("Geolocation is not supported by this browser.")
+      setHomeMessage("Geolocation is not supported by this browser.")
       setIsGettingLocation(false)
     }
   }
@@ -112,8 +111,8 @@ export function HomeView({ navigateToActiveCases, navigateToContacts, startNewCa
                 handleHomeSend()
               }
             }}
-            onMicrophoneClick={() => console.log("[v0] Microphone clicked")}
-            onPictureClick={() => console.log("[v0] Picture clicked")}
+            onMicrophoneClick={() => {}}
+            onPictureClick={() => {}}
             onSendClick={handleHomeSend}
             showLocationSharing={true}
             onLocationClick={handleLocationClick}

@@ -68,7 +68,7 @@ export function Sidebar({
   }, [isUserActive])
 
   const navigateToSettings = () => {
-    window.location.href = "/settings"
+    window.location.href = "/dashboard/settings"
   }
 
   const navigateToHome = () => {

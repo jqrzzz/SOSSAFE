@@ -97,7 +97,7 @@ export default function SettingsPage() {
   }, [router])
 
   const navigateToContacts = useCallback(() => {
-    router.push("/contacts")
+    router.push("/dashboard/contacts")
   }, [router])
 
   const navigateToTrainSosa = useCallback(() => {
@@ -281,7 +281,7 @@ export default function SettingsPage() {
           {
             id: "exportData",
             label: "Export Data",
-            description: "Download your data and case history",
+            description: "Coming soon — download your data and case history",
             type: "button",
           },
         ],
@@ -412,7 +412,7 @@ export default function SettingsPage() {
           contact: () => router.push("/support"),
           feedback: () => window.open("mailto:support@touristsos.com?subject=Feedback", "_blank"),
           about: () => router.push("/about"),
-          exportData: () => alert("Data export will be available soon."),
+          exportData: () => {},
         }
         return (
           <button

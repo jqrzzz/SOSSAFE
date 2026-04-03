@@ -71,7 +71,7 @@ export default function NotificationsPage() {
   }
 
   const navigateToSettings = () => {
-    window.location.href = "/settings"
+    window.location.href = "/dashboard/settings"
   }
 
   const navigateToActiveCases = () => {
@@ -83,7 +83,7 @@ export default function NotificationsPage() {
   }
 
   const navigateToContacts = () => {
-    window.location.href = "/contacts"
+    window.location.href = "/dashboard/contacts"
   }
 
   const selectCase = (caseId: string) => {
@@ -108,10 +108,10 @@ export default function NotificationsPage() {
         }
         break
       case "success":
-        window.location.href = "/cases/completed"
+        window.location.href = "/dashboard/cases"
         break
       case "info":
-        window.location.href = "/settings"
+        window.location.href = "/dashboard/settings"
         break
       default:
         window.location.href = "/"
@@ -128,12 +128,12 @@ export default function NotificationsPage() {
   }
 
   const handlePushPermissionGranted = () => {
-    console.log("[v0] Push notifications enabled")
+    // Push notifications enabled
     // Here you would typically register the service worker and send the token to your backend
   }
 
   const handlePushPermissionDenied = () => {
-    console.log("[v0] Push notifications denied")
+    // Push notifications denied
   }
 
   return (

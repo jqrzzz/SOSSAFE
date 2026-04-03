@@ -55,7 +55,7 @@ export function Header({
       setShowNotifications(true)
     } else {
       // Fallback to navigation if prop not provided
-      router.push("/notifications")
+      router.push("/dashboard/notifications")
     }
   }
 

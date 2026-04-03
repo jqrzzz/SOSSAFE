@@ -153,25 +153,25 @@ export default function AdminDemoPage() {
 
       {/* Quick Actions */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="glass-card border-border/50 hover:border-primary/30 transition-colors cursor-pointer">
+        <Card className="glass-card border-border/50 opacity-60">
           <CardContent className="p-4 text-center">
             <div className="text-2xl mb-2">🚨</div>
             <h3 className="font-semibold">Create Alert</h3>
-            <p className="text-sm text-muted-foreground">Send network-wide notification</p>
+            <p className="text-sm text-muted-foreground">Coming soon</p>
           </CardContent>
         </Card>
-        <Card className="glass-card border-border/50 hover:border-primary/30 transition-colors cursor-pointer">
+        <Card className="glass-card border-border/50 opacity-60">
           <CardContent className="p-4 text-center">
             <div className="text-2xl mb-2">📋</div>
             <h3 className="font-semibold">Generate Report</h3>
-            <p className="text-sm text-muted-foreground">Export incident analytics</p>
+            <p className="text-sm text-muted-foreground">Coming soon</p>
           </CardContent>
         </Card>
-        <Card className="glass-card border-border/50 hover:border-primary/30 transition-colors cursor-pointer">
+        <Card className="glass-card border-border/50 opacity-60">
           <CardContent className="p-4 text-center">
             <div className="text-2xl mb-2">👥</div>
             <h3 className="font-semibold">Manage Users</h3>
-            <p className="text-sm text-muted-foreground">Add or modify network access</p>
+            <p className="text-sm text-muted-foreground">Coming soon</p>
           </CardContent>
         </Card>
       </div>
@@ -308,22 +308,8 @@ export default function AdminDemoPage() {
         </CardContent>
       </Card>
 
-      {/* Pagination */}
-      <div className="flex items-center justify-between">
-        <span className="text-sm text-muted-foreground">
-          Showing {filteredIncidents.length} of {incidents.length} incidents
-        </span>
-        <div className="flex gap-2">
-          <Button variant="outline" size="sm" disabled>
-            Previous
-          </Button>
-          <Button variant="outline" size="sm">
-            1
-          </Button>
-          <Button variant="outline" size="sm" disabled>
-            Next
-          </Button>
-        </div>
+      <div className="text-sm text-muted-foreground">
+        Showing {filteredIncidents.length} of {incidents.length} incidents
       </div>
     </div>
   )
@@ -965,9 +951,9 @@ export default function AdminDemoPage() {
             />
           </div>
           <div className="flex gap-2">
-            <Button variant="destructive">Send Emergency Broadcast</Button>
-            <Button variant="outline">Save as Template</Button>
-            <Button variant="outline">Preview</Button>
+            <Button variant="destructive" disabled>Send Emergency Broadcast</Button>
+            <Button variant="outline" disabled>Save as Template</Button>
+            <Button variant="outline" disabled>Preview</Button>
           </div>
         </CardContent>
       </Card>
@@ -981,7 +967,7 @@ export default function AdminDemoPage() {
           <h2 className="text-xl font-semibold">Message Templates</h2>
           <p className="text-sm text-muted-foreground">Pre-built emergency response templates</p>
         </div>
-        <Button>Create Template</Button>
+        <Button disabled>Create Template</Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

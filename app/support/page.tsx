@@ -79,10 +79,13 @@ export default function SupportPage() {
               </div>
               <h3 className="text-xl font-semibold mb-4">Live Chat</h3>
               <p className="text-muted-foreground mb-6">Get instant help from our support team during business hours</p>
-              <button className="btn-primary-gradient px-6 py-3 rounded-lg font-medium text-white w-full">
-                Start Chat
-              </button>
-              <p className="text-sm text-muted-foreground mt-3">Mon-Fri 8AM-8PM (GMT+7)</p>
+              <a
+                href="mailto:support@touristsos.com?subject=Support%20Request"
+                className="btn-primary-gradient px-6 py-3 rounded-lg font-medium text-white w-full block text-center"
+              >
+                Contact Us
+              </a>
+              <p className="text-sm text-muted-foreground mt-3">Response within 4 hours</p>
             </div>
 
             <div className="glass-card p-8 rounded-2xl text-center">
@@ -200,78 +203,26 @@ export default function SupportPage() {
           <h2 className="text-3xl font-bold text-center gradient-text mb-12">Support Resources</h2>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="glass-card p-6 rounded-xl text-center">
-              <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13M0 18h.897c.35 0 .684-.188.949-.505C4.188 15.684 4.5 15.35 4.5 15s-.316-.684-.505-.949H0v.897z"
-                  />
-                </svg>
+            {[
+              { icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13", title: "User Guide", desc: "Platform documentation" },
+              { icon: "M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z", title: "Video Tutorials", desc: "Training videos" },
+              { icon: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z", title: "API Docs", desc: "Integration guides" },
+              { icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z", title: "Community", desc: "Connect with partners" },
+            ].map((item) => (
+              <div key={item.title} className="glass-card p-6 rounded-xl text-center opacity-50">
+                <div className="w-12 h-12 bg-muted/30 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-6 h-6 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
+                  </svg>
+                </div>
+                <h3 className="font-semibold mb-2">{item.title}</h3>
+                <p className="text-sm text-muted-foreground">{item.desc}</p>
               </div>
-              <h3 className="font-semibold mb-2">User Guide</h3>
-              <p className="text-sm text-muted-foreground mb-4">Complete platform documentation</p>
-              <span className="text-primary/50 text-sm cursor-default">
-                Coming Soon
-              </span>
-            </div>
-
-            <div className="glass-card p-6 rounded-xl text-center">
-              <div className="w-12 h-12 bg-secondary/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
-                  />
-                </svg>
-              </div>
-              <h3 className="font-semibold mb-2">Video Tutorials</h3>
-              <p className="text-sm text-muted-foreground mb-4">Step-by-step training videos</p>
-              <span className="text-secondary/50 text-sm cursor-default">
-                Coming Soon
-              </span>
-            </div>
-
-            <div className="glass-card p-6 rounded-xl text-center">
-              <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />
-                </svg>
-              </div>
-              <h3 className="font-semibold mb-2">API Docs</h3>
-              <p className="text-sm text-muted-foreground mb-4">Integration documentation</p>
-              <span className="text-accent/50 text-sm cursor-default">
-                Coming Soon
-              </span>
-            </div>
-
-            <div className="glass-card p-6 rounded-xl text-center">
-              <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                  />
-                </svg>
-              </div>
-              <h3 className="font-semibold mb-2">Community</h3>
-              <p className="text-sm text-muted-foreground mb-4">Connect with other users</p>
-              <span className="text-purple-500/50 text-sm cursor-default">
-                Coming Soon
-              </span>
-            </div>
+            ))}
           </div>
+          <p className="text-center text-sm text-muted-foreground mt-6">
+            Resources are being prepared and will be available soon.
+          </p>
         </div>
       </section>
 

@@ -165,6 +165,7 @@ export default function ContactsPage() {
     location: "",
   })
   const [editingContact, setEditingContact] = useState<Contact | null>(null)
+  const [formError, setFormError] = useState("")
   const [expandedContacts, setExpandedContacts] = useState<Set<string>>(new Set()) // Track expanded contacts instead of categories
 
   useEffect(() => {
@@ -251,7 +252,7 @@ export default function ContactsPage() {
   }
 
   const navigateToSettings = () => {
-    router.push("/settings")
+    router.push("/dashboard/settings")
   }
 
   const selectCase = (caseId: string) => {
@@ -375,7 +376,7 @@ export default function ContactsPage() {
 
   const handleAddContact = () => {
     if (!newContact.name || !newContact.role || !newContact.phone) {
-      alert("Please fill in all required fields")
+      setFormError("Please fill in all required fields.")
       return
     }
 
@@ -420,7 +421,7 @@ export default function ContactsPage() {
 
   const handleUpdateContact = () => {
     if (!newContact.name || !newContact.role || !newContact.phone || !editingContact) {
-      alert("Please fill in all required fields")
+      setFormError("Please fill in all required fields.")
       return
     }
 
@@ -710,13 +711,17 @@ export default function ContactsPage() {
                   </button>
                 </div>
 
+                {formError && (
+                  <p className="text-sm text-red-500 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">{formError}</p>
+                )}
+
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium mb-1 text-foreground">Name *</label>
                     <input
                       type="text"
                       value={newContact.name}
-                      onChange={(e) => setNewContact((prev) => ({ ...prev, name: e.target.value }))}
+                      onChange={(e) => { setFormError(""); setNewContact((prev) => ({ ...prev, name: e.target.value })) }}
                       className="w-full px-3 py-2 rounded-lg bg-muted/50 border border-border/50 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                       placeholder="Enter full name"
                     />

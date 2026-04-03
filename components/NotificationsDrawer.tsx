@@ -80,13 +80,13 @@ export function NotificationsDrawer({ isOpen, onClose }: NotificationsDrawerProp
         }
         break
       case "success":
-        window.location.href = "/cases/completed"
+        window.location.href = "/dashboard/cases"
         break
       case "info":
-        window.location.href = "/settings"
+        window.location.href = "/dashboard/settings"
         break
       default:
-        window.location.href = "/"
+        window.location.href = "/dashboard"
     }
   }
 
