@@ -52,8 +52,8 @@ export function PullToRefresh({ onRefresh, children }: PullToRefreshProps) {
   const refreshThreshold = pullDistance > 60
   const opacity = Math.min(pullDistance / 60, 1)
 
-  const RefreshIcon = () => (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  const RefreshIcon = ({ className }: { className?: string }) => (
+    <svg className={className || "w-4 h-4"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path
         strokeLinecap="round"
         strokeLinejoin="round"

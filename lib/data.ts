@@ -21,7 +21,7 @@ export const mockContacts: Contact[] = [
     name: "James Wilson",
     role: "Front Desk",
     category: "Hotel Staff",
-    status: "typing",
+    status: "online",
     avatar: "JW",
     phone: "+1-555-0124",
     location: "Grand Resort",

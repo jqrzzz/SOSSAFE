@@ -10,8 +10,8 @@ interface MessageStatusProps {
 }
 
 export function MessageStatus({ status, onRetry, timestamp }: MessageStatusProps) {
-  const ClockIcon = () => (
-    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  const ClockIcon = ({ className }: { className?: string }) => (
+    <svg className={className || "w-3 h-3"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -21,8 +21,8 @@ export function MessageStatus({ status, onRetry, timestamp }: MessageStatusProps
     </svg>
   )
 
-  const CheckCheckIcon = () => (
-    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  const CheckCheckIcon = ({ className }: { className?: string }) => (
+    <svg className={className || "w-3 h-3"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -33,8 +33,8 @@ export function MessageStatus({ status, onRetry, timestamp }: MessageStatusProps
     </svg>
   )
 
-  const AlertCircleIcon = () => (
-    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  const AlertCircleIcon = ({ className }: { className?: string }) => (
+    <svg className={className || "w-3 h-3"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -44,8 +44,8 @@ export function MessageStatus({ status, onRetry, timestamp }: MessageStatusProps
     </svg>
   )
 
-  const RotateCcwIcon = () => (
-    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  const RotateCcwIcon = ({ className }: { className?: string }) => (
+    <svg className={className || "w-3 h-3"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -59,31 +59,31 @@ export function MessageStatus({ status, onRetry, timestamp }: MessageStatusProps
     <div className="flex items-center gap-1 mt-1">
       {status === "sending" && (
         <>
-          <ClockIcon className="text-muted-foreground animate-pulse" />
+          <ClockIcon className="w-3 h-3 text-muted-foreground animate-pulse" />
           <span className="text-xs text-muted-foreground">Sending...</span>
         </>
       )}
       {status === "sent" && (
         <>
-          <CheckIcon className="text-muted-foreground" />
+          <CheckIcon className="w-3 h-3 text-muted-foreground" />
           <span className="text-xs text-muted-foreground">{timestamp ? formatTimestamp(timestamp) : "Sent"}</span>
         </>
       )}
       {status === "delivered" && (
         <>
-          <CheckCheckIcon className="text-muted-foreground" />
+          <CheckCheckIcon className="w-3 h-3 text-muted-foreground" />
           <span className="text-xs text-muted-foreground">{timestamp ? formatTimestamp(timestamp) : "Delivered"}</span>
         </>
       )}
       {status === "read" && (
         <>
-          <CheckCheckIcon className="text-primary" />
+          <CheckCheckIcon className="w-3 h-3 text-primary" />
           <span className="text-xs text-primary">{timestamp ? formatTimestamp(timestamp) : "Read"}</span>
         </>
       )}
       {status === "failed" && (
         <>
-          <AlertCircleIcon className="text-destructive" />
+          <AlertCircleIcon className="w-3 h-3 text-destructive" />
           <span className="text-xs text-destructive">Failed</span>
           {onRetry && (
             <Button
@@ -92,7 +92,7 @@ export function MessageStatus({ status, onRetry, timestamp }: MessageStatusProps
               className="h-auto p-0 text-xs text-primary hover:text-primary/80 ml-1"
               onClick={onRetry}
             >
-              <RotateCcwIcon className="mr-1" />
+              <RotateCcwIcon className="w-3 h-3 mr-1" />
               Retry
             </Button>
           )}

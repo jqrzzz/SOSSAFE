@@ -15,6 +15,10 @@ export interface Message {
   threadDepth?: number
   replyCount?: number
   files?: Array<{ name: string; size: string; url?: string }>
+  reactions?: Array<{ emoji: string; users: string[] }> | Record<string, string[]>
+  attachments?: any[]
+  location?: { lat?: number; lng?: number; latitude?: number; longitude?: number; name?: string; address?: string }
+  voiceMessage?: { duration: number; url: string }
 }
 
 export interface Case {
@@ -24,8 +28,9 @@ export interface Case {
   messages: Message[]
   status: "active" | "completed"
   unreadCount: number
-  participants?: string[] // Array of contact IDs
-  createdBy?: string // Contact ID of the person who created the case
+  participants?: string[]
+  createdBy?: string
+  priority?: string
 }
 
 export interface Contact {
