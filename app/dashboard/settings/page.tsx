@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
+import { PageHeader } from "@/components/dashboard/PageHeader"
 
 export default function DashboardSettingsPage() {
   const router = useRouter()
@@ -38,11 +39,8 @@ export default function DashboardSettingsPage() {
   }
 
   return (
-    <div className="space-y-6 max-w-2xl">
-      <div>
-        <h1 className="text-2xl font-bold">Settings</h1>
-        <p className="text-muted-foreground text-sm mt-1">Manage your account and preferences</p>
-      </div>
+    <div className="space-y-6 max-w-3xl">
+      <PageHeader title="Settings" subtitle="Manage your account and preferences" />
 
       {/* Account Info */}
       <div className="glass-card p-6 rounded-lg border border-border/50 space-y-4">

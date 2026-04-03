@@ -1,6 +1,8 @@
 "use client"
 
 import { useState } from "react"
+import { PageHeader } from "@/components/dashboard/PageHeader"
+import { StatusBadge } from "@/components/dashboard/StatusBadge"
 
 interface Contact {
   id: string
@@ -25,14 +27,7 @@ const mockContacts: Contact[] = [
   { id: "tour-2", name: "Sofia Martinez", role: "Tour Coordinator", category: "Tour", status: "online", avatar: "SM", phone: "+52-998-555-7891", location: "Coastal Excursions", isFavorite: true },
 ]
 
-const getCategoryBadge = (category: string) => {
-  switch (category) {
-    case "Medical": return "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
-    case "Hospitality": return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
-    case "Tour": return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-    default: return "bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400"
-  }
-}
+// Category badges now use <StatusBadge> component
 
 export default function DashboardContactsPage() {
   const [searchQuery, setSearchQuery] = useState("")
@@ -63,10 +58,7 @@ export default function DashboardContactsPage() {
 
   return (
     <div className="space-y-6 max-w-3xl">
-      <div>
-        <h1 className="text-2xl font-bold">Contacts</h1>
-        <p className="text-muted-foreground text-sm mt-1">Your SOS network contacts</p>
-      </div>
+      <PageHeader title="Contacts" subtitle="Your SOS network contacts" />
 
       <div className="p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/20 text-yellow-600 text-sm">
         Preview mode — contact management will be connected in a future update.
@@ -113,9 +105,7 @@ export default function DashboardContactsPage() {
                       <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                     </svg>
                   )}
-                  <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${getCategoryBadge(contact.category)}`}>
-                    {contact.category}
-                  </span>
+                  <StatusBadge status={contact.category} />
                 </div>
                 <p className="text-xs text-muted-foreground truncate">{contact.role} &middot; {contact.location}</p>
               </div>

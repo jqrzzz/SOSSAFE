@@ -1,5 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
+import { PageHeader } from "@/components/dashboard/PageHeader"
+import { StatusBadge } from "@/components/dashboard/StatusBadge"
 
 export default async function CasesPage() {
   const supabase = await createClient()
@@ -44,14 +46,7 @@ export default async function CasesPage() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Cases</h1>
-          <p className="text-muted-foreground mt-1">
-            View and manage emergency cases
-          </p>
-        </div>
-      </div>
+      <PageHeader title="Cases" subtitle="View and manage emergency cases" />
 
       {cases.length === 0 ? (
         <div className="glass-card p-12 rounded-lg border border-border/50 text-center">
@@ -86,24 +81,8 @@ export default async function CasesPage() {
                     <span className="font-mono text-sm text-muted-foreground">
                       #{caseItem.case_number}
                     </span>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      caseItem.status === "open" 
-                        ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
-                        : caseItem.status === "in_progress"
-                        ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400"
-                        : "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
-                    }`}>
-                      {caseItem.status.replace("_", " ")}
-                    </span>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      caseItem.priority === "critical"
-                        ? "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
-                        : caseItem.priority === "high"
-                        ? "bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400"
-                        : "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400"
-                    }`}>
-                      {caseItem.priority}
-                    </span>
+                    <StatusBadge status={caseItem.status} />
+                    <StatusBadge status={caseItem.priority} />
                   </div>
                   <p className="text-sm text-muted-foreground mt-2">
                     {caseItem.city}, {caseItem.country}

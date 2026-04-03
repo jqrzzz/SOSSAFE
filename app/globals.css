@@ -511,6 +511,29 @@
   }
 
   /* -------------------------------------------------------------------------
+     Premium input
+     ------------------------------------------------------------------------- */
+  .premium-input {
+    background: hsl(var(--muted) / 0.3);
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius-input, 0.5rem);
+    padding: 0.625rem 0.75rem;
+    font-size: 0.875rem;
+    color: hsl(var(--foreground));
+    transition: all 0.2s ease;
+    outline: none;
+  }
+
+  .premium-input::placeholder {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .premium-input:focus {
+    border-color: hsl(var(--primary));
+    box-shadow: 0 0 0 2px hsl(var(--primary) / 0.15);
+  }
+
+  /* -------------------------------------------------------------------------
      Glass card effect
      ------------------------------------------------------------------------- */
   .glass-card {

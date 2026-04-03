@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
+import { PageHeader } from "@/components/dashboard/PageHeader"
 
 interface PartnerFormData {
   name: string
@@ -169,15 +170,13 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="max-w-2xl">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Partner Profile</h1>
-        <p className="text-muted-foreground mt-1">
-          {hasExistingProfile 
-            ? "Manage your organization details" 
-            : "Set up your organization profile to get started"}
-        </p>
-      </div>
+    <div className="max-w-3xl space-y-6">
+      <PageHeader
+        title="Partner Profile"
+        subtitle={hasExistingProfile
+          ? "Manage your organization details"
+          : "Set up your organization profile to get started"}
+      />
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {error && (

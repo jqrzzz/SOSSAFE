@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { PageHeader } from "@/components/dashboard/PageHeader"
 
 const initialNotifications = [
   { id: 1, title: "New Case Assigned", message: "Emergency case #2024-001 requires immediate attention.", time: "5 min ago", type: "urgent", unread: true },
@@ -43,20 +44,17 @@ export default function DashboardNotificationsPage() {
   }
 
   return (
-    <div className="space-y-6 max-w-2xl">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Notifications</h1>
-          <p className="text-muted-foreground text-sm mt-1">
-            {unreadCount > 0 ? `${unreadCount} unread` : "All caught up"}
-          </p>
-        </div>
+    <div className="space-y-6 max-w-3xl">
+      <PageHeader
+        title="Notifications"
+        subtitle={unreadCount > 0 ? `${unreadCount} unread` : "All caught up"}
+      >
         {unreadCount > 0 && (
           <button onClick={markAllRead} className="text-sm text-primary hover:underline">
             Mark all read
           </button>
         )}
-      </div>
+      </PageHeader>
 
       <div className="p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/20 text-yellow-600 text-sm">
         Preview mode — notifications will be connected in a future update.
