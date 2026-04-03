@@ -153,7 +153,6 @@ export default function ProfilePage() {
       }
 
       setSuccess(true)
-      setTimeout(() => setSuccess(false), 3000)
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to save profile")
     } finally {
@@ -188,8 +187,9 @@ export default function ProfilePage() {
         )}
 
         {success && (
-          <div className="p-4 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 text-sm">
-            Profile saved successfully!
+          <div className="p-4 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 text-sm flex items-center justify-between">
+            <span>Profile saved successfully!</span>
+            <button onClick={() => setSuccess(false)} className="text-green-500 hover:text-green-700 ml-4 text-lg leading-none">&times;</button>
           </div>
         )}
 

@@ -529,8 +529,11 @@ export default function OnboardingPage() {
             onClick={() => router.push("/dashboard")}
             className="text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
-            Skip for now
+            I&apos;ll complete this later
           </button>
+          <p className="text-xs text-muted-foreground/60 mt-1">
+            You&apos;ll need to complete your profile before starting certification
+          </p>
         </div>
       </div>
     </div>

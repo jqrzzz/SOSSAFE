@@ -370,8 +370,7 @@ export default function ContactsPage() {
   }
 
   const handleCallContact = (contact: Contact) => {
-    // Simulate a call
-    alert(`Calling ${contact.name} at ${contact.phone}...\n\nIn a real app, this would initiate a voice/video call.`)
+    window.open(`tel:${contact.phone.replace(/\s/g, "")}`, "_self")
   }
 
   const handleAddContact = () => {

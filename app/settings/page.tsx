@@ -3,6 +3,7 @@
 import type React from "react"
 import { useState, useMemo, useCallback, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import { createClient } from "@/lib/supabase/client"
 import { Header } from "@/components/Header"
 import { Sidebar } from "@/components/Sidebar" // Added Sidebar import
 import { SettingsIcon, UserIcon, BellIcon, ShieldIcon, HelpCircleIcon, PhoneIcon } from "@/components/icons"
@@ -33,6 +34,12 @@ export default function SettingsPage() {
   const [bio, setBio] = useState("")
   const maxBioLength = 150
 
+  const [userName, setUserName] = useState("")
+  const [userEmail, setUserEmail] = useState("")
+  const [userOrg, setUserOrg] = useState("")
+  const [userPhone, setUserPhone] = useState("")
+  const [userId, setUserId] = useState("")
+
   const [settings, setSettings] = useState({
     notifications: true,
     locationSharing: true,
@@ -43,6 +50,33 @@ export default function SettingsPage() {
     dataRetention: "90",
     theme: "system",
   })
+
+  useEffect(() => {
+    async function loadUserData() {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        setUserName(user.user_metadata?.full_name || "")
+        setUserEmail(user.email || "")
+        setUserOrg(user.user_metadata?.organization_name || "")
+        setUserId(user.id?.slice(0, 8).toUpperCase() || "")
+        const partnerType = user.user_metadata?.partner_type
+        if (partnerType === "tour_operator") {
+          updateSetting("role", "tours")
+        }
+
+        const { data: membership } = await supabase
+          .from("partner_memberships")
+          .select("partners(phone)")
+          .eq("user_id", user.id)
+          .single()
+        if ((membership as any)?.partners?.phone) {
+          setUserPhone((membership as any).partners.phone)
+        }
+      }
+    }
+    loadUserData()
+  }, [])
 
   const mockCases = [
     { id: "1", status: "active" as const },
@@ -144,7 +178,7 @@ export default function SettingsPage() {
             label: "Full Name",
             description: "Your display name for team communication",
             type: "input",
-            value: "Jane Doe",
+            value: userName,
           },
           {
             id: "role",
@@ -163,21 +197,21 @@ export default function SettingsPage() {
             label: "Phone Number",
             description: "Primary contact number (include country code)",
             type: "input",
-            value: "+1 555-123-4567",
+            value: userPhone,
           },
           {
             id: "company",
             label: "Company",
             description: "Your organization or company name",
             type: "input",
-            value: "Acme Tourism Co.",
+            value: userOrg,
           },
           {
             id: "user-id",
             label: "User ID",
             description: "Your unique identifier",
             type: "input",
-            value: "USR-2024-JD001",
+            value: userId,
           },
         ],
       },
@@ -305,7 +339,11 @@ export default function SettingsPage() {
       settings.autoBackup,
       settings.dataRetention,
       settings.language,
-      settings.theme, // Added theme to dependencies
+      settings.theme,
+      userName,
+      userPhone,
+      userOrg,
+      userId,
     ],
   )
 
