@@ -498,6 +498,9 @@ export default function ContactsPage() {
       />
 
       <div className="p-3 md:p-6">
+        <div className="mb-2 p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/20 text-yellow-600 text-sm">
+          Preview mode — contact management will be connected in a future update.
+        </div>
         <div className="mb-4">
           <div className="flex flex-col gap-3 mb-4">
             <div className="flex items-center justify-between">

@@ -175,6 +175,9 @@ export default function NotificationsPage() {
         <div className="flex-1 overflow-auto p-3 sm:p-4">
           <div className="max-w-2xl mx-auto">
             <div className="flex items-center justify-between mb-4 sm:mb-6">
+              <div className="mb-2 p-2 rounded-lg bg-yellow-500/10 border border-yellow-500/20 text-yellow-600 text-xs">
+                Preview mode — notifications will be connected in a future update.
+              </div>
               <div className="flex items-center gap-2 sm:gap-3">
                 <BellIcon className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                 <h1 className="text-lg sm:text-xl font-bold gradient-text">Notifications</h1>

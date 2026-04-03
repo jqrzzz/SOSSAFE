@@ -317,8 +317,8 @@ export default function TermsPage() {
               <h2 className="text-2xl font-semibold mb-4 text-foreground">11. Dispute Resolution and Governing Law</h2>
               <p className="text-muted-foreground mb-4">
                 <strong>Governing Law:</strong> These Terms are governed by and construed in accordance with the laws of
-                [Jurisdiction], without regard to conflict of law principles. Any legal action or proceeding arising
-                under these Terms will be brought exclusively in the courts of [Jurisdiction].
+                the Kingdom of Thailand, without regard to conflict of law principles. Any legal action or proceeding arising
+                under these Terms will be brought exclusively in the courts of Bangkok, Thailand.
               </p>
               <p className="text-muted-foreground mb-4">
                 <strong>Dispute Resolution Process:</strong>
@@ -395,11 +395,11 @@ export default function TermsPage() {
                 <p>
                   <strong>Mailing Address:</strong> Tourist SOS Legal Department
                   <br />
-                  [Complete Business Address]
+                  388 Exchange Tower, Sukhumvit Road
                   <br />
-                  [City, State/Province, Postal Code]
+                  Klongtoey, Bangkok 10110
                   <br />
-                  [Country]
+                  Thailand
                 </p>
               </div>
               <p className="text-muted-foreground mb-4">
@@ -427,7 +427,7 @@ export default function TermsPage() {
               <a href="/terms" className="hover:text-foreground transition-colors">
                 Terms
               </a>
-              <a href="#" className="hover:text-foreground transition-colors">
+              <a href="/support" className="hover:text-foreground transition-colors">
                 Support
               </a>
             </div>

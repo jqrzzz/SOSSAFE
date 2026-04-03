@@ -48,6 +48,7 @@ const MODULES = [
 export default function CertificationPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [partnerId, setPartnerId] = useState<string | null>(null)
+  const [partnerName, setPartnerName] = useState<string>("")
   const [certification, setCertification] = useState<Certification | null>(null)
   const [submissions, setSubmissions] = useState<Submission[]>([])
   const [error, setError] = useState<string | null>(null)
@@ -66,7 +67,7 @@ export default function CertificationPage() {
       // Get partner membership
       const { data: membership } = await supabase
         .from("partner_memberships")
-        .select("partner_id")
+        .select("partner_id, partners(name)")
         .eq("user_id", user.id)
         .single()
 
@@ -76,6 +77,7 @@ export default function CertificationPage() {
       }
 
       setPartnerId(membership.partner_id)
+      setPartnerName((membership as any).partners?.name || "")
 
       // Get certification
       const { data: certData } = await supabase
@@ -360,7 +362,45 @@ export default function CertificationPage() {
           <p className="text-muted-foreground mb-4">
             Valid until {certification.expires_at ? new Date(certification.expires_at).toLocaleDateString() : "N/A"}
           </p>
-          <button className="px-6 py-2 rounded-lg border border-green-600 text-green-600 dark:border-green-400 dark:text-green-400 text-sm font-medium hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors">
+          <button
+            onClick={() => {
+              const certWindow = window.open("", "_blank")
+              if (certWindow) {
+                certWindow.document.write(`
+                  <html><head><title>SOS Safe Certificate</title>
+                  <style>
+                    body { font-family: Georgia, serif; text-align: center; padding: 60px 40px; background: #f9fafb; }
+                    .cert { max-width: 700px; margin: 0 auto; border: 3px solid #16a34a; border-radius: 12px; padding: 60px 40px; background: white; }
+                    .badge { font-size: 48px; margin-bottom: 16px; }
+                    h1 { color: #16a34a; font-size: 28px; margin: 0 0 8px; }
+                    h2 { color: #333; font-size: 22px; font-weight: normal; margin: 24px 0 8px; }
+                    .org { font-size: 26px; font-weight: bold; color: #111; margin: 16px 0; }
+                    .tier { color: #16a34a; font-size: 16px; text-transform: uppercase; letter-spacing: 2px; }
+                    .dates { color: #666; font-size: 14px; margin-top: 32px; }
+                    .footer { margin-top: 40px; color: #999; font-size: 12px; }
+                    @media print { body { background: white; } .cert { border: 2px solid #16a34a; } }
+                  </style></head><body>
+                  <div class="cert">
+                    <div class="badge">&#x2705;</div>
+                    <h1>SOS Safe Certified</h1>
+                    <p class="tier">${certification.certification_tier.replace(/_/g, " ")}</p>
+                    <h2>This certifies that</h2>
+                    <p class="org">${partnerName || "Partner Organization"}</p>
+                    <p>has met the safety and emergency preparedness standards<br/>required by the Tourist SOS certification program.</p>
+                    <p class="dates">
+                      Issued: ${certification.issued_at ? new Date(certification.issued_at).toLocaleDateString() : "N/A"}<br/>
+                      Valid until: ${certification.expires_at ? new Date(certification.expires_at).toLocaleDateString() : "N/A"}
+                    </p>
+                    <div class="footer">Tourist SOS &bull; tourist-sos.com</div>
+                  </div>
+                  <script>setTimeout(() => window.print(), 500)<\/script>
+                  </body></html>
+                `)
+                certWindow.document.close()
+              }
+            }}
+            className="px-6 py-2 rounded-lg border border-green-600 text-green-600 dark:border-green-400 dark:text-green-400 text-sm font-medium hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors"
+          >
             Download Certificate
           </button>
         </div>

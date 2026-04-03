@@ -11,16 +11,18 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
+  const [error, setError] = useState("")
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
+    setError("")
 
-    // Simulate admin login process
+    // Admin portal is not yet available
     setTimeout(() => {
       setIsLoading(false)
-      // Redirect to admin dashboard after login
-      window.location.href = "/admin/dashboard"
-    }, 1500)
+      setError("Admin portal is coming soon. Please use the demo to preview admin features.")
+    }, 500)
   }
 
   return (
@@ -65,6 +67,12 @@ export default function AdminLoginPage() {
               />
             </div>
 
+            {error && (
+              <div className="p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/30 text-yellow-600 text-sm">
+                {error}
+              </div>
+            )}
+
             <button
               type="submit"
               disabled={isLoading}
@@ -85,7 +93,7 @@ export default function AdminLoginPage() {
 
           <div className="mt-6 text-center">
             <Link
-              href="/login"
+              href="/auth/login"
               className="text-sm text-muted-foreground hover:text-muted-foreground/80 transition-colors"
             >
               ← Back to User Login

@@ -453,7 +453,7 @@ export default function PrivacyPage() {
               <a href="/terms" className="hover:text-foreground transition-colors">
                 Terms
               </a>
-              <a href="#" className="hover:text-foreground transition-colors">
+              <a href="/support" className="hover:text-foreground transition-colors">
                 Support
               </a>
             </div>

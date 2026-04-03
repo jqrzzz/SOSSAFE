@@ -369,8 +369,18 @@ export default function SettingsPage() {
         )
 
       case "button":
+        const buttonActions: Record<string, () => void> = {
+          help: () => router.push("/support"),
+          contact: () => router.push("/support"),
+          feedback: () => window.open("mailto:support@touristsos.com?subject=Feedback", "_blank"),
+          about: () => router.push("/about"),
+          exportData: () => alert("Data export will be available soon."),
+        }
         return (
-          <button className="w-full text-left py-2 px-3 rounded-md hover:bg-muted/30 transition-colors group">
+          <button
+            onClick={buttonActions[item.id] || (() => {})}
+            className="w-full text-left py-2 px-3 rounded-md hover:bg-muted/30 transition-colors group"
+          >
             <div className="flex items-center justify-between">
               <div>
                 <div className="font-medium text-sm">{item.label}</div>
@@ -384,7 +394,7 @@ export default function SettingsPage() {
       default:
         return null
     }
-  }, [])
+  }, [router])
 
   return (
     <div className="min-h-screen bg-background">

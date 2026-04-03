@@ -213,9 +213,9 @@ export default function SupportPage() {
               </div>
               <h3 className="font-semibold mb-2">User Guide</h3>
               <p className="text-sm text-muted-foreground mb-4">Complete platform documentation</p>
-              <a href="#" className="text-primary hover:underline text-sm">
-                View Guide →
-              </a>
+              <span className="text-primary/50 text-sm cursor-default">
+                Coming Soon
+              </span>
             </div>
 
             <div className="glass-card p-6 rounded-xl text-center">
@@ -231,9 +231,9 @@ export default function SupportPage() {
               </div>
               <h3 className="font-semibold mb-2">Video Tutorials</h3>
               <p className="text-sm text-muted-foreground mb-4">Step-by-step training videos</p>
-              <a href="#" className="text-secondary hover:underline text-sm">
-                Watch Videos →
-              </a>
+              <span className="text-secondary/50 text-sm cursor-default">
+                Coming Soon
+              </span>
             </div>
 
             <div className="glass-card p-6 rounded-xl text-center">
@@ -249,9 +249,9 @@ export default function SupportPage() {
               </div>
               <h3 className="font-semibold mb-2">API Docs</h3>
               <p className="text-sm text-muted-foreground mb-4">Integration documentation</p>
-              <a href="#" className="text-accent hover:underline text-sm">
-                View API →
-              </a>
+              <span className="text-accent/50 text-sm cursor-default">
+                Coming Soon
+              </span>
             </div>
 
             <div className="glass-card p-6 rounded-xl text-center">
@@ -267,9 +267,9 @@ export default function SupportPage() {
               </div>
               <h3 className="font-semibold mb-2">Community</h3>
               <p className="text-sm text-muted-foreground mb-4">Connect with other users</p>
-              <a href="#" className="text-purple-500 hover:underline text-sm">
-                Join Forum →
-              </a>
+              <span className="text-purple-500/50 text-sm cursor-default">
+                Coming Soon
+              </span>
             </div>
           </div>
         </div>
