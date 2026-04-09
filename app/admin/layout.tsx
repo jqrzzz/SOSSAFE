@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation"
 import { getAdminUser } from "@/lib/admin"
 import { AdminNav } from "@/components/admin/AdminNav"
+import { AdminChatWidget } from "@/components/admin/AdminChatWidget"
 
 export default async function AdminLayout({
   children,
@@ -19,6 +20,7 @@ export default async function AdminLayout({
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {children}
       </main>
+      <AdminChatWidget />
     </div>
   )
 }
