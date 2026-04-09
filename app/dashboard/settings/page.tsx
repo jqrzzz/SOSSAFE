@@ -50,6 +50,18 @@ export default function SettingsPage() {
         </Link>
       </div>
 
+      {/* Billing */}
+      <div className="glass-card p-6 rounded-lg border border-border/50 space-y-3">
+        <h2 className="font-semibold">Billing & Subscription</h2>
+        <p className="text-sm text-muted-foreground">View your plan, trial status, and manage payment.</p>
+        <Link href="/dashboard/settings/billing" className="inline-flex items-center gap-2 text-sm text-primary hover:underline">
+          Manage billing
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </Link>
+      </div>
+
       {/* Preferences */}
       <div className="glass-card p-6 rounded-lg border border-border/50 space-y-4">
         <h2 className="font-semibold">Preferences</h2>
