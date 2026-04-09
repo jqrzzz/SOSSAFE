@@ -370,7 +370,7 @@ export function TeamClient({
                       {modules.map((mod) => (
                         <th
                           key={mod.id}
-                          className="text-center p-4 text-xs font-medium text-muted-foreground uppercase tracking-wider min-w-[140px]"
+                          className="text-center p-4 text-xs font-medium text-muted-foreground uppercase tracking-wider min-w-[110px]"
                         >
                           <span className="text-base block mb-0.5">{mod.icon}</span>
                           {mod.title.replace("Assessment", "").replace("Protocols", "").trim()}

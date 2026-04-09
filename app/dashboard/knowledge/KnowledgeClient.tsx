@@ -99,7 +99,7 @@ export function KnowledgeClient({
       </div>
 
       {/* Stats row */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
         <div className="glass-card p-4 rounded-lg border border-border/50">
           <p className="text-xs text-muted-foreground">Total Entries</p>
           <p className="text-2xl font-bold mt-1">{entries.length}</p>

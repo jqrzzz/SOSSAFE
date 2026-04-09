@@ -121,7 +121,7 @@ export function Certificate({
         </div>
 
         {/* Details grid */}
-        <div className="grid grid-cols-3 gap-6 text-center mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center mb-10">
           <div>
             <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Issued</p>
             <p className="text-sm font-medium text-gray-700">{formatDate(issuedAt)}</p>

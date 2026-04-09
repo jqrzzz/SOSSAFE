@@ -90,7 +90,7 @@ export function CasesClient({ cases, partnerName }: CasesClientProps) {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold">Cases</h1>
           <p className="text-muted-foreground mt-1">
@@ -152,7 +152,7 @@ export function CasesClient({ cases, partnerName }: CasesClientProps) {
       ) : (
         <>
           {/* Summary stats */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 print:grid-cols-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 print:grid-cols-4">
             <div className="glass-card p-3 rounded-lg border border-border/50">
               <p className="text-xs text-muted-foreground">Total Cases</p>
               <p className="text-xl font-bold">{cases.length}</p>

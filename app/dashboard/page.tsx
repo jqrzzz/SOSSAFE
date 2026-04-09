@@ -301,7 +301,7 @@ export default async function DashboardPage({
       )}
 
       {/* ── Top Stats Row ─────────────────────────────────────────── */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         {/* Certification */}
         <Link
           href="/dashboard/certification"
@@ -684,7 +684,7 @@ export default async function DashboardPage({
       {!isCertified && (
         <div className="glass-card p-6 rounded-lg border border-border/50">
           <h2 className="font-semibold mb-4">How SOS Safe Works</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             {[
               {
                 step: "1",

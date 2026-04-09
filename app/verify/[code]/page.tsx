@@ -178,7 +178,7 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
           <p className="text-sm text-muted-foreground mb-4">
             {tierDescription}
           </p>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="text-center p-3 rounded-lg bg-muted/30">
               <p className="text-2xl font-bold text-primary">{moduleCount}</p>
               <p className="text-xs text-muted-foreground">Modules Passed</p>
