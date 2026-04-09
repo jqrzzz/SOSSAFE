@@ -156,11 +156,12 @@ export default async function DashboardPage({
   const currentTierModules = TIER_MODULES[currentTierId] ?? MODULES.slice(0, 3).map((m) => m.id)
   const totalModulesInTier = currentTierModules.length
 
+  const scoredSubmissions = certSubmissions.filter((s) => s.score != null)
   const avgScore =
-    certSubmissions.length > 0
+    scoredSubmissions.length > 0
       ? Math.round(
-          certSubmissions.reduce((sum, s) => sum + (s.score || 0), 0) /
-            certSubmissions.length,
+          scoredSubmissions.reduce((sum, s) => sum + (s.score || 0), 0) /
+            scoredSubmissions.length,
         )
       : null
 

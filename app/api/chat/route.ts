@@ -39,14 +39,18 @@ export async function POST(req: Request) {
           // Get ALL certification records
           const { data: certs } = await supabase
             .from("certifications")
-            .select("certification_tier, status")
+            .select("id, certification_tier, status")
             .eq("partner_id", membership.partner_id)
             .order("created_at", { ascending: false })
 
-          // Get modules completed (across all certs)
-          const { data: subs } = await supabase
-            .from("certification_submissions")
-            .select("submission_type, score")
+          // Get modules completed for this partner's certs
+          const certIds = (certs ?? []).map((c) => c.id).filter(Boolean)
+          const { data: subs } = certIds.length > 0
+            ? await supabase
+                .from("certification_submissions")
+                .select("submission_type, score")
+                .in("certification_id", certIds)
+            : { data: [] }
 
           const modulesCompleted = (subs ?? []).filter(
             (s) => s.score !== null && s.score >= 80,
@@ -132,11 +136,19 @@ export async function POST(req: Request) {
     systemPrompt = getPublicSystemPrompt()
   }
 
-  const result = streamText({
-    model: anthropic("claude-haiku-4-5"),
-    system: systemPrompt,
-    messages,
-  })
+  try {
+    const result = streamText({
+      model: anthropic("claude-haiku-4-5"),
+      system: systemPrompt,
+      messages,
+    })
 
-  return result.toTextStreamResponse()
+    return result.toTextStreamResponse()
+  } catch (error) {
+    console.error("[Chat API Error]", error)
+    return new Response("I'm having trouble connecting right now. Please try again in a moment.", {
+      status: 500,
+      headers: { "Content-Type": "text/plain" },
+    })
+  }
 }

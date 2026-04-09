@@ -148,9 +148,12 @@ export function PoliciesClient({
   }
 
   /* ── Generate P&P document ──────────────────────────────────────── */
+  const [generateError, setGenerateError] = useState<string | null>(null)
+
   const generatePolicy = async () => {
     if (totalAnswered === 0 || generating) return
     setGenerating(true)
+    setGenerateError(null)
 
     try {
       const res = await fetch("/api/policies/generate", {
@@ -163,9 +166,11 @@ export function PoliciesClient({
         const result = await res.json()
         setPolicy(result.policy)
         setTab("policies")
+      } else {
+        setGenerateError("Failed to generate document. Please try again.")
       }
     } catch {
-      // Silent fail — user can retry
+      setGenerateError("Network error. Please check your connection and try again.")
     }
 
     setGenerating(false)
@@ -370,6 +375,9 @@ export function PoliciesClient({
               ? "Regenerate P&P Document"
               : "Generate P&P Document"}
           </button>
+          {generateError && (
+            <p className="text-sm text-red-600 dark:text-red-400 mt-2">{generateError}</p>
+          )}
         </div>
       )}
     </div>

@@ -24,8 +24,28 @@ interface NotificationPayload {
 
 export async function POST(req: Request) {
   try {
-    const payload: NotificationPayload = await req.json()
     const supabase = await createClient()
+
+    // Verify the caller is authenticated
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      return Response.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+    const payload: NotificationPayload = await req.json()
+
+    // Verify the caller belongs to this partner
+    const { data: callerMembership } = await supabase
+      .from("partner_memberships")
+      .select("partner_id, role")
+      .eq("user_id", user.id)
+      .eq("partner_id", payload.partnerId)
+      .is("removed_at", null)
+      .single()
+
+    if (!callerMembership) {
+      return Response.json({ error: "Forbidden" }, { status: 403 })
+    }
 
     // Load partner info
     const { data: partner } = await supabase
