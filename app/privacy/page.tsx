@@ -1,5 +1,5 @@
-import Link from "next/link"
 import { MarketingHeader } from "@/components/MarketingHeader"
+import { MarketingFooter } from "@/components/MarketingFooter"
 
 export default function PrivacyPage() {
   return (
@@ -322,18 +322,7 @@ export default function PrivacyPage() {
         </div>
       </main>
 
-      <footer className="border-t border-border/50 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row justify-between items-center">
-            <div className="text-sm text-muted-foreground mb-4 sm:mb-0">&copy; {new Date().getFullYear()} Tourist SOS, Inc.</div>
-            <div className="flex gap-6 text-sm text-muted-foreground">
-              <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy</Link>
-              <Link href="/terms" className="hover:text-foreground transition-colors">Terms</Link>
-              <Link href="/support" className="hover:text-foreground transition-colors">Support</Link>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <MarketingFooter />
     </div>
   )
 }

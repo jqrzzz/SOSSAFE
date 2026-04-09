@@ -1,5 +1,5 @@
-import Link from "next/link"
 import { MarketingHeader } from "@/components/MarketingHeader"
+import { MarketingFooter } from "@/components/MarketingFooter"
 
 export default function SupportPage() {
   return (
@@ -139,55 +139,55 @@ export default function SupportPage() {
 
           <div className="space-y-6">
             <div className="glass-card p-6 rounded-xl">
-              <h3 className="text-lg font-semibold mb-3">How quickly do first responders receive emergency alerts?</h3>
+              <h3 className="text-lg font-semibold mb-3">What is SOS Safe certification?</h3>
               <p className="text-muted-foreground">
-                Emergency alerts are sent instantly via push notifications, SMS, and in-app messaging. Our average
-                notification delivery time is under 3 seconds, with first responders typically acknowledging within 45
-                seconds.
+                SOS Safe is a safety certification for hotels, hostels, guesthouses, and tour operators. Your team
+                completes three training modules covering emergency preparedness, facility safety, and communication
+                protocols. Score 80% or higher to earn your certification badge.
               </p>
             </div>
 
             <div className="glass-card p-6 rounded-xl">
-              <h3 className="text-lg font-semibold mb-3">
-                What if there's no internet connection during an emergency?
-              </h3>
+              <h3 className="text-lg font-semibold mb-3">How do I add staff members to our account?</h3>
               <p className="text-muted-foreground">
-                Tourist SOS works offline for basic protocol guidance. Emergency contacts and protocols are cached
-                locally. When connectivity returns, all data syncs automatically. We also provide backup SMS-based
-                emergency numbers.
+                Go to the Team page in your dashboard and copy your invite link. Share it with staff — when they
+                sign up through the link, they&apos;re automatically added to your organization. You can track each
+                team member&apos;s training progress from the same page.
               </p>
             </div>
 
             <div className="glass-card p-6 rounded-xl">
-              <h3 className="text-lg font-semibold mb-3">How do I add new staff members to our hotel account?</h3>
+              <h3 className="text-lg font-semibold mb-3">What are the certification tiers?</h3>
               <p className="text-muted-foreground">
-                Hotel managers can invite staff through the admin dashboard. New members receive training materials and
-                must complete basic emergency response certification before accessing the platform.
+                There are three tiers — Basic, Premium, and Elite — each covering progressively more advanced safety
+                topics. All tiers require an 80% passing score. Your certification tier and verification code are
+                displayed on a public verification page that guests and insurers can check.
               </p>
             </div>
 
             <div className="glass-card p-6 rounded-xl">
-              <h3 className="text-lg font-semibold mb-3">What information is shared with first responders?</h3>
+              <h3 className="text-lg font-semibold mb-3">How much does it cost?</h3>
               <p className="text-muted-foreground">
-                Only essential emergency information: guest condition, location, initial assessment, and relevant
-                medical history (if provided). All data is encrypted and shared only with verified, certified responders
-                in your network.
+                Plans start at $12/month for hostels, with pricing based on property type. Every plan includes full
+                access to all features — certification, team management, AI assistant, and facility assessment.
+                All new accounts start with a 30-day free trial, no credit card required.
               </p>
             </div>
 
             <div className="glass-card p-6 rounded-xl">
-              <h3 className="text-lg font-semibold mb-3">How much does Tourist SOS cost?</h3>
+              <h3 className="text-lg font-semibold mb-3">What happens if my subscription lapses?</h3>
               <p className="text-muted-foreground">
-                Pricing varies by property size and features needed. Basic plans start at $99/month for small
-                properties. Contact our sales team for custom enterprise pricing and volume discounts.
+                Your dashboard becomes read-only and your certification status is set to inactive. Your data,
+                training progress, and team information are preserved — nothing is deleted. Resubscribe at any
+                time to reactivate everything.
               </p>
             </div>
 
             <div className="glass-card p-6 rounded-xl">
-              <h3 className="text-lg font-semibold mb-3">Is training provided for hotel staff?</h3>
+              <h3 className="text-lg font-semibold mb-3">Is staff training included?</h3>
               <p className="text-muted-foreground">
-                Yes! All plans include comprehensive staff training, certification programs, and ongoing support. We
-                provide both online modules and on-site training sessions for larger properties.
+                Yes. All plans include unlimited staff seats. Each team member can complete the training modules
+                independently, and managers can track completion across the team from the dashboard.
               </p>
             </div>
           </div>
@@ -214,25 +214,7 @@ export default function SupportPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border/50 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row justify-between items-center">
-            <div className="text-sm text-muted-foreground mb-4 sm:mb-0">© 2025 Tourist SOS. All rights reserved.</div>
-            <div className="flex gap-6 text-sm text-muted-foreground">
-              <Link href="/privacy" className="hover:text-foreground transition-colors">
-                Privacy
-              </Link>
-              <Link href="/terms" className="hover:text-foreground transition-colors">
-                Terms
-              </Link>
-              <Link href="/support" className="hover:text-foreground transition-colors">
-                Support
-              </Link>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <MarketingFooter />
     </div>
   )
 }
