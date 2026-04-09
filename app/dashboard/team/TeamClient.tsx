@@ -228,6 +228,11 @@ export function TeamClient({
 
               <p className="text-xs text-muted-foreground mt-3">
                 Managers can view cases and certification status. Staff can complete training modules.
+                Invited members must agree to our{" "}
+                <a href="/terms" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Terms of Service</a>{" "}
+                and{" "}
+                <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Privacy Policy</a>{" "}
+                during sign-up.
               </p>
             </div>
           )}

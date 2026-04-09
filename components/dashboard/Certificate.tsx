@@ -195,6 +195,16 @@ export function Certificate({
           </button>
         )}
       </div>
+
+      {/* Badge usage terms */}
+      <p className="text-[11px] text-muted-foreground text-center mt-4 max-w-lg mx-auto leading-relaxed print:hidden">
+        You may display the SOS Safe badge on your website, marketing materials, and premises
+        for the duration of your active certification only. The badge must not be altered and
+        its use must cease upon expiration or revocation.{" "}
+        <a href="/terms" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+          See Terms (Section 3)
+        </a>
+      </p>
     </div>
   )
 }
