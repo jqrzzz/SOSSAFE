@@ -23,6 +23,7 @@ export default function SignUpPage() {
   const [confirmPassword, setConfirmPassword] = useState("")
   const [fullName, setFullName] = useState("")
   const [organizationName, setOrganizationName] = useState("")
+  const [agreedToTerms, setAgreedToTerms] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
@@ -332,9 +333,29 @@ export default function SignUpPage() {
               />
             </div>
 
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={agreedToTerms}
+                onChange={(e) => setAgreedToTerms(e.target.checked)}
+                className="mt-1 h-4 w-4 rounded border-border text-primary focus:ring-primary/50"
+                required
+              />
+              <span className="text-xs text-muted-foreground leading-relaxed">
+                I agree to the{" "}
+                <Link href="/terms" target="_blank" className="text-primary hover:underline">
+                  Terms of Service
+                </Link>{" "}
+                and{" "}
+                <Link href="/privacy" target="_blank" className="text-primary hover:underline">
+                  Privacy Policy
+                </Link>. I confirm that I am at least 18 years of age.
+              </span>
+            </label>
+
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || !agreedToTerms}
               className="w-full btn-primary-gradient py-3 rounded-lg font-medium text-white transition-all duration-300 premium-hover disabled:opacity-50"
             >
               {isLoading ? "Creating account..." : "Create Account"}
