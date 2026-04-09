@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 interface SubscriptionGateProps {
   subscriptionStatus: string
@@ -8,7 +9,11 @@ interface SubscriptionGateProps {
   children: React.ReactNode
 }
 
+// Pages that must remain interactive even when subscription is expired
+const UNGATED_PATHS = ["/dashboard/settings/billing", "/dashboard/settings"]
+
 export function SubscriptionGate({ subscriptionStatus, trialEndsAt, children }: SubscriptionGateProps) {
+  const pathname = usePathname()
   const isActive = subscriptionStatus === "active"
   const isTrialing = subscriptionStatus === "trialing"
   const trialEnd = trialEndsAt ? new Date(trialEndsAt) : null
@@ -19,6 +24,9 @@ export function SubscriptionGate({ subscriptionStatus, trialEndsAt, children }: 
   if (isActive || (isTrialing && !trialExpired)) {
     return <>{children}</>
   }
+
+  // Billing and settings pages must stay interactive so users can subscribe
+  const isUngated = UNGATED_PATHS.some(p => pathname === p || pathname.startsWith(p + "/"))
 
   // Expired trial or cancelled — soft gate with read-only overlay
   if (isExpired || subscriptionStatus === "cancelled") {
@@ -47,10 +55,14 @@ export function SubscriptionGate({ subscriptionStatus, trialEndsAt, children }: 
           </div>
         </div>
 
-        {/* Read-only content — disable interactions */}
-        <div className="pointer-events-none opacity-60 select-none" aria-disabled="true">
-          {children}
-        </div>
+        {isUngated ? (
+          children
+        ) : (
+          /* Read-only content — disable interactions */
+          <div className="pointer-events-none opacity-60 select-none" aria-disabled="true">
+            {children}
+          </div>
+        )}
       </div>
     )
   }

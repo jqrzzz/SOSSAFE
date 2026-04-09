@@ -9,6 +9,7 @@
 import { PASSING_SCORE, CERTIFICATION_TIERS, TIER_MODULES, getModuleSummariesForTier } from "./certification-data"
 import { CATEGORIES } from "./knowledge-categories"
 import { ASSESSMENT_CATEGORIES } from "./facility-assessment-data"
+import { PRICING_PLANS, TRIAL_DAYS } from "./pricing-data"
 
 /* ------------------------------------------------------------------ */
 /*  Types for partner context                                          */
@@ -85,9 +86,16 @@ You help hotels, resorts, and tour operators understand and get started with SOS
 
 ${getCertificationOverview()}
 
+## Pricing
+All plans include full access to every feature. Plans are by business type:
+${PRICING_PLANS.map((p) => `- **${p.name}**: $${p.monthlyPrice}/month or $${p.annualPrice}/year`).join("\n")}
+- ${TRIAL_DAYS}-day free trial, no credit card required
+- Cancel anytime, no commitment
+
 ## Guidelines
 - Be concise. Most responses should be 2-4 short paragraphs.
 - When appropriate, guide users toward creating an account at /auth/sign-up
+- If someone asks about pricing, use the exact numbers above. Direct them to /pricing for full details.
 - If someone describes an active medical emergency, tell them to call local emergency services IMMEDIATELY. You are NOT an emergency service.
 - If someone is a traveler (not a hotel/tour operator), direct them to sostravel.app
 - Never make up statistics, pricing, or features that aren't listed above
