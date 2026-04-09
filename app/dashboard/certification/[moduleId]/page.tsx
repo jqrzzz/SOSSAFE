@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { use } from "react"
 import { MODULES, PASSING_SCORE, calculateModuleScore, didPass, TIER_MODULES } from "@/lib/certification-data"
+import { generateVerificationCode } from "@/lib/verification-code"
 
 export default function ModuleAssessmentPage({ params }: { params: Promise<{ moduleId: string }> }) {
   const resolvedParams = use(params)
@@ -157,12 +158,16 @@ export default function ModuleAssessmentPage({ params }: { params: Promise<{ mod
           const years = certRecord?.certification_tier === "sos_safe_elite" ? 2 : 1
           expiresAt.setFullYear(expiresAt.getFullYear() + years)
 
+          // Generate a unique verification code for the public verification page
+          const verificationCode = generateVerificationCode()
+
           await supabase
             .from("certifications")
             .update({
               status: "approved",
               issued_at: now.toISOString(),
               expires_at: expiresAt.toISOString(),
+              verification_code: verificationCode,
             })
             .eq("id", certId)
 

@@ -19,6 +19,7 @@ interface Certification {
   status: string
   issued_at: string | null
   expires_at: string | null
+  verification_code: string | null
   created_at: string
 }
 
@@ -509,6 +510,7 @@ export default function CertificationPage() {
               issuedAt={activeCert.issued_at}
               expiresAt={activeCert.expires_at}
               certificationId={activeCert.id}
+              verificationCode={activeCert.verification_code}
             />
           )}
         </div>
