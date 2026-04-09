@@ -47,10 +47,11 @@ export function TeamClient({
   currentUserId,
   currentUserEmail,
   currentUserRole,
-  members,
+  members: initialMembers,
   trainingData,
   modules,
 }: TeamClientProps) {
+  const [members, setMembers] = useState(initialMembers)
   const [copiedLink, setCopiedLink] = useState<string | null>(null)
   const [removingId, setRemovingId] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<"members" | "training">("members")
@@ -75,12 +76,15 @@ export function TeamClient({
 
     setRemovingId(membershipId)
     const supabase = createClient()
-    await supabase
+    const { error } = await supabase
       .from("partner_memberships")
       .update({ removed_at: new Date().toISOString() })
       .eq("id", membershipId)
 
-    window.location.reload()
+    if (!error) {
+      setMembers(prev => prev.filter(m => m.id !== membershipId))
+    }
+    setRemovingId(null)
   }
 
   const roleLabel = (role: string) => {

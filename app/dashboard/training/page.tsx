@@ -213,30 +213,30 @@ export default async function MyTrainingPage() {
                 </div>
 
                 <div className="flex-shrink-0">
-                  {isExpired ? (
+                  {isExpired && certification?.id ? (
                     <Link
-                      href={`/dashboard/certification/${module.id}?certId=${certification?.id}`}
+                      href={`/dashboard/certification/${module.id}?certId=${certification.id}`}
                       className="px-4 py-2 rounded-lg bg-orange-600 hover:bg-orange-700 text-white text-sm font-medium transition-colors"
                     >
                       Retrain
                     </Link>
-                  ) : record?.passed ? (
+                  ) : record?.passed && certification?.id ? (
                     <Link
-                      href={`/dashboard/certification/${module.id}?certId=${certification?.id}&review=true`}
+                      href={`/dashboard/certification/${module.id}?certId=${certification.id}&review=true`}
                       className="px-4 py-2 rounded-lg border border-border text-sm font-medium hover:bg-muted/50 transition-colors"
                     >
                       Review
                     </Link>
-                  ) : record && !record.passed ? (
+                  ) : record && !record.passed && certification?.id ? (
                     <Link
-                      href={`/dashboard/certification/${module.id}?certId=${certification?.id}`}
+                      href={`/dashboard/certification/${module.id}?certId=${certification.id}`}
                       className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors"
                     >
                       Retake
                     </Link>
                   ) : canStart ? (
                     <Link
-                      href={`/dashboard/certification/${module.id}?certId=${certification?.id}`}
+                      href={`/dashboard/certification/${module.id}?certId=${certification!.id}`}
                       className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
                     >
                       Start

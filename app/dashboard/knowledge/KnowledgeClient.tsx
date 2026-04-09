@@ -249,7 +249,7 @@ function EntryCard({
 }) {
   const isOwn = entry.submitted_by === userId
   const importance = IMPORTANCE_LEVELS.find((i) => i.value === entry.importance)
-  const submittedBy = userMap[entry.submitted_by] || entry.submitted_by.slice(0, 8)
+  const submittedBy = userMap[entry.submitted_by] || (entry.submitted_by ? entry.submitted_by.slice(0, 8) : "Unknown")
 
   return (
     <div className="glass-card p-5 rounded-lg border border-border/50">

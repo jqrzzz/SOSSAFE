@@ -55,8 +55,10 @@ export default function NotificationsPage() {
     const supabase = createClient()
     const ids = notifications.filter(n => !n.read).map(n => n.id)
     if (ids.length > 0) {
-      await supabase.from("notifications").update({ read_at: new Date().toISOString() }).in("id", ids)
-      setNotifications(prev => prev.map(n => ({ ...n, read: true })))
+      const { error } = await supabase.from("notifications").update({ read_at: new Date().toISOString() }).in("id", ids)
+      if (!error) {
+        setNotifications(prev => prev.map(n => ({ ...n, read: true })))
+      }
     }
   }
 
