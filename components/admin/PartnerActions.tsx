@@ -100,6 +100,11 @@ export function PartnerActions({ partnerId, subscriptionStatus, trialEndsAt }: P
         )}
       </div>
 
+      {trialEndsAt && (
+        <p className="text-xs text-muted-foreground">
+          Current trial ends: {new Date(trialEndsAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+        </p>
+      )}
       <p className="text-xs text-muted-foreground">
         These actions take effect immediately. Use &quot;Mark Active&quot; for early adopters or manual deals before Stripe is connected.
       </p>

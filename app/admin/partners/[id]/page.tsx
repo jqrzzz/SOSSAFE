@@ -1,5 +1,5 @@
 import { createAdminClient } from "@/lib/admin"
-import { getPlan, formatPrice, TRIAL_DAYS } from "@/lib/pricing-data"
+import { getPlan, formatPrice } from "@/lib/pricing-data"
 import type { PropertyType } from "@/lib/pricing-data"
 import { PartnerActions } from "@/components/admin/PartnerActions"
 import Link from "next/link"
