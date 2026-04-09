@@ -7,8 +7,19 @@ import {
   type PartnerContext,
 } from "@/lib/sosa-system-prompt"
 import { ASSESSMENT_QUESTIONS } from "@/lib/facility-assessment-data"
+import { rateLimit } from "@/lib/rate-limit"
 
 export async function POST(req: Request) {
+  // Rate limit: 20 requests per minute per IP
+  const ip = req.headers.get("x-forwarded-for") ?? "unknown"
+  const { allowed } = rateLimit(`chat:${ip}`, { maxRequests: 20, windowMs: 60_000 })
+  if (!allowed) {
+    return new Response("Too many requests. Please wait a moment before trying again.", {
+      status: 429,
+      headers: { "Content-Type": "text/plain" },
+    })
+  }
+
   const { messages, context } = await req.json()
 
   let systemPrompt: string
