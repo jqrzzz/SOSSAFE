@@ -1,5 +1,4 @@
-"use client"
-
+import type { Metadata } from "next"
 import Link from "next/link"
 import { MetricCard } from "@/components/ui/metric-card"
 import { FeatureCard } from "@/components/ui/feature-card"
@@ -7,6 +6,11 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/
 import { IconContainer } from "@/components/ui/icon-container"
 import { MarketingHeader } from "@/components/MarketingHeader"
 import { MarketingFooter } from "@/components/MarketingFooter"
+
+export const metadata: Metadata = {
+  title: "About | SOS Safe Certification",
+  description: "Learn how SOS Safe certification works. Train your staff, complete safety modules, and earn your certification badge for hotels and tour operators.",
+}
 
 export default function AboutPage() {
   return (

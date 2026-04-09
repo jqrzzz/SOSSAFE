@@ -1,6 +1,12 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { MarketingHeader } from "@/components/MarketingHeader"
 import { MarketingFooter } from "@/components/MarketingFooter"
+
+export const metadata: Metadata = {
+  title: "Terms of Service | SOS Safe",
+  description: "Terms and conditions for using the SOS Safe certification platform operated by Tourist SOS, Inc.",
+}
 
 export default function TermsPage() {
   return (

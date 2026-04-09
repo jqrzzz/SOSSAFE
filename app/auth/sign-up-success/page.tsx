@@ -3,7 +3,7 @@ import { Logo } from "@/components/Logo"
 
 export default function SignUpSuccessPage() {
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4 dark">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4">
       <div className="w-full max-w-md text-center">
         <div className="mb-8">
           <Link href="/" className="inline-block">
@@ -58,7 +58,7 @@ export default function SignUpSuccessPage() {
 
           <Link
             href="/auth/login"
-            className="inline-block w-full btn-primary-gradient py-3 rounded-lg font-medium text-white transition-all duration-300 premium-hover"
+            className="inline-block w-full rounded-full bg-primary text-primary-foreground py-3 font-medium hover:bg-primary/90 transition-colors text-center"
           >
             Go to Login
           </Link>

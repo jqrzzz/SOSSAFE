@@ -1,5 +1,11 @@
+import type { Metadata } from "next"
 import { MarketingHeader } from "@/components/MarketingHeader"
 import { MarketingFooter } from "@/components/MarketingFooter"
+
+export const metadata: Metadata = {
+  title: "Privacy Policy | SOS Safe",
+  description: "How Tourist SOS, Inc. collects, uses, and protects your information on the SOS Safe certification platform.",
+}
 
 export default function PrivacyPage() {
   return (
