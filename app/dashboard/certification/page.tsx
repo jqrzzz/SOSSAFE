@@ -316,6 +316,16 @@ export default function CertificationPage() {
                 </li>
               ))}
             </ul>
+            <div className="p-3 rounded-lg bg-muted/50 border border-border/50 mb-4">
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                <strong className="text-foreground">Please note:</strong> SOS Safe certification demonstrates
+                your commitment to guest safety preparedness and training. It does not guarantee that emergencies
+                will not occur, nor does it constitute an endorsement of physical safety, regulatory compliance,
+                or insurance coverage. See our{" "}
+                <Link href="/terms" target="_blank" className="text-primary hover:underline">Terms of Service</Link>{" "}
+                (Section 3) for full details.
+              </p>
+            </div>
             <button
               onClick={() => startCertification(activeTier)}
               className="btn-primary-gradient px-6 py-3 rounded-lg font-medium text-white transition-all duration-300 premium-hover"

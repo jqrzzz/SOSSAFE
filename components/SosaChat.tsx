@@ -259,6 +259,11 @@ export function SosaChat({ context = "public" }: SosaChatProps) {
               Press the SOS button or tell me about your business. I can help you understand SOS Safe certification.
             </p>
 
+            <p className="text-[11px] text-muted-foreground/60 max-w-sm mb-5 leading-relaxed">
+              SOSA is an AI assistant. Responses are for informational purposes only and may contain errors.
+              This is not an emergency service and does not provide professional safety, legal, or medical advice.
+            </p>
+
             <div className="flex flex-wrap justify-center gap-2">
               {CHIPS.map((chip) => (
                 <button

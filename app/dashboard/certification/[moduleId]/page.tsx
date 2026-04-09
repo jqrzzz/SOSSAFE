@@ -320,8 +320,8 @@ export default function ModuleAssessmentPage({ params }: { params: Promise<{ mod
   return (
     <div className="max-w-2xl mx-auto">
       <div className="mb-8">
-        <Link 
-          href="/dashboard/certification" 
+        <Link
+          href="/dashboard/certification"
           className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-4 transition-colors"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -331,6 +331,15 @@ export default function ModuleAssessmentPage({ params }: { params: Promise<{ mod
         </Link>
         <h1 className="text-2xl font-bold">{moduleData.title}</h1>
         <p className="text-muted-foreground">{moduleData.description}</p>
+      </div>
+
+      {/* Educational disclaimer */}
+      <div className="p-3 rounded-lg bg-muted/50 border border-border/50 mb-6">
+        <p className="text-xs text-muted-foreground leading-relaxed">
+          This assessment is an educational training tool designed to improve safety preparedness.
+          It is not a professional safety audit, regulatory inspection, or guarantee of safety compliance.
+          A passing score of {PASSING_SCORE}% is required. You may retake this module as many times as needed.
+        </p>
       </div>
 
       {/* Progress */}

@@ -85,6 +85,10 @@ export function SosaChatWidget() {
                 <p className="text-sm text-muted-foreground mb-3">
                   Ask me about certification, safety protocols, or your local knowledge.
                 </p>
+                <p className="text-[10px] text-muted-foreground/50 mb-3 leading-relaxed px-2">
+                  SOSA is an AI assistant. Responses are informational only and may contain errors.
+                  Not a substitute for professional safety advice.
+                </p>
                 <div className="flex flex-wrap justify-center gap-1.5">
                   {[
                     "How do I improve my score?",
@@ -195,6 +199,9 @@ export function SosaChatWidget() {
                 </svg>
               </button>
             </form>
+            <p className="text-[10px] text-muted-foreground text-center mt-1.5 opacity-40">
+              AI-powered — not an emergency service
+            </p>
           </div>
         </div>
       )}
