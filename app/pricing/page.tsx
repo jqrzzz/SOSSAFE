@@ -118,9 +118,9 @@ export default function PricingPage() {
                   {/* CTA */}
                   <Link
                     href={`/auth/sign-up?plan=${plan.id}`}
-                    className={`w-full text-center py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`w-full text-center py-2.5 rounded-full text-sm font-medium transition-colors ${
                       isPopular
-                        ? "btn-primary-gradient text-white"
+                        ? "bg-primary text-primary-foreground hover:bg-primary/90"
                         : "border border-border hover:bg-muted/50 text-foreground"
                     }`}
                   >
@@ -208,7 +208,7 @@ export default function PricingPage() {
           </p>
           <Link
             href="/auth/sign-up"
-            className="inline-flex items-center gap-2 btn-primary-gradient px-6 py-3 rounded-lg font-medium text-white transition-all duration-300 premium-hover"
+            className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3 font-medium hover:bg-primary/90 transition-colors"
           >
             Get Started Free
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

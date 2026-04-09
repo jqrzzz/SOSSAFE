@@ -37,18 +37,18 @@ export default function SupportPage() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
-                  href="tel:+66-2-123-4567"
+                  href="mailto:emergency@tourist-sos.com"
                   className="inline-flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
-                  Emergency Hotline
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                  Emergency Email
                 </a>
                 <a
-                  href="mailto:emergency@touristsos.com"
+                  href="mailto:emergency@tourist-sos.com"
                   className="inline-flex items-center gap-2 border border-red-500 text-red-600 hover:bg-red-500/10 px-6 py-3 rounded-lg font-medium transition-colors"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                  emergency@touristsos.com
+                  emergency@tourist-sos.com
                 </a>
               </div>
               <p className="text-sm text-muted-foreground mt-4">Available 24/7 • Response time: Under 5 minutes</p>
@@ -77,8 +77,8 @@ export default function SupportPage() {
               <h3 className="text-xl font-semibold mb-4">Live Chat</h3>
               <p className="text-muted-foreground mb-6">Get instant help from our support team during business hours</p>
               <a
-                href="mailto:support@touristsos.com?subject=Support%20Request"
-                className="btn-primary-gradient px-6 py-3 rounded-lg font-medium text-white w-full block text-center"
+                href="mailto:support@tourist-sos.com?subject=Support%20Request"
+                className="rounded-full bg-primary text-primary-foreground px-6 py-3 font-medium hover:bg-primary/90 transition-colors w-full block text-center"
               >
                 Contact Us
               </a>
@@ -99,10 +99,10 @@ export default function SupportPage() {
               <h3 className="text-xl font-semibold mb-4">Email Support</h3>
               <p className="text-muted-foreground mb-6">Send detailed questions and get comprehensive responses</p>
               <a
-                href="mailto:support@touristsos.com"
+                href="mailto:support@tourist-sos.com"
                 className="border border-secondary text-secondary hover:bg-secondary/10 px-6 py-3 rounded-lg font-medium transition-colors block"
               >
-                support@touristsos.com
+                support@tourist-sos.com
               </a>
               <p className="text-sm text-muted-foreground mt-3">Response within 4 hours</p>
             </div>
@@ -118,13 +118,13 @@ export default function SupportPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold mb-4">Phone Support</h3>
-              <p className="text-muted-foreground mb-6">Speak directly with our technical support specialists</p>
+              <h3 className="text-xl font-semibold mb-4">WhatsApp</h3>
+              <p className="text-muted-foreground mb-6">Message us directly on WhatsApp for quick assistance</p>
               <a
-                href="tel:+66-2-987-6543"
+                href="mailto:support@tourist-sos.com?subject=WhatsApp%20Support%20Request"
                 className="border border-accent text-accent hover:bg-accent/10 px-6 py-3 rounded-lg font-medium transition-colors block"
               >
-                +66-2-987-6543
+                Request WhatsApp Link
               </a>
               <p className="text-sm text-muted-foreground mt-3">Mon-Fri 9AM-6PM (GMT+7)</p>
             </div>

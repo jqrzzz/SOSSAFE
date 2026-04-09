@@ -308,7 +308,7 @@ export function SosaChat({ context = "public" }: SosaChatProps) {
           <div className="flex justify-center mb-2 pointer-events-none">
             <img
               src="/sosa-avatar.png"
-              alt="SOSA"
+              alt="SOSA AI Safety Assistant"
               width={160}
               height={160}
               className="w-32 h-32 md:w-40 md:h-40 object-contain drop-shadow-lg"

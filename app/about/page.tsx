@@ -14,7 +14,7 @@ export default function AboutPage() {
       <MarketingHeader />
 
       {/* Hero Section */}
-      <section className="pt-16 pb-16 sm:pt-20 sm:pb-20">
+      <section className="pt-24 pb-16 sm:pt-24 sm:pb-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-8">
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -34,7 +34,7 @@ export default function AboutPage() {
           </p>
 
           <div className="flex justify-center mb-10 sm:mb-12">
-            <img src="/sosa-avatar.png" alt="SOS Safety Certification" className="w-28 sm:w-36 lg:w-40 h-auto" />
+            <img src="/sosa-avatar.png" alt="SOSA AI Safety Assistant" className="w-28 sm:w-36 lg:w-40 h-auto" />
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16 sm:mb-20">
@@ -52,7 +52,7 @@ export default function AboutPage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 pitch-metrics rounded-2xl p-8 sm:p-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 rounded-2xl p-8 sm:p-10">
             <MetricCard
               value="3"
               label="Certification tiers"
@@ -503,7 +503,7 @@ export default function AboutPage() {
           <div className="flex justify-center mb-16">
             <Link
               href="/auth/sign-up"
-              className="btn-primary-gradient px-12 py-4 rounded-xl text-lg font-semibold text-white transition-all duration-300 premium-hover shadow-lg"
+              className="inline-flex items-center gap-1.5 rounded-full bg-primary text-primary-foreground px-8 py-3 text-base font-medium hover:bg-primary/90 transition-colors"
             >
               Start Your Certification
             </Link>
