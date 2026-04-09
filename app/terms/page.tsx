@@ -149,13 +149,32 @@ export default function TermsPage() {
             <div className="glass-card p-8 rounded-2xl mb-8">
               <h2 className="text-2xl font-semibold mb-4 text-foreground">7. Pricing and Payment</h2>
               <p className="text-muted-foreground mb-4">
-                The Platform is currently offered at no cost during our launch period. We reserve the right to
-                introduce paid tiers, subscription fees, or premium features in the future. We will provide at least
-                30 days&rsquo; notice before any pricing changes that affect existing users.
+                The Platform operates on a subscription basis with plans based on property type (Hostel, Guesthouse,
+                Hotel &amp; Resort, Tour Operator). All plans include full access to all Platform features. Current
+                pricing is available on our{" "}
+                <Link href="/pricing" className="text-primary hover:underline">Pricing page</Link>.
+              </p>
+              <p className="text-muted-foreground mb-4">
+                <strong>Free Trial:</strong> New accounts receive a 30-day free trial with full access. No payment
+                is required during the trial period. After the trial, an active subscription is required to
+                maintain certification status and dashboard access.
+              </p>
+              <p className="text-muted-foreground mb-4">
+                <strong>Billing:</strong> Subscriptions are billed either monthly or annually, at your choice.
+                Annual subscriptions are billed upfront for the full year at a discounted rate. Payments are
+                processed by Stripe. We will provide at least 30 days&rsquo; notice before any pricing changes
+                that affect existing subscribers.
+              </p>
+              <p className="text-muted-foreground mb-4">
+                <strong>Cancellation:</strong> Monthly subscriptions may be cancelled at any time. Annual
+                subscriptions remain active for the paid period. Upon cancellation or non-payment, your
+                certification becomes inactive, your dashboard becomes read-only, and your public verification
+                page will reflect the inactive status.
               </p>
               <p className="text-muted-foreground">
-                <strong>Refund Policy:</strong> If paid features are introduced, refund terms will be communicated at
-                that time and will apply to the specific paid services offered.
+                <strong>Refund Policy:</strong> Monthly subscriptions are non-refundable. Annual subscriptions
+                may be refunded on a prorated basis within the first 30 days of the subscription period.
+                Contact support@tourist-sos.com for refund requests.
               </p>
             </div>
 
