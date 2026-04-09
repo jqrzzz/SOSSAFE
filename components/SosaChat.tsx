@@ -302,7 +302,7 @@ export function SosaChat({ context = "public" }: SosaChatProps) {
       </div>
 
       {/* Input area */}
-      <div className="border-t border-border px-4 py-3 bg-surface-2">
+      <div className="border-t border-border/50 px-4 py-3">
         <div className="max-w-2xl mx-auto">
           {/* SOSA avatar */}
           <div className="flex justify-center mb-2 pointer-events-none">
