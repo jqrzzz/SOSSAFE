@@ -78,28 +78,30 @@ export function DashboardNav({ user }: DashboardNavProps) {
           </div>
         </div>
 
-        {/* Mobile nav */}
-        <nav className="md:hidden flex items-center gap-1 pb-3 overflow-x-auto">
-          {navItems.map((item) => {
-            const isActive = pathname === item.href || 
-              (item.href !== "/dashboard" && pathname.startsWith(item.href))
-            const Icon = item.icon
-            
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-                  isActive
-                    ? "bg-primary/10 text-primary"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                }`}
-              >
-                <Icon className="w-4 h-4" />
-                {item.label}
-              </Link>
-            )
-          })}
+        {/* Mobile nav — scrollable with fade edges */}
+        <nav className="md:hidden relative pb-3">
+          <div className="flex items-center gap-1 overflow-x-auto scrollbar-none -mx-4 px-4">
+            {navItems.map((item) => {
+              const isActive = pathname === item.href ||
+                (item.href !== "/dashboard" && pathname.startsWith(item.href))
+              const Icon = item.icon
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+                    isActive
+                      ? "bg-primary/10 text-primary"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                  }`}
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                  {item.label}
+                </Link>
+              )
+            })}
+          </div>
         </nav>
       </div>
     </header>

@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
 import { PASSING_SCORE, MODULES, CERTIFICATION_TIERS, TIER_MODULES } from "@/lib/certification-data"
 import { ASSESSMENT_QUESTIONS } from "@/lib/facility-assessment-data"
+import { DashboardCharts } from "@/components/dashboard/DashboardCharts"
 
 export default async function DashboardPage({
   searchParams,
@@ -156,11 +157,12 @@ export default async function DashboardPage({
   const currentTierModules = TIER_MODULES[currentTierId] ?? MODULES.slice(0, 3).map((m) => m.id)
   const totalModulesInTier = currentTierModules.length
 
+  const scoredSubmissions = certSubmissions.filter((s) => s.score != null)
   const avgScore =
-    certSubmissions.length > 0
+    scoredSubmissions.length > 0
       ? Math.round(
-          certSubmissions.reduce((sum, s) => sum + (s.score || 0), 0) /
-            certSubmissions.length,
+          scoredSubmissions.reduce((sum, s) => sum + (s.score || 0), 0) /
+            scoredSubmissions.length,
         )
       : null
 
@@ -169,6 +171,42 @@ export default async function DashboardPage({
   ).length
 
   const totalAssessmentQuestions = ASSESSMENT_QUESTIONS.length
+
+  // ── Chart data ──────────────────────────────────────────────────
+  const moduleScores = MODULES
+    .filter((m) => certSubmissions.some((s) => s.submission_type === m.id && s.score != null))
+    .map((m) => {
+      const sub = certSubmissions.find((s) => s.submission_type === m.id)
+      const score = sub?.score ?? 0
+      return {
+        name: m.title.replace(" & ", " & "),
+        score,
+        passed: score >= PASSING_SCORE,
+      }
+    })
+
+  const readinessData = [
+    {
+      label: "Certification Modules",
+      value: passedModules,
+      max: totalModulesInTier,
+    },
+    {
+      label: "Team Trained",
+      value: trainedMemberCount,
+      max: Math.max(teamMemberCount, 1),
+    },
+    {
+      label: "Facility Assessment",
+      value: assessmentAnswerCount,
+      max: totalAssessmentQuestions,
+    },
+    {
+      label: "Local Knowledge",
+      value: Math.min(knowledgeEntryCount, 10),
+      max: 10,
+    },
+  ]
 
   return (
     <div className="space-y-8">
@@ -263,7 +301,7 @@ export default async function DashboardPage({
       )}
 
       {/* ── Top Stats Row ─────────────────────────────────────────── */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         {/* Certification */}
         <Link
           href="/dashboard/certification"
@@ -419,6 +457,15 @@ export default async function DashboardPage({
           </p>
         </div>
       </div>
+
+      {/* ── Charts ───────────────────────────────────────────────── */}
+      {hasProfile && (
+        <DashboardCharts
+          moduleScores={moduleScores}
+          readiness={readinessData}
+          passingScore={PASSING_SCORE}
+        />
+      )}
 
       {/* ── Module Scores Breakdown ─────────────────────────────── */}
       {certSubmissions.length > 0 && (
@@ -637,7 +684,7 @@ export default async function DashboardPage({
       {!isCertified && (
         <div className="glass-card p-6 rounded-lg border border-border/50">
           <h2 className="font-semibold mb-4">How SOS Safe Works</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             {[
               {
                 step: "1",

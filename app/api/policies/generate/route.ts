@@ -2,9 +2,19 @@ import { streamText } from "ai"
 import { anthropic } from "@ai-sdk/anthropic"
 import { createClient } from "@/lib/supabase/server"
 import { ASSESSMENT_QUESTIONS } from "@/lib/facility-assessment-data"
+import { rateLimit } from "@/lib/rate-limit"
 
 export async function POST(req: Request) {
   const { partnerId } = await req.json()
+
+  // Rate limit: 5 generations per hour per partner (expensive AI operation)
+  const { allowed } = rateLimit(`policy:${partnerId}`, { maxRequests: 5, windowMs: 3_600_000 })
+  if (!allowed) {
+    return Response.json(
+      { error: "Rate limit exceeded. Please wait before generating another document." },
+      { status: 429 },
+    )
+  }
 
   const supabase = await createClient()
 

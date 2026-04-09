@@ -90,7 +90,7 @@ export function CasesClient({ cases, partnerName }: CasesClientProps) {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold">Cases</h1>
           <p className="text-muted-foreground mt-1">
@@ -152,7 +152,7 @@ export function CasesClient({ cases, partnerName }: CasesClientProps) {
       ) : (
         <>
           {/* Summary stats */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 print:grid-cols-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 print:grid-cols-4">
             <div className="glass-card p-3 rounded-lg border border-border/50">
               <p className="text-xs text-muted-foreground">Total Cases</p>
               <p className="text-xl font-bold">{cases.length}</p>
@@ -234,12 +234,18 @@ export function CasesClient({ cases, partnerName }: CasesClientProps) {
           <div className="glass-card p-4 rounded-lg border border-border/50 bg-muted/20 print:hidden">
             <div className="flex items-start gap-3">
               <InfoIcon className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />
-              <p className="text-sm text-muted-foreground">
-                Export your incident log as CSV for insurance claims,
-                compliance audits, or internal records. The printed version
-                includes all case details in a format suitable for official
-                documentation.
-              </p>
+              <div className="text-sm text-muted-foreground space-y-1">
+                <p>
+                  Export your incident log as CSV for insurance claims,
+                  compliance audits, or internal records. The printed version
+                  includes all case details in a format suitable for official
+                  documentation.
+                </p>
+                <p className="text-xs">
+                  Exported data may contain sensitive information. Handle in accordance with your
+                  organization&apos;s data protection policies and applicable privacy regulations.
+                </p>
+              </div>
             </div>
           </div>
         </>

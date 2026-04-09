@@ -150,6 +150,22 @@ export default function ProfilePage() {
     setError(null)
     setSuccess(false)
 
+    // Validate required fields
+    const missing = requiredFields.filter((f) => !formData[f]?.trim())
+    if (missing.length > 0) {
+      const labels: Record<string, string> = {
+        name: "Organization Name",
+        type: "Organization Type",
+        country: "Country",
+        city: "City",
+        email: "Email",
+        phone: "Phone",
+      }
+      setError(`Please fill in: ${missing.map((f) => labels[f] || f).join(", ")}`)
+      setIsSaving(false)
+      return
+    }
+
     try {
       const supabase = createClient()
       const {

@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef } from "react"
+import { useRef, useEffect, useState } from "react"
 
 interface CertificateProps {
   organizationName: string
@@ -8,6 +8,27 @@ interface CertificateProps {
   issuedAt: string | null
   expiresAt: string | null
   certificationId: string
+  verificationCode: string | null
+}
+
+/**
+ * Generates a QR code as an SVG data URL using a minimal implementation.
+ * We avoid external QR libraries to keep the bundle lean.
+ * Falls back to a text URL if QR generation isn't available.
+ */
+function useQrCode(url: string): string | null {
+  const [qrUrl, setQrUrl] = useState<string | null>(null)
+
+  useEffect(() => {
+    // Use the QR code API for reliable, high-quality QR codes
+    // This is a GET endpoint that returns an SVG — no API key needed
+    const encoded = encodeURIComponent(url)
+    setQrUrl(
+      `https://api.qrserver.com/v1/create-qr-code/?size=150x150&format=svg&data=${encoded}`,
+    )
+  }, [url])
+
+  return qrUrl
 }
 
 export function Certificate({
@@ -16,6 +37,7 @@ export function Certificate({
   issuedAt,
   expiresAt,
   certificationId,
+  verificationCode,
 }: CertificateProps) {
   const certRef = useRef<HTMLDivElement>(null)
 
@@ -26,11 +48,30 @@ export function Certificate({
         ? "Premium"
         : "Basic"
 
+  const tierColor =
+    certificationTier === "sos_safe_elite"
+      ? { bg: "bg-amber-50", border: "border-amber-200", text: "text-amber-700", accent: "from-amber-500 via-amber-600 to-yellow-500" }
+      : certificationTier === "sos_safe_premium"
+        ? { bg: "bg-blue-50", border: "border-blue-200", text: "text-blue-700", accent: "from-blue-500 via-primary to-indigo-500" }
+        : { bg: "bg-emerald-50", border: "border-emerald-200", text: "text-emerald-700", accent: "from-emerald-500 via-primary to-teal-500" }
+
   const formatDate = (d: string | null) =>
     d ? new Date(d).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : "—"
 
+  const verifyUrl = verificationCode
+    ? `${typeof window !== "undefined" ? window.location.origin : "https://sossafe.tourist-sos.com"}/verify/${verificationCode}`
+    : null
+
+  const qrCodeUrl = useQrCode(verifyUrl ?? "")
+
   const handlePrint = () => {
     window.print()
+  }
+
+  const handleCopyLink = async () => {
+    if (verifyUrl) {
+      await navigator.clipboard.writeText(verifyUrl)
+    }
   }
 
   return (
@@ -42,7 +83,7 @@ export function Certificate({
         className="bg-white text-gray-900 rounded-2xl border-2 border-primary/30 p-10 max-w-2xl mx-auto print:border-2 print:border-gray-300 print:shadow-none"
       >
         {/* Header border accent */}
-        <div className="h-1.5 bg-gradient-to-r from-red-500 via-primary to-secondary rounded-full mb-8" />
+        <div className={`h-1.5 bg-gradient-to-r ${tierColor.accent} rounded-full mb-8`} />
 
         {/* Logo area */}
         <div className="text-center mb-8">
@@ -60,8 +101,8 @@ export function Certificate({
         {/* Certificate title */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-light text-gray-800 mb-1">Certificate of Completion</h1>
-          <div className="inline-block px-4 py-1 rounded-full bg-emerald-50 border border-emerald-200">
-            <span className="text-sm font-semibold text-emerald-700">
+          <div className={`inline-block px-4 py-1 rounded-full ${tierColor.bg} ${tierColor.border} border`}>
+            <span className={`text-sm font-semibold ${tierColor.text}`}>
               SOS Safe {tierLabel}
             </span>
           </div>
@@ -80,7 +121,7 @@ export function Certificate({
         </div>
 
         {/* Details grid */}
-        <div className="grid grid-cols-3 gap-6 text-center mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center mb-10">
           <div>
             <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Issued</p>
             <p className="text-sm font-medium text-gray-700">{formatDate(issuedAt)}</p>
@@ -90,29 +131,49 @@ export function Certificate({
             <p className="text-sm font-medium text-gray-700">{formatDate(expiresAt)}</p>
           </div>
           <div>
-            <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Certificate ID</p>
-            <p className="text-sm font-medium text-gray-700 font-mono">
-              {certificationId.slice(0, 8).toUpperCase()}
+            <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Verification Code</p>
+            <p className="text-sm font-bold text-gray-700 font-mono tracking-wider">
+              {verificationCode ?? certificationId.slice(0, 8).toUpperCase()}
             </p>
           </div>
         </div>
 
-        {/* Footer */}
+        {/* QR code + verification footer */}
         <div className="h-px bg-gray-200 mb-6" />
         <div className="flex justify-between items-end">
           <div>
             <div className="w-32 border-b border-gray-300 mb-1" />
             <p className="text-xs text-gray-400">Tourist SOS Certifications</p>
           </div>
-          <div className="text-right">
-            <p className="text-xs text-gray-400">Verify at</p>
-            <p className="text-xs text-emerald-600 font-medium">sossafe.tourist-sos.com/verify</p>
-          </div>
+
+          {verifyUrl && qrCodeUrl ? (
+            <div className="flex items-center gap-3">
+              <div className="text-right">
+                <p className="text-xs text-gray-400 mb-0.5">Scan to verify</p>
+                <p className="text-xs text-emerald-600 font-medium font-mono">
+                  {verificationCode}
+                </p>
+              </div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={qrCodeUrl}
+                alt={`QR code to verify certification ${verificationCode}`}
+                width={64}
+                height={64}
+                className="rounded"
+              />
+            </div>
+          ) : (
+            <div className="text-right">
+              <p className="text-xs text-gray-400">Verify at</p>
+              <p className="text-xs text-emerald-600 font-medium">sossafe.tourist-sos.com/verify</p>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Action buttons (hidden when printing) */}
-      <div className="flex justify-center gap-4 mt-6 print:hidden">
+      <div className="flex flex-wrap justify-center gap-3 mt-6 print:hidden">
         <button
           onClick={handlePrint}
           className="btn-primary-gradient px-6 py-3 rounded-lg font-medium text-white inline-flex items-center gap-2"
@@ -122,7 +183,28 @@ export function Certificate({
           </svg>
           Print Certificate
         </button>
+        {verifyUrl && (
+          <button
+            onClick={handleCopyLink}
+            className="px-6 py-3 rounded-lg border border-border font-medium inline-flex items-center gap-2 hover:bg-muted/50 transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+            </svg>
+            Copy Verification Link
+          </button>
+        )}
       </div>
+
+      {/* Badge usage terms */}
+      <p className="text-[11px] text-muted-foreground text-center mt-4 max-w-lg mx-auto leading-relaxed print:hidden">
+        You may display the SOS Safe badge on your website, marketing materials, and premises
+        for the duration of your active certification only. The badge must not be altered and
+        its use must cease upon expiration or revocation.{" "}
+        <a href="/terms" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+          See Terms (Section 3)
+        </a>
+      </p>
     </div>
   )
 }

@@ -1,98 +1,74 @@
-"use client"
-
+import type { Metadata } from "next"
 import Link from "next/link"
 import { MetricCard } from "@/components/ui/metric-card"
 import { FeatureCard } from "@/components/ui/feature-card"
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
 import { IconContainer } from "@/components/ui/icon-container"
-import { Logo } from "@/components/Logo"
+import { MarketingHeader } from "@/components/MarketingHeader"
+import { MarketingFooter } from "@/components/MarketingFooter"
+
+export const metadata: Metadata = {
+  title: "About | SOS Safe Certification",
+  description: "Learn how SOS Safe certification works. Train your staff, complete safety modules, and earn your certification badge for hotels and tour operators.",
+}
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-background dark">
-      {/* Header - matching homepage style */}
-      <header className="fixed top-0 w-full z-50 border-b border-border/50 bg-background/95 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link href="/">
-              <Logo size="default" />
-            </Link>
-            <div className="flex items-center gap-4">
-              <Link
-                href="/"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Home
-              </Link>
-              <Link
-                href="/auth/login"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Login
-              </Link>
-              <Link
-                href="/auth/sign-up"
-                className="btn-primary-gradient px-4 py-2 rounded-lg text-sm font-medium text-white transition-all duration-300"
-              >
-                Get Certified
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-background">
+      <MarketingHeader />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 sm:pt-40 sm:pb-24 lg:pt-44 lg:pb-28">
+      <section className="pt-24 pb-16 sm:pt-24 sm:pb-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-8">
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
             </svg>
-            Industry-Standard Safety Certification
+            Safety Certification for Hospitality
           </div>
 
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold text-foreground mb-8 sm:mb-12 text-balance leading-[1.1] tracking-tight">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 sm:mb-8 text-balance leading-[1.1] tracking-tight">
             Become
             <br />
             <span className="gradient-text">SOS Safe Certified</span>
           </h1>
 
-          <p className="text-lg sm:text-xl lg:text-2xl text-muted-foreground mb-12 sm:mb-16 max-w-4xl mx-auto text-pretty leading-relaxed">
-            The trusted safety certification for hotels and tour operators. Train your staff, protect your guests, and join the network of properties committed to tourist safety.
+          <p className="text-lg sm:text-xl text-muted-foreground mb-10 sm:mb-12 max-w-3xl mx-auto text-pretty leading-relaxed">
+            The trusted safety certification for hotels and tour operators. Train your staff, verify your protocols, and give your guests confidence that safety comes first.
           </p>
 
-          <div className="flex justify-center mb-12 sm:mb-16">
-            <img src="/sosa-avatar.png" alt="SOS Safety Certification" className="w-32 sm:w-40 lg:w-48 h-auto" />
+          <div className="flex justify-center mb-10 sm:mb-12">
+            <img src="/sosa-avatar.png" alt="SOSA AI Safety Assistant" className="w-28 sm:w-36 lg:w-40 h-auto" />
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-20 sm:mb-24">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16 sm:mb-20">
             <Link
               href="/auth/sign-up"
-              className="btn-primary-gradient px-8 py-4 rounded-xl text-lg font-semibold text-white transition-all duration-300 premium-hover w-full sm:w-auto sm:min-w-[200px] shadow-lg"
+              className="inline-flex items-center gap-1.5 rounded-full bg-primary text-primary-foreground px-8 py-3 text-base font-medium hover:bg-primary/90 transition-colors w-full sm:w-auto sm:min-w-[200px] justify-center"
             >
               Get Certified
             </Link>
             <Link
               href="#how-it-works"
-              className="glass-card px-8 py-4 rounded-xl text-lg font-semibold border border-border/50 transition-all duration-300 premium-hover w-full sm:w-auto sm:min-w-[200px]"
+              className="glass-card px-8 py-3 rounded-full text-base font-medium border border-border/50 transition-colors hover:bg-muted/50 w-full sm:w-auto sm:min-w-[200px] text-center"
             >
               Learn More
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 pitch-metrics rounded-2xl p-8 sm:p-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 rounded-2xl p-8 sm:p-10">
             <MetricCard
-              value="500+"
-              label="Certified properties"
-              subtext="across Southeast Asia"
+              value="3"
+              label="Certification tiers"
+              subtext="Basic, Premium, Elite"
               subtextColor="green"
             />
-            <MetricCard value="98%" label="Staff confidence increase" subtext="after certification" subtextColor="green" />
+            <MetricCard value="80%" label="Passing threshold" subtext="industry standard" subtextColor="green" />
             <MetricCard value="24/7" label="Emergency support" subtext="for certified partners" subtextColor="green" />
             <MetricCard
-              value="4.9/5"
-              label="Guest trust rating"
-              subtext="for certified properties"
+              value="30"
+              label="Day free trial"
+              subtext="no credit card required"
               subtextColor="green"
             />
           </div>
@@ -459,7 +435,7 @@ export default function AboutPage() {
             Ready to Get Certified?
           </h2>
           <p className="text-xl sm:text-2xl text-muted-foreground mb-16 leading-relaxed">
-            Join hundreds of properties that have elevated their guest safety standards
+            Protect your guests, train your staff, and stand out as a safety-first property
           </p>
 
           <div className="grid md:grid-cols-2 gap-10 mb-20">
@@ -531,7 +507,7 @@ export default function AboutPage() {
           <div className="flex justify-center mb-16">
             <Link
               href="/auth/sign-up"
-              className="btn-primary-gradient px-12 py-4 rounded-xl text-lg font-semibold text-white transition-all duration-300 premium-hover shadow-lg"
+              className="inline-flex items-center gap-1.5 rounded-full bg-primary text-primary-foreground px-8 py-3 text-base font-medium hover:bg-primary/90 transition-colors"
             >
               Start Your Certification
             </Link>
@@ -550,27 +526,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border/50 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div className="text-sm text-muted-foreground text-center sm:text-left">
-              2025 SOS Safety by Tourist SOS. All rights reserved.
-            </div>
-            <div className="flex gap-6 text-sm text-muted-foreground">
-              <Link href="/privacy" className="hover:text-foreground transition-colors font-medium">
-                Privacy
-              </Link>
-              <Link href="/terms" className="hover:text-foreground transition-colors font-medium">
-                Terms
-              </Link>
-              <Link href="/support" className="hover:text-foreground transition-colors font-medium">
-                Support
-              </Link>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <MarketingFooter />
     </div>
   )
 }

@@ -1,24 +1,30 @@
-import { streamText } from "ai"
+import { streamText, stepCountIs } from "ai"
 import { anthropic } from "@ai-sdk/anthropic"
 import { createClient } from "@/lib/supabase/server"
-import {
-  getPublicSystemPrompt,
-  getDashboardSystemPrompt,
-  type PartnerContext,
-} from "@/lib/sosa-system-prompt"
-import { ASSESSMENT_QUESTIONS } from "@/lib/facility-assessment-data"
+import { getPublicSystemPrompt, getDashboardSystemPrompt } from "@/lib/sosa-system-prompt"
+import { createDashboardTools } from "@/lib/sosa-tools"
+import { rateLimit } from "@/lib/rate-limit"
 
 export async function POST(req: Request) {
+  // Rate limit: 20 requests per minute per IP
+  const ip = req.headers.get("x-forwarded-for") ?? "unknown"
+  const { allowed } = rateLimit(`chat:${ip}`, { maxRequests: 20, windowMs: 60_000 })
+  if (!allowed) {
+    return new Response("Too many requests. Please wait a moment before trying again.", {
+      status: 429,
+      headers: { "Content-Type": "text/plain" },
+    })
+  }
+
   const { messages, context } = await req.json()
 
   let systemPrompt: string
+  let tools: ReturnType<typeof createDashboardTools> | undefined
 
   if (context === "dashboard") {
     try {
       const supabase = await createClient()
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
+      const { data: { user } } = await supabase.auth.getUser()
 
       if (user) {
         const { data: membership } = await supabase
@@ -36,89 +42,15 @@ export async function POST(req: Request) {
             city: string
           } | null
 
-          // Get ALL certification records
-          const { data: certs } = await supabase
-            .from("certifications")
-            .select("certification_tier, status")
-            .eq("partner_id", membership.partner_id)
-            .order("created_at", { ascending: false })
-
-          // Get modules completed (across all certs)
-          const { data: subs } = await supabase
-            .from("certification_submissions")
-            .select("submission_type, score")
-
-          const modulesCompleted = (subs ?? []).filter(
-            (s) => s.score !== null && s.score >= 80,
-          ).length
-
-          // Get team size
-          const { count: teamSize } = await supabase
-            .from("partner_memberships")
-            .select("*", { count: "exact", head: true })
-            .eq("partner_id", membership.partner_id)
-            .is("removed_at", null)
-
-          // Get trained count
-          const { data: training } = await supabase
-            .from("staff_training_completions")
-            .select("user_id, passed")
-            .eq("partner_id", membership.partner_id)
-
-          const trainedMembers = new Set(
-            (training ?? []).filter((t) => t.passed).map((t) => t.user_id),
-          ).size
-
-          // Get local knowledge entries
-          const { data: knowledge } = await supabase
-            .from("partner_local_knowledge")
-            .select("category, title, content, verified")
-            .eq("partner_id", membership.partner_id)
-            .order("created_at", { ascending: false })
-            .limit(50)
-
-          // Get facility assessment answers
-          const { data: assessmentAnswers } = await supabase
-            .from("facility_assessments")
-            .select("question_id, category, answer")
-            .eq("partner_id", membership.partner_id)
-            .order("created_at", { ascending: true })
-
-          // Map assessment answers to include policy sections
-          const facilityAssessment = (assessmentAnswers ?? []).map((a) => {
-            const question = ASSESSMENT_QUESTIONS.find(
-              (q) => q.id === a.question_id,
-            )
-            return {
-              questionId: a.question_id,
-              category: a.category,
-              answer: a.answer,
-              policySection: question?.policySection ?? "General",
-            }
-          })
-
-          const partnerContext: PartnerContext = {
+          systemPrompt = getDashboardSystemPrompt({
             partnerName: partner?.name ?? "Your Organization",
             partnerType: partner?.type ?? "accommodation",
             country: partner?.country ?? "Unknown",
             city: partner?.city ?? "Unknown",
-            certifications: (certs ?? []).map((c) => ({
-              tier: c.certification_tier,
-              status: c.status,
-            })),
-            modulesCompleted,
-            teamSize: teamSize ?? 1,
-            trainedMembers,
-            localKnowledge: (knowledge ?? []).map((k) => ({
-              category: k.category,
-              title: k.title,
-              content: k.content,
-              verified: k.verified,
-            })),
-            facilityAssessment,
-          }
+          })
 
-          systemPrompt = getDashboardSystemPrompt(partnerContext)
+          // Create scoped tools — every query is filtered to this partner
+          tools = createDashboardTools(supabase, membership.partner_id)
         } else {
           systemPrompt = getPublicSystemPrompt()
         }
@@ -132,11 +64,21 @@ export async function POST(req: Request) {
     systemPrompt = getPublicSystemPrompt()
   }
 
-  const result = streamText({
-    model: anthropic("claude-haiku-4-5"),
-    system: systemPrompt,
-    messages,
-  })
+  try {
+    const result = streamText({
+      model: anthropic("claude-haiku-4-5"),
+      system: systemPrompt,
+      messages,
+      tools,
+      stopWhen: stepCountIs(5),
+    })
 
-  return result.toTextStreamResponse()
+    return result.toTextStreamResponse()
+  } catch (error) {
+    console.error("[Chat API Error]", error)
+    return new Response("I'm having trouble connecting right now. Please try again in a moment.", {
+      status: 500,
+      headers: { "Content-Type": "text/plain" },
+    })
+  }
 }

@@ -1,36 +1,42 @@
+import type { Metadata } from "next"
 import { MarketingHeader } from "@/components/MarketingHeader"
+import { MarketingFooter } from "@/components/MarketingFooter"
+
+export const metadata: Metadata = {
+  title: "Privacy Policy | SOS Safe",
+  description: "How Tourist SOS, Inc. collects, uses, and protects your information on the SOS Safe certification platform.",
+}
 
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-background">
       <MarketingHeader />
 
-      {/* Privacy Policy Content */}
       <main className="pt-24 pb-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="glass-card p-8 sm:p-12 rounded-2xl">
             <h1 className="text-4xl font-bold gradient-text mb-8">Privacy Policy</h1>
-            <div className="text-sm text-muted-foreground mb-8">Last updated: January 2025</div>
+            <div className="text-sm text-muted-foreground mb-8">Last updated: April 2026</div>
 
             <div className="prose prose-lg max-w-none">
               {/* Introduction */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-foreground mb-4">Introduction</h2>
                 <p className="text-muted-foreground mb-4">
-                  Tourist SOS ("we," "our," or "us") operates a professional emergency response coordination platform
-                  designed exclusively for adults aged 18 and over. This Privacy Policy explains how we collect, use,
-                  disclose, and safeguard your information when you use our services.
+                  Tourist SOS, Inc. (&ldquo;we,&rdquo; &ldquo;our,&rdquo; or &ldquo;us&rdquo;) operates the SOS Safety
+                  certification platform. This Privacy Policy explains how we collect, use, disclose, and protect your
+                  information when you use our Platform.
                 </p>
                 <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 mb-4">
                   <p className="text-amber-800 dark:text-amber-200 font-medium">
-                    <strong>Age Restriction:</strong> Our services are strictly limited to individuals who are 18 years
-                    of age or older. By using our platform, you represent and warrant that you are at least 18 years
-                    old.
+                    <strong>Age Restriction:</strong> Our Platform is for individuals 18 years of age or older. We do
+                    not knowingly collect information from anyone under 18. By using the Platform, you confirm you are
+                    at least 18 years old.
                   </p>
                 </div>
                 <p className="text-muted-foreground">
-                  By accessing or using our services, you agree to the collection and use of information in accordance
-                  with this policy. If you do not agree with our policies and practices, do not use our services.
+                  By using the Platform, you agree to the collection and use of information as described here. If you
+                  do not agree, please do not use the Platform.
                 </p>
               </section>
 
@@ -39,396 +45,282 @@ export default function PrivacyPage() {
                 <h2 className="text-2xl font-semibold text-foreground mb-4">1. Information We Collect</h2>
 
                 <h3 className="text-xl font-medium text-foreground mb-3">1.1 Information You Provide</h3>
-                <p className="text-muted-foreground mb-4">
-                  We collect information you directly provide to us, including:
-                </p>
                 <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-6">
                   <li>
-                    <strong>Account Information:</strong> Full name, email address, phone number, professional title,
-                    organization name, work address, emergency contact details
+                    <strong>Account Information:</strong> Name, email address, password, organization name, role
                   </li>
                   <li>
-                    <strong>Professional Credentials:</strong> Certifications, training records, professional licenses,
-                    employment verification
+                    <strong>Organization Details:</strong> Property or company name, type (accommodation/tour operator),
+                    address, phone, website, property size, guest capacity
                   </li>
                   <li>
-                    <strong>Emergency Case Data:</strong> Incident reports, case notes, communications, photos, videos,
-                    audio recordings, location coordinates, timestamps
+                    <strong>Assessment Data:</strong> Your responses to certification module questions, facility
+                    assessment answers, and scores
                   </li>
                   <li>
-                    <strong>Communication Data:</strong> Messages, calls, video conferences, file attachments sent
-                    through our platform
+                    <strong>Knowledge Contributions:</strong> Local safety information you share through the knowledge base
                   </li>
                   <li>
-                    <strong>Payment Information:</strong> Billing address, payment method details (processed by
-                    third-party payment processors)
+                    <strong>Chat Data:</strong> Messages you send to the SOSA AI assistant
                   </li>
                 </ul>
 
                 <h3 className="text-xl font-medium text-foreground mb-3">1.2 Information We Collect Automatically</h3>
                 <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-6">
                   <li>
-                    <strong>Device Information:</strong> IP address, device type, operating system, browser type and
-                    version, device identifiers
+                    <strong>Device Information:</strong> IP address, browser type, operating system, device type
                   </li>
                   <li>
-                    <strong>Usage Data:</strong> Pages visited, features used, time spent, click patterns, search
-                    queries, session recordings
+                    <strong>Usage Data:</strong> Pages visited, features used, time spent, via Vercel Analytics
                   </li>
                   <li>
-                    <strong>Location Data:</strong> GPS coordinates, Wi-Fi network information, cell tower data (when
-                    location services are enabled)
-                  </li>
-                  <li>
-                    <strong>Technical Data:</strong> Log files, cookies, web beacons, analytics data, performance
-                    metrics
+                    <strong>Authentication Data:</strong> Login timestamps, session tokens (managed by Supabase Auth)
                   </li>
                 </ul>
 
                 <h3 className="text-xl font-medium text-foreground mb-3">1.3 Information from Third Parties</h3>
                 <ul className="list-disc pl-6 text-muted-foreground space-y-2">
-                  <li>Professional verification services and background check providers</li>
-                  <li>Emergency services and first responder organizations</li>
-                  <li>Hotel management systems and property management platforms</li>
-                  <li>Insurance companies and legal representatives</li>
-                  <li>Government agencies and regulatory bodies</li>
+                  <li>Emergency case data from the Tourist SOS Command Center (read-only, linked to your organization)</li>
+                  <li>Team member information when staff join via invite links</li>
                 </ul>
               </section>
 
-              {/* How We Use Your Information */}
+              {/* How We Use Information */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-foreground mb-4">2. How We Use Your Information</h2>
-                <p className="text-muted-foreground mb-4">We use your information for the following purposes:</p>
 
-                <h3 className="text-xl font-medium text-foreground mb-3">2.1 Service Provision</h3>
+                <h3 className="text-xl font-medium text-foreground mb-3">2.1 Platform Operations</h3>
                 <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-6">
-                  <li>Facilitate real-time emergency response coordination</li>
-                  <li>Connect hospitality staff with qualified first responders</li>
-                  <li>Provide training programs and certification management</li>
-                  <li>Maintain emergency case records and documentation</li>
-                  <li>Enable secure communication channels during emergencies</li>
+                  <li>Operate the certification, training, and assessment features</li>
+                  <li>Generate and verify digital certificates and verification codes</li>
+                  <li>Manage team memberships and role-based access</li>
+                  <li>Generate Policies &amp; Procedures documents from your facility assessment</li>
+                  <li>Power the SOSA AI assistant with context about your organization</li>
+                  <li>Send notifications about certification status, team activity, and training progress</li>
                 </ul>
 
-                <h3 className="text-xl font-medium text-foreground mb-3">2.2 Platform Operations</h3>
+                <h3 className="text-xl font-medium text-foreground mb-3">2.2 Public Verification</h3>
+                <p className="text-muted-foreground mb-4">
+                  When your organization earns an SOS Safe certification, limited information is made publicly
+                  accessible via the verification page (/verify/[code]):
+                </p>
                 <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-6">
-                  <li>Verify professional credentials and maintain user safety</li>
-                  <li>Process payments and manage subscriptions</li>
-                  <li>Provide customer support and technical assistance</li>
-                  <li>Send service notifications, updates, and emergency alerts</li>
-                  <li>Analyze usage patterns to improve our services</li>
+                  <li>Organization name, type, city, and country</li>
+                  <li>Certification tier, issue date, and expiry date</li>
+                  <li>Verification code and certification status (active/expired/revoked)</li>
                 </ul>
+                <p className="text-muted-foreground mb-6">
+                  This is a core feature of the certification system — it allows travelers and insurers to verify your
+                  certification. Assessment scores, internal team data, and other details are never exposed publicly.
+                </p>
 
-                <h3 className="text-xl font-medium text-foreground mb-3">2.3 Legal and Safety</h3>
+                <h3 className="text-xl font-medium text-foreground mb-3">2.3 Improvement and Analytics</h3>
                 <ul className="list-disc pl-6 text-muted-foreground space-y-2">
-                  <li>Comply with legal obligations and regulatory requirements</li>
-                  <li>Protect against fraud, abuse, and security threats</li>
-                  <li>Enforce our terms of service and user agreements</li>
-                  <li>Respond to legal requests and court orders</li>
-                  <li>Maintain records for insurance and liability purposes</li>
+                  <li>Analyze usage patterns to improve the Platform</li>
+                  <li>Monitor performance and fix technical issues</li>
+                  <li>We use Vercel Analytics for anonymized, privacy-friendly web analytics</li>
                 </ul>
               </section>
 
-              {/* Information Sharing and Disclosure */}
+              {/* Information Sharing */}
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-foreground mb-4">3. Information Sharing and Disclosure</h2>
+                <h2 className="text-2xl font-semibold text-foreground mb-4">3. Information Sharing</h2>
                 <p className="text-muted-foreground mb-4">
-                  We may share your information in the following circumstances:
+                  We do not sell, rent, or trade your personal information. We share information only as follows:
                 </p>
 
-                <h3 className="text-xl font-medium text-foreground mb-3">3.1 Emergency Response</h3>
-                <p className="text-muted-foreground mb-4">
-                  During active emergency situations, we share relevant information with:
-                </p>
+                <h3 className="text-xl font-medium text-foreground mb-3">3.1 Service Providers</h3>
                 <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-6">
-                  <li>Certified first responders and emergency medical personnel</li>
-                  <li>Local emergency services (police, fire, ambulance)</li>
-                  <li>Hospital emergency departments and medical facilities</li>
-                  <li>Hotel management and security personnel</li>
-                  <li>Insurance companies and legal representatives (as required)</li>
+                  <li><strong>Supabase:</strong> Authentication, database hosting, and file storage</li>
+                  <li><strong>Vercel:</strong> Application hosting and analytics</li>
+                  <li><strong>Anthropic:</strong> AI model provider for the SOSA assistant and policy generation</li>
                 </ul>
 
-                <h3 className="text-xl font-medium text-foreground mb-3">3.2 Service Providers</h3>
-                <p className="text-muted-foreground mb-4">
-                  We work with trusted third-party service providers who assist us in operating our platform:
+                <h3 className="text-xl font-medium text-foreground mb-3">3.2 Public Verification</h3>
+                <p className="text-muted-foreground mb-6">
+                  Organization name, location, and certification status are visible on the public verification page
+                  as described in Section 2.2.
                 </p>
-                <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-6">
-                  <li>Cloud hosting and data storage providers (AWS, Google Cloud)</li>
-                  <li>Payment processors and financial institutions</li>
-                  <li>Communication service providers (SMS, email, video calling)</li>
-                  <li>Analytics and performance monitoring services</li>
-                  <li>Professional verification and background check services</li>
-                </ul>
 
                 <h3 className="text-xl font-medium text-foreground mb-3">3.3 Legal Requirements</h3>
                 <p className="text-muted-foreground mb-4">
-                  We may disclose your information when required by law or when we believe disclosure is necessary to:
+                  We may disclose information when required by law, court order, or government request, or to protect
+                  the rights, property, or safety of Tourist SOS, our users, or the public.
                 </p>
-                <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-6">
-                  <li>Comply with legal process, court orders, or government requests</li>
-                  <li>Protect the rights, property, or safety of Tourist SOS, our users, or the public</li>
-                  <li>Investigate potential violations of our terms of service</li>
-                  <li>Respond to claims of illegal activity or intellectual property infringement</li>
-                </ul>
 
                 <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
                   <p className="text-red-800 dark:text-red-200 font-medium">
-                    <strong>Important:</strong> We never sell, rent, or trade your personal information to third parties
-                    for marketing purposes. Your data is only shared as described in this policy or with your explicit
-                    consent.
+                    <strong>We never sell your data.</strong> Your personal information and assessment data are not
+                    shared with advertisers, data brokers, or any third party for marketing purposes.
                   </p>
                 </div>
               </section>
 
-              {/* Data Security and Protection */}
+              {/* Data Security */}
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-foreground mb-4">4. Data Security and Protection</h2>
+                <h2 className="text-2xl font-semibold text-foreground mb-4">4. Data Security</h2>
                 <p className="text-muted-foreground mb-4">
-                  We implement comprehensive security measures to protect your information:
+                  We take reasonable measures to protect your information:
                 </p>
-
-                <h3 className="text-xl font-medium text-foreground mb-3">4.1 Technical Safeguards</h3>
                 <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-6">
-                  <li>End-to-end encryption for all emergency communications</li>
-                  <li>AES-256 encryption for data at rest and TLS 1.3 for data in transit</li>
-                  <li>Multi-factor authentication for all user accounts</li>
-                  <li>Regular security audits and penetration testing</li>
-                  <li>Automated threat detection and response systems</li>
-                  <li>Secure API endpoints with rate limiting and access controls</li>
-                </ul>
-
-                <h3 className="text-xl font-medium text-foreground mb-3">4.2 Organizational Safeguards</h3>
-                <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-6">
-                  <li>Role-based access controls with principle of least privilege</li>
-                  <li>Regular employee training on data protection and security</li>
-                  <li>Confidentiality agreements with all staff and contractors</li>
-                  <li>Incident response procedures and breach notification protocols</li>
-                  <li>Regular backup and disaster recovery testing</li>
+                  <li>All data transmitted over HTTPS/TLS encryption</li>
+                  <li>Passwords are hashed and never stored in plain text (managed by Supabase Auth)</li>
+                  <li>Row-Level Security (RLS) policies ensure users can only access their own organization&rsquo;s data</li>
+                  <li>API endpoints are rate-limited to prevent abuse</li>
+                  <li>Authentication middleware protects all dashboard routes</li>
+                  <li>Soft deletes for team member removal (data preserved for audit)</li>
                 </ul>
 
                 <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
                   <p className="text-blue-800 dark:text-blue-200">
-                    <strong>Security Notice:</strong> While we implement industry-leading security measures, no system
-                    is 100% secure. We continuously monitor and improve our security practices to protect your
-                    information.
+                    <strong>No system is 100% secure.</strong> While we implement industry-standard security practices,
+                    we cannot guarantee absolute security. We continuously monitor and improve our security posture.
                   </p>
                 </div>
               </section>
 
-              {/* Data Retention and Deletion */}
+              {/* Data Retention */}
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-foreground mb-4">5. Data Retention and Deletion</h2>
+                <h2 className="text-2xl font-semibold text-foreground mb-4">5. Data Retention</h2>
                 <p className="text-muted-foreground mb-4">
-                  We retain your information for different periods based on the type of data and legal requirements:
+                  We retain your information for different periods depending on the type:
                 </p>
-                <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-6">
+                <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-4">
                   <li>
-                    <strong>Account Information:</strong> Until you delete your account, plus 30 days for account
-                    recovery
+                    <strong>Account and Profile Data:</strong> Until you delete your account, plus 30 days for recovery
                   </li>
                   <li>
-                    <strong>Emergency Case Records:</strong> 10 years for legal, insurance, and regulatory compliance
+                    <strong>Certification Records:</strong> 7 years after expiry, for compliance and audit purposes
                   </li>
                   <li>
-                    <strong>Training and Certification Records:</strong> 7 years for professional compliance
-                    requirements
+                    <strong>Training Completion Records:</strong> 5 years, for staff training compliance verification
                   </li>
                   <li>
-                    <strong>Communication Data:</strong> 3 years for quality assurance and legal purposes
+                    <strong>Assessment Responses:</strong> Duration of your active certification plus 1 year
                   </li>
                   <li>
-                    <strong>Usage and Analytics Data:</strong> 2 years for service improvement and analytics
-                  </li>
-                  <li>
-                    <strong>Financial Records:</strong> 7 years for tax and accounting purposes
+                    <strong>Usage Analytics:</strong> 2 years (anonymized after 12 months)
                   </li>
                 </ul>
                 <p className="text-muted-foreground">
-                  After the retention period expires, we securely delete or anonymize your information. Some information
-                  may be retained longer if required by law or for legitimate business purposes.
+                  After retention periods expire, data is securely deleted or anonymized. Some data may be retained
+                  longer if required by law.
                 </p>
               </section>
 
-              {/* Your Privacy Rights */}
+              {/* Your Rights */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-foreground mb-4">6. Your Privacy Rights</h2>
                 <p className="text-muted-foreground mb-4">
-                  Depending on your location, you may have the following rights regarding your personal information:
+                  Depending on your location, you may have the right to:
                 </p>
-
-                <h3 className="text-xl font-medium text-foreground mb-3">6.1 Access and Portability</h3>
                 <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-6">
-                  <li>Request a copy of all personal information we hold about you</li>
-                  <li>Receive your data in a structured, machine-readable format</li>
-                  <li>Transfer your data to another service provider</li>
+                  <li><strong>Access:</strong> Request a copy of the personal information we hold about you</li>
+                  <li><strong>Correction:</strong> Update or correct inaccurate information</li>
+                  <li><strong>Deletion:</strong> Request deletion of your data (subject to legal retention requirements)</li>
+                  <li><strong>Portability:</strong> Receive your data in a machine-readable format</li>
+                  <li><strong>Objection:</strong> Object to certain processing activities</li>
+                  <li><strong>Restriction:</strong> Limit how we process your information</li>
                 </ul>
 
-                <h3 className="text-xl font-medium text-foreground mb-3">6.2 Correction and Updates</h3>
-                <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-6">
-                  <li>Update or correct inaccurate or incomplete information</li>
-                  <li>Add missing information to your profile</li>
-                  <li>Verify the accuracy of your professional credentials</li>
-                </ul>
-
-                <h3 className="text-xl font-medium text-foreground mb-3">6.3 Deletion and Restriction</h3>
-                <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-6">
-                  <li>Request deletion of your personal information (subject to legal retention requirements)</li>
-                  <li>Restrict or limit how we process your information</li>
-                  <li>Object to certain types of processing activities</li>
-                </ul>
-
-                <div className="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-6 mb-4">
+                <div className="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-6">
                   <h4 className="font-medium text-foreground mb-2">How to Exercise Your Rights</h4>
-                  <p className="text-muted-foreground mb-2">To exercise any of these rights, contact us at:</p>
+                  <p className="text-muted-foreground mb-2">Contact us at:</p>
                   <ul className="text-muted-foreground space-y-1">
-                    <li>
-                      <strong>Email:</strong> privacy@touristsos.com
-                    </li>
-                    <li>
-                      <strong>Subject Line:</strong> "Privacy Rights Request"
-                    </li>
-                    <li>
-                      <strong>Response Time:</strong> We will respond within 30 days
-                    </li>
+                    <li><strong>Email:</strong> privacy@tourist-sos.com</li>
+                    <li><strong>Subject:</strong> &ldquo;Privacy Rights Request&rdquo;</li>
+                    <li><strong>Response Time:</strong> Within 30 days</li>
                   </ul>
                 </div>
               </section>
 
-              {/* International Data Transfers */}
+              {/* International Transfers */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-foreground mb-4">7. International Data Transfers</h2>
                 <p className="text-muted-foreground mb-4">
-                  Tourist SOS operates globally, and your information may be transferred to and processed in countries
-                  other than your own, including the United States, European Union, and other jurisdictions where our
-                  service providers operate.
+                  Your data may be processed in countries other than your own, as our service providers
+                  (Supabase, Vercel, Anthropic) operate globally. We rely on appropriate safeguards such as
+                  Standard Contractual Clauses where applicable.
                 </p>
-                <p className="text-muted-foreground mb-4">
-                  When we transfer your information internationally, we ensure appropriate safeguards are in place:
-                </p>
-                <ul className="list-disc pl-6 text-muted-foreground space-y-2">
-                  <li>Standard Contractual Clauses approved by the European Commission</li>
-                  <li>Adequacy decisions for countries with equivalent data protection laws</li>
-                  <li>Binding Corporate Rules for transfers within our corporate group</li>
-                  <li>Certification schemes and codes of conduct where applicable</li>
-                </ul>
               </section>
 
-              {/* Age Restrictions and Children's Privacy */}
+              {/* Cookies */}
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-foreground mb-4">
-                  8. Age Restrictions and Children's Privacy
-                </h2>
-                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 mb-4">
-                  <p className="text-red-800 dark:text-red-200 font-bold text-lg mb-2">ADULTS ONLY - 18+ REQUIRED</p>
+                <h2 className="text-2xl font-semibold text-foreground mb-4">8. Cookies</h2>
+                <p className="text-muted-foreground mb-4">
+                  We use a limited set of cookies:
+                </p>
+                <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-4">
+                  <li>
+                    <strong>Essential (Authentication):</strong> Supabase session cookies for login functionality.
+                    These are required for the Platform to work.
+                  </li>
+                  <li>
+                    <strong>Analytics:</strong> Vercel Analytics collects anonymized usage data. No personally
+                    identifiable information is tracked.
+                  </li>
+                  <li>
+                    <strong>Preferences:</strong> Cookie consent choice stored in local storage.
+                  </li>
+                </ul>
+                <p className="text-muted-foreground">
+                  You can manage cookies through your browser settings. Disabling essential cookies will prevent
+                  you from logging in.
+                </p>
+              </section>
+
+              {/* Children */}
+              <section className="mb-8">
+                <h2 className="text-2xl font-semibold text-foreground mb-4">9. Children&rsquo;s Privacy</h2>
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-4">
+                  <p className="text-red-800 dark:text-red-200 font-bold mb-1">Adults Only &mdash; 18+ Required</p>
                   <p className="text-red-800 dark:text-red-200">
-                    Our services are exclusively designed for and restricted to individuals who are 18 years of age or
-                    older. We do not knowingly collect, use, or disclose personal information from anyone under 18 years
-                    of age.
+                    The Platform is not intended for anyone under 18. If we learn we have collected information from a
+                    minor, we will delete it immediately and terminate the account.
                   </p>
                 </div>
-                <p className="text-muted-foreground mb-4">
-                  If we become aware that we have collected personal information from someone under 18, we will:
-                </p>
-                <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-4">
-                  <li>Immediately delete the information from our systems</li>
-                  <li>Terminate the account and block future access</li>
-                  <li>Notify relevant parties if required by law</li>
-                  <li>Implement additional verification measures to prevent future occurrences</li>
-                </ul>
                 <p className="text-muted-foreground">
                   Parents or guardians who believe their child has provided information to us should contact us
-                  immediately at privacy@touristsos.com.
+                  immediately at privacy@tourist-sos.com.
                 </p>
               </section>
 
-              {/* Cookies and Tracking Technologies */}
+              {/* Changes */}
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-foreground mb-4">9. Cookies and Tracking Technologies</h2>
-                <p className="text-muted-foreground mb-4">
-                  We use cookies and similar tracking technologies to enhance your experience:
-                </p>
-
-                <h3 className="text-xl font-medium text-foreground mb-3">9.1 Types of Cookies</h3>
-                <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-6">
-                  <li>
-                    <strong>Essential Cookies:</strong> Required for basic platform functionality and security
-                  </li>
-                  <li>
-                    <strong>Performance Cookies:</strong> Help us analyze usage and improve our services
-                  </li>
-                  <li>
-                    <strong>Functional Cookies:</strong> Remember your preferences and settings
-                  </li>
-                  <li>
-                    <strong>Security Cookies:</strong> Detect suspicious activity and prevent fraud
-                  </li>
-                </ul>
-
-                <h3 className="text-xl font-medium text-foreground mb-3">9.2 Managing Cookies</h3>
-                <p className="text-muted-foreground mb-4">
-                  You can control cookies through your browser settings, but disabling certain cookies may affect
-                  platform functionality. We also provide cookie preference controls in your account settings.
-                </p>
-              </section>
-
-              {/* Changes to This Privacy Policy */}
-              <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-foreground mb-4">10. Changes to This Privacy Policy</h2>
-                <p className="text-muted-foreground mb-4">
-                  We may update this privacy policy periodically to reflect changes in our practices, technology, legal
-                  requirements, or other factors. When we make material changes, we will:
-                </p>
-                <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-4">
-                  <li>Post the updated policy on our website with a new "Last updated" date</li>
-                  <li>Send email notifications to registered users about significant changes</li>
-                  <li>Provide in-app notifications for material changes affecting your rights</li>
-                  <li>Maintain previous versions for your reference</li>
-                </ul>
+                <h2 className="text-2xl font-semibold text-foreground mb-4">10. Changes to This Policy</h2>
                 <p className="text-muted-foreground">
-                  Your continued use of our services after changes become effective constitutes acceptance of the
-                  updated policy.
+                  We may update this policy from time to time. Material changes will be communicated via email and/or
+                  a notice on the Platform. The &ldquo;Last updated&rdquo; date at the top will reflect the most recent
+                  revision. Continued use after changes take effect constitutes acceptance.
                 </p>
               </section>
 
-              {/* Contact Information */}
-              <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-foreground mb-4">11. Contact Information</h2>
+              {/* Contact */}
+              <section>
+                <h2 className="text-2xl font-semibold text-foreground mb-4">11. Contact</h2>
                 <p className="text-muted-foreground mb-4">
-                  If you have questions, concerns, or requests regarding this privacy policy or our data practices,
-                  please contact us:
+                  For privacy questions or requests:
                 </p>
                 <div className="bg-muted/30 rounded-lg p-6">
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
                       <h4 className="font-medium text-foreground mb-2">Privacy Team</h4>
                       <div className="space-y-2 text-muted-foreground">
-                        <div>
-                          <strong>Email:</strong> privacy@touristsos.com
-                        </div>
-                        <div>
-                          <strong>Phone:</strong> +66 (0) 2-123-4567
-                        </div>
-                        <div>
-                          <strong>Response Time:</strong> 48 hours for urgent matters
-                        </div>
+                        <div><strong>Email:</strong> privacy@tourist-sos.com</div>
+                        <div><strong>General:</strong> support@tourist-sos.com</div>
+                        <div><strong>Response Time:</strong> 48 hours for urgent matters</div>
                       </div>
                     </div>
                     <div>
                       <h4 className="font-medium text-foreground mb-2">Mailing Address</h4>
                       <div className="space-y-1 text-muted-foreground">
-                        <div>Tourist SOS Privacy Officer</div>
-                        <div>123 Emergency Response Avenue</div>
-                        <div>Sukhumvit District</div>
-                        <div>Bangkok, Thailand 10110</div>
+                        <div>Tourist SOS, Inc.</div>
+                        <div>388 Exchange Tower, Sukhumvit Road</div>
+                        <div>Klongtoey, Bangkok 10110</div>
+                        <div>Thailand</div>
                       </div>
                     </div>
                   </div>
-                </div>
-
-                <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
-                  <p className="text-blue-800 dark:text-blue-200 text-sm">
-                    <strong>Data Protection Officer:</strong> For EU residents, you may also contact our Data Protection
-                    Officer at dpo@touristsos.com for matters related to GDPR compliance.
-                  </p>
                 </div>
               </section>
             </div>
@@ -436,25 +328,7 @@ export default function PrivacyPage() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-border/50 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row justify-between items-center">
-            <div className="text-sm text-muted-foreground mb-4 sm:mb-0">© 2025 Tourist SOS. All rights reserved.</div>
-            <div className="flex gap-6 text-sm text-muted-foreground">
-              <a href="/privacy" className="hover:text-foreground transition-colors">
-                Privacy
-              </a>
-              <a href="/terms" className="hover:text-foreground transition-colors">
-                Terms
-              </a>
-              <a href="/support" className="hover:text-foreground transition-colors">
-                Support
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <MarketingFooter />
     </div>
   )
 }

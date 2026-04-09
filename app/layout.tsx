@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
 import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/react"
+import { CookieConsent } from "@/components/CookieConsent"
 import "./globals.css"
 
 const inter = Inter({
@@ -61,6 +62,7 @@ export default function RootLayout({
       </head>
       <body className="font-sans antialiased bg-background text-foreground">
         {children}
+        <CookieConsent />
         <Analytics />
       </body>
     </html>

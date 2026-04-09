@@ -1,5 +1,11 @@
-import Link from "next/link"
+import type { Metadata } from "next"
 import { MarketingHeader } from "@/components/MarketingHeader"
+import { MarketingFooter } from "@/components/MarketingFooter"
+
+export const metadata: Metadata = {
+  title: "Support | SOS Safe Certification",
+  description: "Get help with SOS Safe certification. Contact our team for emergency support, technical assistance, or general inquiries.",
+}
 
 export default function SupportPage() {
   return (
@@ -37,18 +43,18 @@ export default function SupportPage() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
-                  href="tel:+66-2-123-4567"
+                  href="mailto:emergency@tourist-sos.com"
                   className="inline-flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
-                  Emergency Hotline
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                  Emergency Email
                 </a>
                 <a
-                  href="mailto:emergency@touristsos.com"
+                  href="mailto:emergency@tourist-sos.com"
                   className="inline-flex items-center gap-2 border border-red-500 text-red-600 hover:bg-red-500/10 px-6 py-3 rounded-lg font-medium transition-colors"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                  emergency@touristsos.com
+                  emergency@tourist-sos.com
                 </a>
               </div>
               <p className="text-sm text-muted-foreground mt-4">Available 24/7 • Response time: Under 5 minutes</p>
@@ -77,8 +83,8 @@ export default function SupportPage() {
               <h3 className="text-xl font-semibold mb-4">Live Chat</h3>
               <p className="text-muted-foreground mb-6">Get instant help from our support team during business hours</p>
               <a
-                href="mailto:support@touristsos.com?subject=Support%20Request"
-                className="btn-primary-gradient px-6 py-3 rounded-lg font-medium text-white w-full block text-center"
+                href="mailto:support@tourist-sos.com?subject=Support%20Request"
+                className="rounded-full bg-primary text-primary-foreground px-6 py-3 font-medium hover:bg-primary/90 transition-colors w-full block text-center"
               >
                 Contact Us
               </a>
@@ -99,10 +105,10 @@ export default function SupportPage() {
               <h3 className="text-xl font-semibold mb-4">Email Support</h3>
               <p className="text-muted-foreground mb-6">Send detailed questions and get comprehensive responses</p>
               <a
-                href="mailto:support@touristsos.com"
+                href="mailto:support@tourist-sos.com"
                 className="border border-secondary text-secondary hover:bg-secondary/10 px-6 py-3 rounded-lg font-medium transition-colors block"
               >
-                support@touristsos.com
+                support@tourist-sos.com
               </a>
               <p className="text-sm text-muted-foreground mt-3">Response within 4 hours</p>
             </div>
@@ -118,13 +124,13 @@ export default function SupportPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold mb-4">Phone Support</h3>
-              <p className="text-muted-foreground mb-6">Speak directly with our technical support specialists</p>
+              <h3 className="text-xl font-semibold mb-4">WhatsApp</h3>
+              <p className="text-muted-foreground mb-6">Message us directly on WhatsApp for quick assistance</p>
               <a
-                href="tel:+66-2-987-6543"
+                href="mailto:support@tourist-sos.com?subject=WhatsApp%20Support%20Request"
                 className="border border-accent text-accent hover:bg-accent/10 px-6 py-3 rounded-lg font-medium transition-colors block"
               >
-                +66-2-987-6543
+                Request WhatsApp Link
               </a>
               <p className="text-sm text-muted-foreground mt-3">Mon-Fri 9AM-6PM (GMT+7)</p>
             </div>
@@ -139,134 +145,62 @@ export default function SupportPage() {
 
           <div className="space-y-6">
             <div className="glass-card p-6 rounded-xl">
-              <h3 className="text-lg font-semibold mb-3">How quickly do first responders receive emergency alerts?</h3>
+              <h3 className="text-lg font-semibold mb-3">What is SOS Safe certification?</h3>
               <p className="text-muted-foreground">
-                Emergency alerts are sent instantly via push notifications, SMS, and in-app messaging. Our average
-                notification delivery time is under 3 seconds, with first responders typically acknowledging within 45
-                seconds.
+                SOS Safe is a safety certification for hotels, hostels, guesthouses, and tour operators. Your team
+                completes three training modules covering emergency preparedness, facility safety, and communication
+                protocols. Score 80% or higher to earn your certification badge.
               </p>
             </div>
 
             <div className="glass-card p-6 rounded-xl">
-              <h3 className="text-lg font-semibold mb-3">
-                What if there's no internet connection during an emergency?
-              </h3>
+              <h3 className="text-lg font-semibold mb-3">How do I add staff members to our account?</h3>
               <p className="text-muted-foreground">
-                Tourist SOS works offline for basic protocol guidance. Emergency contacts and protocols are cached
-                locally. When connectivity returns, all data syncs automatically. We also provide backup SMS-based
-                emergency numbers.
+                Go to the Team page in your dashboard and copy your invite link. Share it with staff — when they
+                sign up through the link, they&apos;re automatically added to your organization. You can track each
+                team member&apos;s training progress from the same page.
               </p>
             </div>
 
             <div className="glass-card p-6 rounded-xl">
-              <h3 className="text-lg font-semibold mb-3">How do I add new staff members to our hotel account?</h3>
+              <h3 className="text-lg font-semibold mb-3">What are the certification tiers?</h3>
               <p className="text-muted-foreground">
-                Hotel managers can invite staff through the admin dashboard. New members receive training materials and
-                must complete basic emergency response certification before accessing the platform.
+                There are three tiers — Basic, Premium, and Elite — each covering progressively more advanced safety
+                topics. All tiers require an 80% passing score. Your certification tier and verification code are
+                displayed on a public verification page that guests and insurers can check.
               </p>
             </div>
 
             <div className="glass-card p-6 rounded-xl">
-              <h3 className="text-lg font-semibold mb-3">What information is shared with first responders?</h3>
+              <h3 className="text-lg font-semibold mb-3">How much does it cost?</h3>
               <p className="text-muted-foreground">
-                Only essential emergency information: guest condition, location, initial assessment, and relevant
-                medical history (if provided). All data is encrypted and shared only with verified, certified responders
-                in your network.
+                Plans start at $12/month for hostels, with pricing based on property type. Every plan includes full
+                access to all features — certification, team management, AI assistant, and facility assessment.
+                All new accounts start with a 30-day free trial, no credit card required.
               </p>
             </div>
 
             <div className="glass-card p-6 rounded-xl">
-              <h3 className="text-lg font-semibold mb-3">How much does Tourist SOS cost?</h3>
+              <h3 className="text-lg font-semibold mb-3">What happens if my subscription lapses?</h3>
               <p className="text-muted-foreground">
-                Pricing varies by property size and features needed. Basic plans start at $99/month for small
-                properties. Contact our sales team for custom enterprise pricing and volume discounts.
+                Your dashboard becomes read-only and your certification status is set to inactive. Your data,
+                training progress, and team information are preserved — nothing is deleted. Resubscribe at any
+                time to reactivate everything.
               </p>
             </div>
 
             <div className="glass-card p-6 rounded-xl">
-              <h3 className="text-lg font-semibold mb-3">Is training provided for hotel staff?</h3>
+              <h3 className="text-lg font-semibold mb-3">Is staff training included?</h3>
               <p className="text-muted-foreground">
-                Yes! All plans include comprehensive staff training, certification programs, and ongoing support. We
-                provide both online modules and on-site training sessions for larger properties.
+                Yes. All plans include unlimited staff seats. Each team member can complete the training modules
+                independently, and managers can track completion across the team from the dashboard.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Resources Section */}
-      <section className="pb-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center gradient-text mb-12">Support Resources</h2>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="glass-card p-6 rounded-xl text-center opacity-50">
-              <div className="w-12 h-12 bg-muted/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                </svg>
-              </div>
-              <h3 className="font-semibold mb-2">User Guide</h3>
-              <p className="text-sm text-muted-foreground mb-4">Complete platform documentation</p>
-              <span className="text-muted-foreground text-sm">Coming Soon</span>
-            </div>
-
-            <div className="glass-card p-6 rounded-xl text-center opacity-50">
-              <div className="w-12 h-12 bg-muted/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <h3 className="font-semibold mb-2">Video Tutorials</h3>
-              <p className="text-sm text-muted-foreground mb-4">Step-by-step training videos</p>
-              <span className="text-muted-foreground text-sm">Coming Soon</span>
-            </div>
-
-            <div className="glass-card p-6 rounded-xl text-center opacity-50">
-              <div className="w-12 h-12 bg-muted/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              </div>
-              <h3 className="font-semibold mb-2">API Docs</h3>
-              <p className="text-sm text-muted-foreground mb-4">Integration documentation</p>
-              <span className="text-muted-foreground text-sm">Coming Soon</span>
-            </div>
-
-            <div className="glass-card p-6 rounded-xl text-center opacity-50">
-              <div className="w-12 h-12 bg-muted/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-              </div>
-              <h3 className="font-semibold mb-2">Community</h3>
-              <p className="text-sm text-muted-foreground mb-4">Connect with other users</p>
-              <span className="text-muted-foreground text-sm">Coming Soon</span>
-            </div>
-          </div>
-          <p className="text-center text-sm text-muted-foreground mt-6">Resources are being prepared and will be available soon.</p>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="border-t border-border/50 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row justify-between items-center">
-            <div className="text-sm text-muted-foreground mb-4 sm:mb-0">© 2025 Tourist SOS. All rights reserved.</div>
-            <div className="flex gap-6 text-sm text-muted-foreground">
-              <Link href="/privacy" className="hover:text-foreground transition-colors">
-                Privacy
-              </Link>
-              <Link href="/terms" className="hover:text-foreground transition-colors">
-                Terms
-              </Link>
-              <Link href="/support" className="hover:text-foreground transition-colors">
-                Support
-              </Link>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <MarketingFooter />
     </div>
   )
 }

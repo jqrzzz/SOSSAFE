@@ -104,7 +104,7 @@ const SIMULATED: Record<string, string> = {
   tour: `Absolutely! Tour operators are essential partners in our safety network, especially for adventure and outdoor activities.\n\n**SOS Safe certification** for tour operators covers:\n- Emergency protocols training for your guides\n- Communication procedures when incidents happen in the field\n- Access to our medical coordination network\n- The SOS Safe badge for your marketing materials\n\nYour guides will know exactly what to do if a guest has a medical issue during a tour.\n\n[Start your certification](/auth/sign-up) — it takes about 2-3 hours to complete.`,
   what: `**SOS Safe** is a certification program by Tourist SOS that recognizes hotels, resorts, and tour operators who are prepared to handle guest medical emergencies.\n\nCertification involves three training modules — facility assessment, emergency preparedness, and communication protocols — each with a minimum **80% passing score**.\n\nWould you like to [get started](/auth/sign-up)?`,
   time: `Most partners complete certification within **1-2 weeks**. Here is the breakdown:\n\n- **Training modules**: About 2-3 hours total (3 modules, at your own pace)\n- **Passing score**: 80% per module — retake as many times as needed\n- **Our review**: 2-3 business days after all modules are passed\n\nReady? [Create your account](/auth/sign-up).`,
-  cost: `We have different certification tiers:\n\n- **SOS Safe Basic** — Start the certification process for free\n- **SOS Safe Premium** — Coming soon\n- **SOS Safe Elite** — Coming soon\n\n[Create a free account](/auth/sign-up) and explore the dashboard.`,
+  cost: `Pricing depends on the type of business you run:\n\n- **Hostels** — $12/month\n- **Guesthouses & B&Bs** — $22/month\n- **Hotels & Resorts** — $52/month\n- **Tour Operators** — $22/month\n\nEvery plan includes **all features** — all certification tiers, unlimited staff seats, AI assistant, and more. You can also save ~15% by paying annually.\n\nAll plans start with a **30-day free trial**. [View pricing details](/pricing) or [start your free trial](/auth/sign-up).`,
   modules: `The certification covers **three modules** with a total of 30 questions:\n\n**1. Facility Assessment** (10 questions)\nCovers emergency exits, first aid, fire safety, AED availability, accessibility.\n\n**2. Emergency Preparedness** (12 questions)\nCovers staff training, emergency coordinators, response plans, drill frequency.\n\n**3. Communication Protocols** (8 questions)\nCovers check-in briefings, multilingual info, mass notification, 24/7 contact.\n\nYou need **80% or higher** on each module. Retakes are allowed.\n\nWant to [start now](/auth/sign-up)?`,
   emergency: `**If this is an active medical emergency, please call your local emergency services immediately.**\n\nTourist SOS cannot dispatch emergency services. Local EMS must be your first call.\n\nIf you are asking about emergency preparedness certification — that is exactly what SOS Safe helps you prepare for.`,
   default: `Hi! I am SOSA, your SOS Safety assistant.\n\nI can help you understand:\n- How **SOS Safe certification** works\n- What the training modules cover\n- Benefits for hotels, resorts, and tour operators\n- Requirements and the certification process\n\nWhat type of property or business do you have? Or feel free to ask me anything about the program.`,
@@ -259,6 +259,11 @@ export function SosaChat({ context = "public" }: SosaChatProps) {
               Press the SOS button or tell me about your business. I can help you understand SOS Safe certification.
             </p>
 
+            <p className="text-[11px] text-muted-foreground/60 max-w-sm mb-5 leading-relaxed">
+              SOSA is an AI assistant. Responses are for informational purposes only and may contain errors.
+              This is not an emergency service and does not provide professional safety, legal, or medical advice.
+            </p>
+
             <div className="flex flex-wrap justify-center gap-2">
               {CHIPS.map((chip) => (
                 <button
@@ -297,13 +302,13 @@ export function SosaChat({ context = "public" }: SosaChatProps) {
       </div>
 
       {/* Input area */}
-      <div className="border-t border-border px-4 py-3 bg-surface-2">
+      <div className="border-t border-border/50 px-4 py-3">
         <div className="max-w-2xl mx-auto">
           {/* SOSA avatar */}
           <div className="flex justify-center mb-2 pointer-events-none">
             <img
               src="/sosa-avatar.png"
-              alt="SOSA"
+              alt="SOSA AI Safety Assistant"
               width={160}
               height={160}
               className="w-32 h-32 md:w-40 md:h-40 object-contain drop-shadow-lg"

@@ -1,434 +1,306 @@
+import type { Metadata } from "next"
+import Link from "next/link"
 import { MarketingHeader } from "@/components/MarketingHeader"
+import { MarketingFooter } from "@/components/MarketingFooter"
+
+export const metadata: Metadata = {
+  title: "Terms of Service | SOS Safe",
+  description: "Terms and conditions for using the SOS Safe certification platform operated by Tourist SOS, Inc.",
+}
 
 export default function TermsPage() {
   return (
     <div className="min-h-screen bg-background">
       <MarketingHeader />
 
-      {/* Terms Content */}
       <main className="pt-24 pb-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold gradient-text mb-4">Terms of Service</h1>
-            <p className="text-lg text-muted-foreground">Last updated: January 2025</p>
+            <p className="text-lg text-muted-foreground">Last updated: April 2026</p>
           </div>
 
           <div className="prose prose-lg max-w-none">
             <div className="glass-card p-8 rounded-2xl mb-8">
               <h2 className="text-2xl font-semibold mb-4 text-foreground">1. Acceptance of Terms</h2>
               <p className="text-muted-foreground mb-4">
-                By accessing, downloading, installing, or using Tourist SOS ("the Service," "Platform," "Application"),
-                you ("User," "you," or "your") acknowledge that you have read, understood, and agree to be legally bound
-                by these Terms of Service ("Terms," "Agreement") and our Privacy Policy, which is incorporated herein by
-                reference.
+                By accessing or using the SOS Safety certification platform (&ldquo;the Platform&rdquo;), operated by
+                Tourist SOS, Inc. (&ldquo;Tourist SOS,&rdquo; &ldquo;we,&rdquo; &ldquo;our&rdquo;), you (&ldquo;User,&rdquo;
+                &ldquo;you,&rdquo; or &ldquo;your&rdquo;) agree to be bound by these Terms of Service (&ldquo;Terms&rdquo;)
+                and our <Link href="/privacy" className="text-primary hover:underline">Privacy Policy</Link>, which is
+                incorporated by reference.
               </p>
               <p className="text-muted-foreground mb-4">
-                <strong>Age Requirement:</strong> You must be at least 18 years of age to use this Service. By using
-                Tourist SOS, you represent and warrant that you are 18 years of age or older and have the legal capacity
-                to enter into this Agreement.
+                <strong>Age Requirement:</strong> You must be at least 18 years of age to use this Platform. By creating
+                an account, you represent and warrant that you are 18 years of age or older.
               </p>
               <p className="text-muted-foreground">
-                If you do not agree to these Terms or do not meet the age requirement, you must not access or use the
-                Service. These Terms apply to all users, including hospitality staff, tour operators, first responders,
-                administrators, and any other parties accessing the Platform.
+                If you do not agree to these Terms, do not use the Platform. These Terms apply to all users, including
+                accommodation providers, tour operators, their staff, and any other parties accessing the Platform.
               </p>
             </div>
 
             <div className="glass-card p-8 rounded-2xl mb-8">
-              <h2 className="text-2xl font-semibold mb-4 text-foreground">2. Service Description and Scope</h2>
+              <h2 className="text-2xl font-semibold mb-4 text-foreground">2. Service Description</h2>
               <p className="text-muted-foreground mb-4">
-                Tourist SOS is a professional emergency communication and coordination platform designed exclusively for
-                hospitality industry professionals, tour operators, and certified first responders. The Service
+                SOS Safety is a safety certification and training platform for the hospitality industry. The Platform
                 provides:
               </p>
               <ul className="list-disc list-inside text-muted-foreground space-y-2 mb-4">
-                <li>Real-time secure messaging and communication infrastructure</li>
-                <li>Emergency protocol guidance and AI-powered decision support tools</li>
-                <li>Professional training modules and certification tracking systems</li>
-                <li>Incident documentation, reporting, and analytics capabilities</li>
-                <li>Integration with local emergency response networks and authorities</li>
-                <li>Multi-language support and cultural sensitivity resources</li>
-                <li>Geolocation services and mapping functionality</li>
-                <li>Audit trails and compliance monitoring tools</li>
-              </ul>
-              <p className="text-muted-foreground mb-4">
-                <strong>Professional Use Only:</strong> This Platform is intended solely for professional emergency
-                response coordination and is not a consumer application. Users must maintain appropriate professional
-                credentials and certifications as required by their jurisdiction.
-              </p>
-              <p className="text-muted-foreground">
-                <strong>Service Limitations:</strong> Tourist SOS facilitates communication and provides informational
-                resources but does not provide medical advice, diagnosis, treatment, or replace professional emergency
-                services. The Platform is a coordination tool only.
-              </p>
-            </div>
-
-            <div className="glass-card p-8 rounded-2xl mb-8">
-              <h2 className="text-2xl font-semibold mb-4 text-foreground">
-                3. User Eligibility and Account Requirements
-              </h2>
-              <p className="text-muted-foreground mb-4">
-                <strong>Professional Requirements:</strong> Users must be:
-              </p>
-              <ul className="list-disc list-inside text-muted-foreground space-y-2 mb-4">
-                <li>At least 18 years of age with valid government-issued identification</li>
-                <li>Currently employed in hospitality, tourism, or emergency response sectors</li>
-                <li>Authorized by their employer or organization to use emergency communication systems</li>
-                <li>Compliant with all applicable professional licensing and certification requirements</li>
-                <li>Able to demonstrate legitimate business need for emergency coordination services</li>
-              </ul>
-              <p className="text-muted-foreground mb-4">
-                <strong>Account Verification:</strong> We reserve the right to verify user credentials, employment
-                status, and professional qualifications. Accounts may be suspended pending verification or if
-                credentials cannot be authenticated.
-              </p>
-              <p className="text-muted-foreground">
-                <strong>Account Security:</strong> Users are solely responsible for maintaining the confidentiality of
-                their account credentials and for all activities that occur under their account. You must immediately
-                notify us of any unauthorized use or security breach.
-              </p>
-            </div>
-
-            <div className="glass-card p-8 rounded-2xl mb-8">
-              <h2 className="text-2xl font-semibold mb-4 text-foreground">
-                4. User Obligations and Prohibited Conduct
-              </h2>
-              <p className="text-muted-foreground mb-4">
-                <strong>Required Conduct:</strong> Users must:
-              </p>
-              <ul className="list-disc list-inside text-muted-foreground space-y-2 mb-4">
-                <li>Provide accurate, current, and complete information during registration and use</li>
-                <li>Use the Platform exclusively for legitimate emergency response and coordination purposes</li>
-                <li>Maintain strict confidentiality of all emergency-related communications and data</li>
-                <li>
-                  Comply with all applicable laws, regulations, professional standards, and organizational policies
-                </li>
-                <li>Respect the privacy, dignity, and rights of all individuals involved in emergency situations</li>
-                <li>Report suspected misuse, security vulnerabilities, or inappropriate behavior immediately</li>
-                <li>Keep professional certifications and training current as required by jurisdiction</li>
-                <li>Follow established emergency protocols and chain of command procedures</li>
-              </ul>
-              <p className="text-muted-foreground mb-4">
-                <strong>Strictly Prohibited Activities:</strong>
-              </p>
-              <ul className="list-disc list-inside text-muted-foreground space-y-2 mb-4">
-                <li>Using the Service for non-emergency communications or personal purposes</li>
-                <li>Sharing account credentials or allowing unauthorized access</li>
-                <li>Transmitting false, misleading, or fraudulent emergency information</li>
-                <li>Harassment, discrimination, or unprofessional conduct toward any user</li>
-                <li>Attempting to circumvent security measures or access unauthorized data</li>
-                <li>Using the Platform for commercial solicitation or marketing purposes</li>
-                <li>Reverse engineering, decompiling, or attempting to extract source code</li>
-                <li>Interfering with or disrupting the Service or its infrastructure</li>
-                <li>Violating any applicable privacy laws or professional confidentiality requirements</li>
-              </ul>
-            </div>
-
-            <div className="glass-card p-8 rounded-2xl mb-8">
-              <h2 className="text-2xl font-semibold mb-4 text-foreground">
-                5. Emergency Response and Medical Disclaimers
-              </h2>
-              <p className="text-muted-foreground mb-4">
-                <strong>CRITICAL DISCLAIMER:</strong> Tourist SOS is a communication and coordination platform only. It
-                does not provide medical advice, diagnosis, treatment, or emergency response services.
-              </p>
-              <p className="text-muted-foreground mb-4">
-                <strong>User Acknowledgments:</strong> By using this Service, you acknowledge and agree that:
-              </p>
-              <ul className="list-disc list-inside text-muted-foreground space-y-2 mb-4">
-                <li>
-                  The Platform facilitates communication but does not guarantee response times, availability, or
-                  outcomes
-                </li>
-                <li>All medical and emergency response decisions must be made by qualified, licensed professionals</li>
-                <li>
-                  In life-threatening emergencies, you must immediately contact local emergency services (911, 112,
-                  etc.)
-                </li>
-                <li>
-                  AI-powered guidance and recommendations are informational only and must not replace professional
-                  judgment
-                </li>
-                <li>
-                  Tourist SOS bears no responsibility for emergency response outcomes, medical decisions, or treatment
-                  results
-                </li>
-                <li>
-                  The Platform may experience technical failures, outages, or limitations that could affect emergency
-                  communications
-                </li>
-                <li>
-                  You assume all risks associated with relying on digital communication systems during emergencies
-                </li>
+                <li>Online safety training modules and assessments across three certification tiers (Basic, Premium, Elite)</li>
+                <li>Digital certificates with public verification codes and QR-based authentication</li>
+                <li>Team management tools for inviting staff and tracking training completion</li>
+                <li>Local safety knowledge sharing between team members</li>
+                <li>Facility assessment interviews and generated Policies &amp; Procedures documents</li>
+                <li>Read-only access to emergency case data created through the Tourist SOS network</li>
+                <li>AI-powered assistant (SOSA) for safety guidance and platform support</li>
               </ul>
               <p className="text-muted-foreground">
-                <strong>Professional Responsibility:</strong> Users remain fully responsible for their professional
-                duties, decisions, and compliance with applicable standards of care, regardless of any information or
-                guidance provided through the Platform.
+                <strong>Not an Emergency Service:</strong> The Platform is a training and certification tool. It does not
+                provide emergency response, medical advice, diagnosis, or treatment. In any emergency, contact local
+                emergency services immediately.
               </p>
             </div>
 
             <div className="glass-card p-8 rounded-2xl mb-8">
-              <h2 className="text-2xl font-semibold mb-4 text-foreground">6. Data Protection and Privacy</h2>
+              <h2 className="text-2xl font-semibold mb-4 text-foreground">3. SOS Safe Certification</h2>
               <p className="text-muted-foreground mb-4">
-                <strong>Data Security Measures:</strong> We implement industry-standard security measures including:
+                <strong>What Certification Represents:</strong> An SOS Safe certification indicates that the certified
+                organization has completed the required training modules with a minimum passing score of 80% in the
+                applicable tier. It demonstrates a commitment to guest safety preparedness and training standards
+                defined by Tourist SOS.
+              </p>
+              <p className="text-muted-foreground mb-4">
+                <strong>What Certification Does Not Guarantee:</strong> Certification does not constitute:
               </p>
               <ul className="list-disc list-inside text-muted-foreground space-y-2 mb-4">
-                <li>End-to-end encryption for all communications and sensitive data</li>
-                <li>Multi-factor authentication and advanced access controls</li>
-                <li>Regular security audits, penetration testing, and vulnerability assessments</li>
-                <li>Compliance with SOC 2, GDPR, HIPAA, and other applicable data protection standards</li>
-                <li>Secure data centers with 24/7 monitoring and incident response capabilities</li>
-                <li>Data minimization principles and purpose limitation practices</li>
+                <li>A guarantee that emergencies will not occur at the certified property</li>
+                <li>An endorsement of the property&rsquo;s physical safety, structural integrity, or regulatory compliance</li>
+                <li>A warranty of the quality of care provided by the certified organization&rsquo;s staff</li>
+                <li>Insurance coverage or liability protection of any kind</li>
+                <li>Compliance with local safety regulations, building codes, or licensing requirements</li>
               </ul>
               <p className="text-muted-foreground mb-4">
-                <strong>Data Retention and Deletion:</strong> Emergency communications and incident data may be retained
-                for legal, regulatory, and safety purposes as outlined in our Privacy Policy. Users may request data
-                deletion subject to applicable legal requirements.
+                <strong>Validity and Expiry:</strong> Certifications are valid for the period stated on the certificate
+                (1 year for Basic and Premium, 2 years for Elite). Expired certifications must be renewed by
+                re-completing the required modules. Expired or revoked certifications must not be displayed or
+                represented as active.
+              </p>
+              <p className="text-muted-foreground mb-4">
+                <strong>Badge and Logo Usage:</strong> Certified organizations may display the SOS Safe certification
+                badge on their website, marketing materials, and physical premises for the duration of their active
+                certification only. The badge must not be altered, and its use must cease immediately upon expiration
+                or revocation.
               </p>
               <p className="text-muted-foreground">
-                For comprehensive information about our data practices, please review our{" "}
-                <a href="/privacy" className="text-primary hover:underline">
-                  Privacy Policy
-                </a>
-                , which forms an integral part of this Agreement.
+                <strong>Revocation:</strong> We reserve the right to revoke certification at any time if we determine
+                that the certified organization has misrepresented its certification status, engaged in conduct that
+                undermines guest safety, or violated these Terms.
               </p>
             </div>
 
             <div className="glass-card p-8 rounded-2xl mb-8">
-              <h2 className="text-2xl font-semibold mb-4 text-foreground">7. Intellectual Property Rights</h2>
+              <h2 className="text-2xl font-semibold mb-4 text-foreground">4. User Accounts and Responsibilities</h2>
               <p className="text-muted-foreground mb-4">
-                <strong>Platform Ownership:</strong> Tourist SOS and its licensors retain all rights, title, and
-                interest in the Platform, including all software, algorithms, user interfaces, content, trademarks,
-                service marks, and other intellectual property.
+                <strong>Account Registration:</strong> You must provide accurate, current, and complete information
+                during registration. You are responsible for maintaining the confidentiality of your account credentials
+                and for all activities under your account.
               </p>
               <p className="text-muted-foreground mb-4">
-                <strong>Limited License:</strong> Subject to these Terms, we grant you a limited, non-exclusive,
-                non-transferable, revocable license to access and use the Service solely for its intended professional
-                purposes. This license does not include any right to:
+                <strong>Organization Accounts:</strong> The account owner who registers an organization is responsible
+                for managing team member access. Staff invited via team invite links are governed by these same Terms.
               </p>
-              <ul className="list-disc list-inside text-muted-foreground space-y-2 mb-4">
-                <li>Modify, adapt, or create derivative works of the Platform</li>
-                <li>Reverse engineer, decompile, or disassemble any software components</li>
-                <li>Remove or alter any proprietary notices or labels</li>
-                <li>Use our trademarks, service marks, or branding without written permission</li>
-                <li>Access or use the Platform for competitive analysis or development</li>
+              <p className="text-muted-foreground mb-4">
+                <strong>Prohibited Conduct:</strong> You must not:
+              </p>
+              <ul className="list-disc list-inside text-muted-foreground space-y-2">
+                <li>Provide false or misleading information in assessments or registration</li>
+                <li>Share account credentials or allow unauthorized access</li>
+                <li>Attempt to manipulate assessment scores or bypass module requirements</li>
+                <li>Display expired or revoked certification badges</li>
+                <li>Misrepresent the scope or meaning of your SOS Safe certification</li>
+                <li>Use the Platform for any unlawful purpose</li>
+                <li>Reverse engineer, decompile, or attempt to extract the Platform&rsquo;s source code</li>
+                <li>Interfere with or disrupt the Platform or its infrastructure</li>
               </ul>
+            </div>
+
+            <div className="glass-card p-8 rounded-2xl mb-8">
+              <h2 className="text-2xl font-semibold mb-4 text-foreground">5. AI-Powered Features</h2>
+              <p className="text-muted-foreground mb-4">
+                The Platform includes AI-powered features such as the SOSA assistant and policy document generation.
+                These features are informational tools and have inherent limitations:
+              </p>
+              <ul className="list-disc list-inside text-muted-foreground space-y-2 mb-4">
+                <li>AI-generated content is provided for guidance only and may contain errors or omissions</li>
+                <li>Generated Policies &amp; Procedures documents should be reviewed by qualified personnel before adoption</li>
+                <li>AI responses do not constitute professional safety, legal, or medical advice</li>
+                <li>You are responsible for verifying the accuracy and suitability of any AI-generated content</li>
+              </ul>
+            </div>
+
+            <div className="glass-card p-8 rounded-2xl mb-8">
+              <h2 className="text-2xl font-semibold mb-4 text-foreground">6. Intellectual Property</h2>
+              <p className="text-muted-foreground mb-4">
+                <strong>Our IP:</strong> The Platform, including all software, content, training materials, assessment
+                questions, certification badges, trademarks, and design, are owned by Tourist SOS. You may not copy,
+                modify, or distribute any part of the Platform except as expressly permitted.
+              </p>
               <p className="text-muted-foreground">
-                <strong>User Content:</strong> You retain ownership of content you create, but grant us necessary rights
-                to operate the Service, including storing, transmitting, and processing communications for emergency
-                response purposes.
+                <strong>Your Content:</strong> You retain ownership of content you submit (e.g., local knowledge entries,
+                facility assessment answers). By submitting content, you grant us a non-exclusive, worldwide license to
+                use, store, and process it for the purpose of operating the Platform and providing services to you.
               </p>
             </div>
 
             <div className="glass-card p-8 rounded-2xl mb-8">
-              <h2 className="text-2xl font-semibold mb-4 text-foreground">
-                8. Limitation of Liability and Disclaimers
-              </h2>
+              <h2 className="text-2xl font-semibold mb-4 text-foreground">7. Pricing and Payment</h2>
               <p className="text-muted-foreground mb-4">
-                <strong>SERVICE PROVIDED "AS IS":</strong> Tourist SOS is provided on an "as is" and "as available"
-                basis without warranties of any kind, either express or implied, including but not limited to warranties
-                of merchantability, fitness for a particular purpose, or non-infringement.
+                The Platform operates on a subscription basis with plans based on property type (Hostel, Guesthouse,
+                Hotel &amp; Resort, Tour Operator). All plans include full access to all Platform features. Current
+                pricing is available on our{" "}
+                <Link href="/pricing" className="text-primary hover:underline">Pricing page</Link>.
               </p>
               <p className="text-muted-foreground mb-4">
-                <strong>LIMITATION OF LIABILITY:</strong> To the maximum extent permitted by applicable law, Tourist
-                SOS, its officers, directors, employees, agents, and affiliates shall not be liable for any direct,
-                indirect, incidental, special, consequential, or punitive damages, including but not limited to:
+                <strong>Free Trial:</strong> New accounts receive a 30-day free trial with full access. No payment
+                is required during the trial period. After the trial, an active subscription is required to
+                maintain certification status and dashboard access.
+              </p>
+              <p className="text-muted-foreground mb-4">
+                <strong>Billing:</strong> Subscriptions are billed either monthly or annually, at your choice.
+                Annual subscriptions are billed upfront for the full year at a discounted rate. Payments are
+                processed by Stripe. We will provide at least 30 days&rsquo; notice before any pricing changes
+                that affect existing subscribers.
+              </p>
+              <p className="text-muted-foreground mb-4">
+                <strong>Cancellation:</strong> Monthly subscriptions may be cancelled at any time. Annual
+                subscriptions remain active for the paid period. Upon cancellation or non-payment, your
+                certification becomes inactive, your dashboard becomes read-only, and your public verification
+                page will reflect the inactive status.
+              </p>
+              <p className="text-muted-foreground">
+                <strong>Refund Policy:</strong> Monthly subscriptions are non-refundable. Annual subscriptions
+                may be refunded on a prorated basis within the first 30 days of the subscription period.
+                Contact support@tourist-sos.com for refund requests.
+              </p>
+            </div>
+
+            <div className="glass-card p-8 rounded-2xl mb-8">
+              <h2 className="text-2xl font-semibold mb-4 text-foreground">8. Limitation of Liability</h2>
+              <p className="text-muted-foreground mb-4">
+                <strong>AS-IS BASIS:</strong> The Platform is provided &ldquo;as is&rdquo; and &ldquo;as available&rdquo;
+                without warranties of any kind, express or implied, including warranties of merchantability, fitness for
+                a particular purpose, or non-infringement.
+              </p>
+              <p className="text-muted-foreground mb-4">
+                <strong>LIMITATION:</strong> To the maximum extent permitted by law, Tourist SOS shall not be liable for
+                any indirect, incidental, special, consequential, or punitive damages, including but not limited to:
               </p>
               <ul className="list-disc list-inside text-muted-foreground space-y-2 mb-4">
-                <li>Personal injury, death, or property damage arising from emergency situations</li>
-                <li>Medical malpractice, negligence, or professional liability claims</li>
-                <li>Service interruptions, technical failures, data loss, or security breaches</li>
-                <li>Decisions made by users based on Platform information or recommendations</li>
-                <li>Actions or omissions of third-party service providers or emergency responders</li>
+                <li>Personal injury, death, or property damage arising at certified or non-certified properties</li>
+                <li>Emergency outcomes, regardless of the organization&rsquo;s certification status</li>
+                <li>Service interruptions, technical failures, or data loss</li>
+                <li>Decisions made based on AI-generated content, training materials, or assessment results</li>
+                <li>Actions or omissions of certified organizations, their staff, or third parties</li>
                 <li>Loss of business, profits, data, or other economic losses</li>
-                <li>Any damages exceeding the amount paid by you for the Service in the preceding 12 months</li>
               </ul>
               <p className="text-muted-foreground mb-4">
-                <strong>INDEMNIFICATION:</strong> You agree to indemnify, defend, and hold harmless Tourist SOS from any
-                claims, damages, losses, or expenses arising from your use of the Service, violation of these Terms, or
-                infringement of any third-party rights.
+                <strong>INDEMNIFICATION:</strong> You agree to indemnify and hold harmless Tourist SOS from any claims,
+                damages, losses, or expenses arising from your use of the Platform, your certification status, your
+                violation of these Terms, or your organization&rsquo;s operations.
               </p>
               <p className="text-muted-foreground">
-                <strong>JURISDICTIONAL LIMITATIONS:</strong> Some jurisdictions do not allow the exclusion or limitation
-                of certain warranties or damages. In such jurisdictions, our liability is limited to the maximum extent
-                permitted by law.
+                <strong>MAXIMUM LIABILITY:</strong> In any event, our total aggregate liability shall not exceed the
+                amount you have paid us in the 12 months preceding the claim, or USD $100, whichever is greater.
               </p>
             </div>
 
             <div className="glass-card p-8 rounded-2xl mb-8">
-              <h2 className="text-2xl font-semibold mb-4 text-foreground">9. Account Suspension and Termination</h2>
+              <h2 className="text-2xl font-semibold mb-4 text-foreground">9. Account Termination</h2>
               <p className="text-muted-foreground mb-4">
-                <strong>Grounds for Termination:</strong> We may suspend or terminate your account immediately, with or
-                without notice, for:
+                <strong>By You:</strong> You may close your account at any time by contacting support. Closing your
+                account will deactivate your certification and remove your team&rsquo;s access.
               </p>
-              <ul className="list-disc list-inside text-muted-foreground space-y-2 mb-4">
-                <li>Material breach of these Terms or our Privacy Policy</li>
-                <li>Misuse of the Platform or violation of professional standards</li>
-                <li>Failure to maintain required professional certifications or credentials</li>
-                <li>Non-payment of applicable fees or charges</li>
-                <li>Suspected fraudulent, illegal, or harmful activity</li>
-                <li>Compromise of account security or unauthorized access</li>
-                <li>Legal or regulatory requirements or court orders</li>
-                <li>Discontinuation of the Service or specific features</li>
-              </ul>
               <p className="text-muted-foreground mb-4">
-                <strong>User-Initiated Termination:</strong> You may terminate your account at any time by following the
-                account closure procedures in the Platform or contacting our support team. Termination does not relieve
-                you of obligations incurred prior to termination.
+                <strong>By Us:</strong> We may suspend or terminate your account for material breach of these Terms,
+                fraudulent activity, non-payment of applicable fees, or if required by law. We will provide reasonable
+                notice where possible.
               </p>
               <p className="text-muted-foreground">
-                <strong>Effect of Termination:</strong> Upon termination, your access to the Service will cease
-                immediately. We may retain certain data as required by law, for legitimate business purposes, or to
-                comply with our data retention policies.
+                <strong>Effect:</strong> Upon termination, your certification becomes inactive and your right to display
+                the SOS Safe badge ceases immediately. We may retain certain data as required by law or for legitimate
+                business purposes.
               </p>
             </div>
 
             <div className="glass-card p-8 rounded-2xl mb-8">
-              <h2 className="text-2xl font-semibold mb-4 text-foreground">10. Modifications and Updates</h2>
+              <h2 className="text-2xl font-semibold mb-4 text-foreground">10. Modifications</h2>
               <p className="text-muted-foreground mb-4">
-                <strong>Terms Modifications:</strong> We reserve the right to modify these Terms at any time to reflect
-                changes in our services, legal requirements, or business practices. Material changes will be
-                communicated through:
-              </p>
-              <ul className="list-disc list-inside text-muted-foreground space-y-2 mb-4">
-                <li>In-app notifications and prominent Platform notices</li>
-                <li>Email notifications to your registered address</li>
-                <li>Updates to this page with revised effective dates</li>
-                <li>Direct communication for significant changes affecting user rights</li>
-              </ul>
-              <p className="text-muted-foreground mb-4">
-                <strong>Service Updates:</strong> We may modify, update, or discontinue features of the Service at any
-                time. We will provide reasonable notice for material changes that significantly impact functionality.
-              </p>
-              <p className="text-muted-foreground">
-                <strong>Continued Use:</strong> Your continued use of the Service after any modifications constitutes
-                acceptance of the revised Terms. If you do not agree to the changes, you must discontinue use of the
-                Service.
+                We may update these Terms from time to time. Material changes will be communicated via email to your
+                registered address and/or a notice on the Platform. Continued use after changes take effect constitutes
+                acceptance of the updated Terms.
               </p>
             </div>
 
             <div className="glass-card p-8 rounded-2xl mb-8">
               <h2 className="text-2xl font-semibold mb-4 text-foreground">11. Dispute Resolution and Governing Law</h2>
               <p className="text-muted-foreground mb-4">
-                <strong>Governing Law:</strong> These Terms are governed by and construed in accordance with the laws of
-                [Jurisdiction], without regard to conflict of law principles. Any legal action or proceeding arising
-                under these Terms will be brought exclusively in the courts of [Jurisdiction].
+                <strong>Governing Law:</strong> These Terms are governed by the laws of the Kingdom of Thailand. Any
+                legal proceedings shall be brought exclusively in the courts of Bangkok, Thailand.
               </p>
               <p className="text-muted-foreground mb-4">
-                <strong>Dispute Resolution Process:</strong>
+                <strong>Dispute Process:</strong> Before initiating legal proceedings, both parties agree to attempt
+                informal resolution for at least 30 days. If unresolved, disputes will be submitted to mediation
+                before proceeding to binding arbitration or litigation.
               </p>
-              <ol className="list-decimal list-inside text-muted-foreground space-y-2 mb-4">
-                <li>
-                  <strong>Informal Resolution:</strong> Before initiating formal proceedings, parties must attempt to
-                  resolve disputes through good faith negotiations for at least 30 days.
-                </li>
-                <li>
-                  <strong>Mediation:</strong> If informal resolution fails, disputes will be submitted to binding
-                  mediation administered by a recognized mediation service.
-                </li>
-                <li>
-                  <strong>Arbitration:</strong> Unresolved disputes will be settled through binding arbitration in
-                  accordance with applicable arbitration rules.
-                </li>
-                <li>
-                  <strong>Class Action Waiver:</strong> You agree to resolve disputes individually and waive any right
-                  to participate in class action lawsuits or class-wide arbitration.
-                </li>
-              </ol>
               <p className="text-muted-foreground">
-                <strong>Exceptions:</strong> Either party may seek injunctive relief in court for intellectual property
-                infringement, confidentiality breaches, or other matters requiring immediate judicial intervention.
+                <strong>Class Action Waiver:</strong> You agree to resolve disputes individually and waive any right to
+                participate in class action lawsuits or class-wide arbitration.
               </p>
             </div>
 
             <div className="glass-card p-8 rounded-2xl mb-8">
-              <h2 className="text-2xl font-semibold mb-4 text-foreground">12. Miscellaneous Provisions</h2>
+              <h2 className="text-2xl font-semibold mb-4 text-foreground">12. General Provisions</h2>
               <p className="text-muted-foreground mb-4">
-                <strong>Entire Agreement:</strong> These Terms, together with our Privacy Policy and any additional
-                agreements, constitute the entire agreement between you and Tourist SOS regarding the Service.
+                <strong>Entire Agreement:</strong> These Terms, together with our Privacy Policy, constitute the entire
+                agreement between you and Tourist SOS regarding the Platform.
               </p>
               <p className="text-muted-foreground mb-4">
-                <strong>Severability:</strong> If any provision of these Terms is found to be unenforceable or invalid,
-                the remaining provisions will continue in full force and effect, and the invalid provision will be
-                modified to the minimum extent necessary to make it enforceable.
+                <strong>Severability:</strong> If any provision is found unenforceable, the remaining provisions continue
+                in full effect.
               </p>
               <p className="text-muted-foreground mb-4">
-                <strong>Assignment:</strong> You may not assign or transfer your rights under these Terms without our
-                written consent. We may assign our rights and obligations without restriction.
-              </p>
-              <p className="text-muted-foreground mb-4">
-                <strong>Force Majeure:</strong> Neither party will be liable for delays or failures in performance
-                resulting from circumstances beyond their reasonable control, including natural disasters, government
-                actions, or technical infrastructure failures.
+                <strong>Force Majeure:</strong> Neither party is liable for delays or failures caused by circumstances
+                beyond reasonable control, including natural disasters, government actions, or infrastructure failures.
               </p>
               <p className="text-muted-foreground">
-                <strong>Survival:</strong> Provisions relating to intellectual property, confidentiality, limitation of
-                liability, indemnification, and dispute resolution will survive termination of these Terms.
+                <strong>Assignment:</strong> You may not assign your rights under these Terms without our written
+                consent. We may assign our rights and obligations without restriction.
               </p>
             </div>
 
             <div className="glass-card p-8 rounded-2xl">
-              <h2 className="text-2xl font-semibold mb-4 text-foreground">13. Contact Information and Support</h2>
+              <h2 className="text-2xl font-semibold mb-4 text-foreground">13. Contact</h2>
               <p className="text-muted-foreground mb-4">
-                For questions about these Terms of Service, legal matters, or compliance issues, please contact our
-                Legal Department:
+                For questions about these Terms, contact us at:
               </p>
-              <div className="text-muted-foreground space-y-2 mb-6">
+              <div className="text-muted-foreground space-y-2">
+                <p><strong>Email:</strong> legal@tourist-sos.com</p>
+                <p><strong>General Support:</strong> support@tourist-sos.com</p>
                 <p>
-                  <strong>Legal Department:</strong> legal@touristsos.com
-                </p>
-                <p>
-                  <strong>Compliance Officer:</strong> compliance@touristsos.com
-                </p>
-                <p>
-                  <strong>Data Protection Officer:</strong> privacy@touristsos.com
-                </p>
-                <p>
-                  <strong>Security Issues:</strong> security@touristsos.com
-                </p>
-                <p>
-                  <strong>Mailing Address:</strong> Tourist SOS Legal Department
-                  <br />
-                  [Complete Business Address]
-                  <br />
-                  [City, State/Province, Postal Code]
-                  <br />
-                  [Country]
+                  <strong>Mailing Address:</strong><br />
+                  Tourist SOS, Inc.<br />
+                  388 Exchange Tower, Sukhumvit Road<br />
+                  Klongtoey, Bangkok 10110<br />
+                  Thailand
                 </p>
               </div>
-              <p className="text-muted-foreground mb-4">
-                <strong>Technical Support:</strong> For technical assistance, account issues, or general inquiries,
-                please use our support portal or contact support@touristsos.com.
-              </p>
-              <p className="text-muted-foreground">
-                <strong>Emergency Support:</strong> For urgent technical issues affecting emergency response
-                capabilities, please use our 24/7 emergency support hotline available through the Platform.
-              </p>
             </div>
           </div>
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-border/50 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row justify-between items-center">
-            <div className="text-sm text-muted-foreground mb-4 sm:mb-0">© 2025 Tourist SOS. All rights reserved.</div>
-            <div className="flex gap-6 text-sm text-muted-foreground">
-              <a href="/privacy" className="hover:text-foreground transition-colors">
-                Privacy
-              </a>
-              <a href="/terms" className="hover:text-foreground transition-colors">
-                Terms
-              </a>
-              <a href="/support" className="hover:text-foreground transition-colors">
-                Support
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <MarketingFooter />
     </div>
   )
 }

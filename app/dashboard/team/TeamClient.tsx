@@ -47,10 +47,11 @@ export function TeamClient({
   currentUserId,
   currentUserEmail,
   currentUserRole,
-  members,
+  members: initialMembers,
   trainingData,
   modules,
 }: TeamClientProps) {
+  const [members, setMembers] = useState(initialMembers)
   const [copiedLink, setCopiedLink] = useState<string | null>(null)
   const [removingId, setRemovingId] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<"members" | "training">("members")
@@ -75,12 +76,15 @@ export function TeamClient({
 
     setRemovingId(membershipId)
     const supabase = createClient()
-    await supabase
+    const { error } = await supabase
       .from("partner_memberships")
       .update({ removed_at: new Date().toISOString() })
       .eq("id", membershipId)
 
-    window.location.reload()
+    if (!error) {
+      setMembers(prev => prev.filter(m => m.id !== membershipId))
+    }
+    setRemovingId(null)
   }
 
   const roleLabel = (role: string) => {
@@ -224,6 +228,11 @@ export function TeamClient({
 
               <p className="text-xs text-muted-foreground mt-3">
                 Managers can view cases and certification status. Staff can complete training modules.
+                Invited members must agree to our{" "}
+                <a href="/terms" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Terms of Service</a>{" "}
+                and{" "}
+                <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Privacy Policy</a>{" "}
+                during sign-up.
               </p>
             </div>
           )}
@@ -366,7 +375,7 @@ export function TeamClient({
                       {modules.map((mod) => (
                         <th
                           key={mod.id}
-                          className="text-center p-4 text-xs font-medium text-muted-foreground uppercase tracking-wider min-w-[140px]"
+                          className="text-center p-4 text-xs font-medium text-muted-foreground uppercase tracking-wider min-w-[110px]"
                         >
                           <span className="text-base block mb-0.5">{mod.icon}</span>
                           {mod.title.replace("Assessment", "").replace("Protocols", "").trim()}
