@@ -156,6 +156,13 @@ export default function OnboardingPage() {
 
       if (membershipError) throw membershipError
 
+      // Send welcome email (fire-and-forget — don't block onboarding)
+      fetch("/api/email/welcome", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ partnerId: newPartner.id }),
+      }).catch(() => {}) // Silently ignore email failures
+
       router.push("/dashboard?welcome=true")
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to complete setup")
