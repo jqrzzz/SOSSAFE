@@ -5,7 +5,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
-import { Logo } from "@/components/Logo"
+import { MarketingHeader } from "@/components/MarketingHeader"
 import type { PropertyType } from "@/lib/pricing-data"
 
 type PartnerType = "accommodation" | "tour_operator"
@@ -142,30 +142,7 @@ export default function SignUpPage() {
   if (step === "type") {
     return (
       <div className="min-h-screen bg-background flex flex-col">
-        {/* Header - matching homepage style */}
-        <header className="sticky top-0 z-40 border-b border-border/50 bg-background/95 backdrop-blur-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-14">
-              <Link href="/">
-                <Logo size="default" />
-              </Link>
-              <div className="flex items-center gap-4">
-                <Link
-                  href="/about"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  About
-                </Link>
-                <Link
-                  href="/auth/login"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Login
-                </Link>
-              </div>
-            </div>
-          </div>
-        </header>
+        <MarketingHeader />
 
         <div className="flex-1 flex items-center justify-center px-4 py-12">
           <div className="w-full max-w-lg">
@@ -222,30 +199,7 @@ export default function SignUpPage() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Header - matching homepage style */}
-      <header className="sticky top-0 z-40 border-b border-border/50 bg-background/95 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-14">
-            <Link href="/">
-              <Logo size="default" />
-            </Link>
-            <div className="flex items-center gap-4">
-              <Link
-                href="/about"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                About
-              </Link>
-              <Link
-                href="/auth/login"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Login
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+      <MarketingHeader />
 
       <div className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">

@@ -29,13 +29,11 @@ const sizeStyles: Record<LogoSize, { wrapper: string; tourist: string; divider: 
 export function Logo({ size = "default", className }: { size?: LogoSize; className?: string }) {
   const s = sizeStyles[size]
   return (
-    <span className={cn("inline-flex items-center select-none", s.wrapper, className)} aria-label="SOS Safety by Tourist SOS">
+    <span className={cn("inline-flex items-center select-none", s.wrapper, className)} aria-label="Tourist SOS Safe">
       <span className={cn("font-light uppercase text-foreground", s.tourist)}>Tourist</span>
-      <span className={cn("bg-primary/40", s.divider)} aria-hidden="true" />
-      <span className={cn("font-semibold uppercase", s.sos)}>
-        <span className="text-red-500">SOS</span>
-        <span className="text-primary ml-1">Safety</span>
-      </span>
+      <span className={cn("bg-accent", s.divider)} aria-hidden="true" />
+      <span className={cn("font-semibold uppercase text-red-500", s.sos)}>SOS</span>
+      <span className={cn("font-semibold uppercase text-red-500", s.safety)}>SAFE</span>
     </span>
   )
 }

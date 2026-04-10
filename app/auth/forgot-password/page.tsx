@@ -4,7 +4,7 @@ import type React from "react"
 import { useState } from "react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
-import { Logo } from "@/components/Logo"
+import { MarketingHeader } from "@/components/MarketingHeader"
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("")
@@ -34,21 +34,7 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <header className="sticky top-0 z-40 border-b border-border/50 bg-background/95 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-14">
-            <Link href="/">
-              <Logo size="default" />
-            </Link>
-            <Link
-              href="/auth/login"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Back to Login
-            </Link>
-          </div>
-        </div>
-      </header>
+      <MarketingHeader />
 
       <div className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">

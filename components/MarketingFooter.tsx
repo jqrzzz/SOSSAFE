@@ -19,7 +19,7 @@ export function MarketingFooter() {
         </nav>
 
         <p className="text-[11px] text-muted-foreground/50 leading-relaxed text-center max-w-3xl mx-auto mb-5">
-          SOS Safety is the certification portal of Tourist SOS, Inc. We help accommodation providers
+          SOS Safe is the certification portal of Tourist SOS, Inc. We help accommodation providers
           and tour operators meet verified safety standards for guest emergency preparedness. This
           website is for informational purposes only and does not function as an emergency call center.
           In the event of a medical emergency, contact local emergency services immediately.
