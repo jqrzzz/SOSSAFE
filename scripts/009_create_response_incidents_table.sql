@@ -9,7 +9,7 @@
 CREATE TABLE IF NOT EXISTS response_incidents (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   partner_id uuid NOT NULL REFERENCES partners(id) ON DELETE CASCADE,
-  started_by uuid NOT NULL REFERENCES auth.users(id),
+  started_by uuid NOT NULL REFERENCES users(id),
 
   -- Timing
   started_at timestamptz NOT NULL DEFAULT now(),
