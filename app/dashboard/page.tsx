@@ -223,6 +223,37 @@ export default async function DashboardPage({
         </p>
       </div>
 
+      {/* Always-visible emergency response shortcut */}
+      {hasProfile && (
+        <Link
+          href="/dashboard/respond"
+          className="group flex items-center justify-between gap-4 rounded-xl border-2 border-red-500/50 bg-gradient-to-r from-red-500/10 via-red-500/5 to-transparent p-5 hover:border-red-500 hover:from-red-500/20 transition-colors"
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-lg bg-red-500/20 text-red-500 flex items-center justify-center flex-shrink-0">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" />
+              </svg>
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h2 className="text-lg font-semibold">Emergency response console</h2>
+                <span className="inline-flex h-2 w-2 rounded-full bg-red-500 animate-pulse" />
+              </div>
+              <p className="text-sm text-muted-foreground">
+                One-tap timer, CPR metronome, and printable paramedic handover. Use it the second someone shouts for help.
+              </p>
+            </div>
+          </div>
+          <span className="hidden sm:inline-flex items-center gap-1 text-sm font-semibold text-red-500 group-hover:translate-x-1 transition-transform">
+            Start
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </span>
+        </Link>
+      )}
+
       {/* First-time welcome banner */}
       {isWelcome && (
         <div className="glass-card p-6 rounded-lg border border-primary/30 bg-primary/5">

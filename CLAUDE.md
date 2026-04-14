@@ -49,6 +49,7 @@ Created in `scripts/001` through `scripts/005`:
 | `partner_local_knowledge` | Staff-contributed local safety intel (medical, transport, hazards) |
 | `facility_assessments` | SOSA-conducted facility interview answers (equipment, protocols) |
 | `facility_policies` | Generated P&P documents from assessment data (versioned) |
+| `response_incidents` | Live, staff-triggered emergency response log (timeline + handover) |
 
 **Enums owned:** `partner_type`, `certification_status`, `certification_tier`, `partner_membership_role`
 

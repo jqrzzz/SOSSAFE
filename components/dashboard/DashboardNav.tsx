@@ -22,6 +22,7 @@ export function DashboardNav({ user }: DashboardNavProps) {
 
   const navItems = [
     { href: "/dashboard", label: "Overview", icon: HomeIcon },
+    { href: "/dashboard/respond", label: "Respond", icon: RespondIcon, emphasis: true as const },
     { href: "/dashboard/certification", label: "Certification", icon: CertificateIcon },
     { href: "/dashboard/training", label: "My Training", icon: TrainingIcon },
     { href: "/dashboard/knowledge", label: "Local Knowledge", icon: KnowledgeIcon },
@@ -47,14 +48,19 @@ export function DashboardNav({ user }: DashboardNavProps) {
                   (item.href !== "/dashboard" && pathname.startsWith(item.href))
                 const Icon = item.icon
                 
+                const emphasis = "emphasis" in item && item.emphasis
                 return (
                   <Link
                     key={item.href}
                     href={item.href}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      isActive
-                        ? "bg-primary/10 text-primary"
-                        : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                      emphasis
+                        ? isActive
+                          ? "bg-red-500/15 text-red-500"
+                          : "text-red-500 hover:bg-red-500/10"
+                        : isActive
+                          ? "bg-primary/10 text-primary"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                     }`}
                   >
                     <Icon className="w-4 h-4" />
@@ -86,14 +92,19 @@ export function DashboardNav({ user }: DashboardNavProps) {
                 (item.href !== "/dashboard" && pathname.startsWith(item.href))
               const Icon = item.icon
 
+              const emphasis = "emphasis" in item && item.emphasis
               return (
                 <Link
                   key={item.href}
                   href={item.href}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
-                    isActive
-                      ? "bg-primary/10 text-primary"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                    emphasis
+                      ? isActive
+                        ? "bg-red-500/15 text-red-500"
+                        : "text-red-500 hover:bg-red-500/10"
+                      : isActive
+                        ? "bg-primary/10 text-primary"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                   }`}
                 >
                   <Icon className="w-3.5 h-3.5" />
@@ -112,6 +123,14 @@ function HomeIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+    </svg>
+  )
+}
+
+function RespondIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" />
     </svg>
   )
 }
